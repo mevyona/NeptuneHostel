@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+{% block title %}
+	{{ parent() }}
+	Liste des types
+{% endblock %}
+{% block content %}
+	<div class="container-uid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				<h2 class="text-center text-light">Liste des types</h2>
+				{% for type in types %}
+					{{type.id}}
+					{{type.label}}
+					<a href="index.php?page=updateType&id={{type.id}}"><i class="bi bi-pen-fill"></i></a>
+					<a href="index.php?page=deleteType&id={{type.id}}"><i class="bi bi-trash2-fill"></i></a><br/>
+				{% endfor%}
+				<a href="index.php?page=addType&id={{type.id}}"><i class="bi bi-plus-lg"></i></a><br/>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
