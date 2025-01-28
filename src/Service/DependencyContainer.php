@@ -3,6 +3,8 @@ namespace MyApp\Service;
 
 use PDO;
 
+use MyApp\Model\AdministrateurModel;
+
 class DependencyContainer
 {
     private $instances = [];
@@ -25,6 +27,9 @@ class DependencyContainer
         switch ($key) {
             case 'PDO':
                 return $this->createPDOInstance();
+            case 'AdministrateurModel' :
+                $pdo = $this->get('PDO');
+                return new AdministrateurModel($pdo);
             default:
                 throw new \Exception("No service found for key: " . $key);
         }

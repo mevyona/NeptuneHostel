@@ -2,8 +2,8 @@
 declare (strict_types = 1);
 namespace MyApp\Model;
 
-use MyApp\Administrateur;
 use PDO;
+use MyApp\Entity\Administrateur;
 
 class AdministrateurModel
 {

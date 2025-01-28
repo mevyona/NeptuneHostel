@@ -3,7 +3,7 @@ declare(strict_types = 1);
 namespace MyApp\Entity;
 
 class Administrateur{
-    private ?int $id_admin_admin = null;
+    private ?int $id_admin = null;
     private string $nom_admin;
     private string $prenom_admin;
     public function __construct(?int $id_admin, string $nom_admin, string $prenom_admin ){
