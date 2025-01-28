@@ -2,8 +2,6 @@
 declare(strict_types = 1);
 namespace MyApp\Entity;
 
-// Comment
-
 class Administrateur{
     private ?int $id_admin_admin = null;
     private string $nom_admin;
