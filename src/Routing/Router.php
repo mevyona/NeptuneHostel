@@ -27,15 +27,6 @@ class Router
             'home' => [DefaultController::class, 'home'],
             'contact' => [DefaultController::class, 'contact'],
             'legals' => [DefaultController::class, 'legals'],
-            'types' => [DefaultController::class, 'types'],
-            'addType' => [DefaultController::class, 'addType'],
-            'updateType' => [DefaultController::class, 'updateType'],
-            'deleteType' => [DefaultController::class, 'deleteType'],
-            'products' => [DefaultController::class, 'products'],
-            'addProduct' => [DefaultController::class, 'addProduct'],
-            'updateProduct' => [DefaultController::class, 'updateProduct'],
-            'deleteProduct' => [DefaultController::class, 'deleteProduct'],
-            'users' => [DefaultController::class, 'users'],
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500']
         ];

@@ -6,7 +6,7 @@ SET time_zone = "+00:00";
 -- Base de données : `dbHotelNeptune`
 --
 
-CREATE TABLE `Admin` (
+CREATE TABLE `Administrateur` (
   `id_admin` int(11) NOT NULL,
   `nom_admin` varchar(50) NOT NULL,
   `prenom_admin` varchar(50) NOT NULL
