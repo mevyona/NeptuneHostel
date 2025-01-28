@@ -8,51 +8,59 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Administrateur` (
   `id_admin` int(11) NOT NULL,
-  `nom_admin` varchar(50) NOT NULL,
-  `prenom_admin` varchar(50) NOT NULL
+  `nom_admin` varchar(30) NOT NULL,
+  `prenom_admin` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 CREATE TABLE `Chambre` (
   `num_chambre` int(11) NOT NULL,
-  `chambre_Disponible` varchar(50) NOT NULL,
-  `photosDescriptive_Chambre` varchar(50) NOT NULL,
-  `prix_Chambre` varchar(50) NOT NULL
+  `disponibilite` boolean NOT NULL,
+  `id_photos` int(11),
+  `prix` float(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+CREATE TABLE `Image` (
+  `id_img` int(11) NOT NULL,
+  `nom_img` varchar(30) NOT NULL,
+  `taille_img` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 CREATE TABLE `Client` (
   `id_client` int(11) NOT NULL,
-  `nom_client` varchar(50) NOT NULL,
-  `prenom_client` varchar(50) NOT NULL,
-  `NuméroTelephone_client` char(15) NOT NULL,
-  `mails_client` varchar(50) NOT NULL,
-  `numéro_chambre` varchar(50) NOT NULL,
-  `prixTotal_Chambre` varchar(50) NOT NULL,
-  `historique_Reservation` varchar(50) NOT NULL
+  `nom_client` varchar(30) NOT NULL,
+  `prenom_client` varchar(30) NOT NULL,
+  `telephone_client` varchar(15) NOT NULL,
+  `email_client` varchar(40) NOT NULL,
+  `numero_chambre` int(5),
+  `prix_total` float(15),
+  `historique_reservation` varchar(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 CREATE TABLE `Paiement` (
   `id_paiement` int(11) NOT NULL,
-  `numero_cb` varchar(50) NOT NULL,
+  `numero_cb` varchar(16) NOT NULL,
   `date_expiration` date NOT NULL,
-  `ccv_cb` text NOT NULL
+  `ccv` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 CREATE TABLE `Reservation` (
   `num_reservation` int(11) NOT NULL,
-  `dateDebut_reservation` date NOT NULL,
-  `dateFin_reservation` date NOT NULL,
-  `chambre_Disponible` varchar(50) NOT NULL,
-  `annulation` varchar(50) NOT NULL,
+  `date_debut` date NOT NULL,
+  `date_fin` date NOT NULL,
+  `chambres_disponibles` varchar(50) NOT NULL,
+  `annulations` varchar(50) NOT NULL,
   `facture` text NOT NULL,
-  `Option_Chambre` varchar(50) NOT NULL
+  `options_chambre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -60,31 +68,37 @@ CREATE TABLE `Reservation` (
 --
 
 --
--- Index pour la table `admin`
+-- Index pour la table `Administrateur`
 --
-ALTER TABLE `Admin`
+ALTER TABLE `Administrateur`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Index pour la table `chambre`
+-- Index pour la table `Chambre`
 --
 ALTER TABLE `Chambre`
   ADD PRIMARY KEY (`num_chambre`);
 
 --
--- Index pour la table `client`
+-- Index pour la table `Image`
+--
+ALTER TABLE `Image`
+  ADD PRIMARY KEY (`id_img`);
+
+--
+-- Index pour la table `Client`
 --
 ALTER TABLE `Client`
   ADD PRIMARY KEY (`id_client`);
 
 --
--- Index pour la table `paiement`
+-- Index pour la table `Paiement`
 --
 ALTER TABLE `Paiement`
   ADD PRIMARY KEY (`id_paiement`);
 
 --
--- Index pour la table `réservation`
+-- Index pour la table `Reservation`
 --
 ALTER TABLE `Reservation`
   ADD PRIMARY KEY (`num_reservation`);
@@ -94,19 +108,25 @@ ALTER TABLE `Reservation`
 --
 
 --
--- AUTO_INCREMENT pour la table `admin`
+-- AUTO_INCREMENT pour la table `Administrateur`
 --
-ALTER TABLE `Admin`
+ALTER TABLE `Administrateur`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `chambre`
+-- AUTO_INCREMENT pour la table `Chambre`
 --
 ALTER TABLE `Chambre`
   MODIFY `num_chambre` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `client`
+-- AUTO_INCREMENT pour la table `Image`
+--
+ALTER TABLE `Image`
+  MODIFY `id_img` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `Client`
 --
 ALTER TABLE `Client`
   MODIFY `id_client` int(11) NOT NULL AUTO_INCREMENT;
@@ -122,4 +142,14 @@ ALTER TABLE `Paiement`
 --
 ALTER TABLE `Reservation`
   MODIFY `num_reservation` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Contrainte de clé étrangère entre `Chambre` et `Image`
+--
+ALTER TABLE `Chambre`
+  ADD CONSTRAINT `fk_chambre_image`
+  FOREIGN KEY (`id_photos`) REFERENCES `Image`(`id_img`)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE;
+
 COMMIT;
