@@ -14,21 +14,36 @@
 		</title>
 	</head>
 	<body class="bg-white">
-		<nav class="navbar navbar-expand-lg bg-white" data-bs-theme="white">
-			<div class="container-fluid">
-				<ul class="navbar-nav me-auto">
-					<li class="nav-item">
-						<a class="nav-link" href=".">Accueil</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="index.php?page=contact">Contact</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="index.php?page=legals">Mentions Légales</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
+
+<nav class="navbar navbar-expand-lg navbar-white bg-white p-3">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+		</button>
+			<img src="https://cdn.discordapp.com/attachments/1329366775846142019/1331289243955499102/image.png?ex=6799a4f9&is=67985379&hm=24670c515659ed2a28d8267c52edbbaa9e21bc255f0a4880904548ad218b6c26&" alt="Logo Hôtel" class="logohotel" width="85" height="80">
+
+    <div 
+		<ul class="navbar-nav mx-auto ">
+            <li class="nav-item">
+              <a class="nav-link" href=".">Accueil</a>
+            </li>
+            <li class="nav-item">
+			  <a class="nav-link" href="index.php?page=contact">Contact</a>
+            </li>
+            <li class="nav-item">
+			  <a class="nav-link" href="index.php?page=legals">Mentions Légales</a>
+            </li>
+              </ul>
+            </li>
+          </ul>
+    </div>
+			<a class="nav-link" href=".">Réserver</a>
+			<img src="https://cdn.discordapp.com/attachments/1329366775846142019/1333800917379579904/image.png?ex=679a3667&is=6798e4e7&hm=785bb7c2e657fe8a91982adabe997abac6c7aab7c3bca09cc7b889f67e71934e&" alt="Logo Personne" class="logoicon" width="85" height="80">
+
+    </nav>
+
+  <!-- Navbar content -->
+</nav>
+
+
 		{% block content %}{% endblock %}
 		{% block js %}
 			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
