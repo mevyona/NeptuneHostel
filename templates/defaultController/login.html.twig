@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Page de connexion {% endblock %}
+       
+{% block content %} 
+
+<div class="title">Page de connexion : </div> <br>
+
+    <form method="post"> <br>
+        Prénom : <input type="firstName" placeholder="Saisir votre prénom" name="firstName" required/> <br> <br>
+        Nom : <input type="lastName" placeholder="Saisir votre nom" name="lastName" required/> <br> <br>
+        Email : <input type="email" placeholder="Saisir votre email" name="email" required/> <br> <br>
+        Mot de passe : <input type="password" placeholder="Saisir votre mot de passe" name="password" required/> <br> <br>
+        <br> <input type="submit" value="Se connecter" name="btConnect"/>
+    </form>
+
+</div>
+
+{% endblock %} 
