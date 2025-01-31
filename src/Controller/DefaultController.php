@@ -41,6 +41,11 @@ class DefaultController
         echo $this->twig->render('defaultController/administrateurs.html.twig', ['administrateurs' => $administrateurs]);
     }
 
+    public function login()
+    {
+        echo $this->twig->render('defaultController/login.html.twig');
+    }
+
     public function error404()
     {
         echo $this->twig->render('defaultController/error404.html.twig', []);
