@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listes des chambres</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+    <div class="logo"> <img src="logo.png" alt="Logo Hôtel Neptune"> </div>
+        <h1>Listes des chambres</h1>
+        <a href="#" class="reserver">Réserver</a>
+       
+    </header>
+    <main>
+        {% block content %}
+        <section class="chambres">
+            <div class="chambre">
+                <img src="saturne.jpg" alt="Chambre Saturne">
+                <div class="details">
+                    <p>Détail de la chambre</p>
+                    <p>Capacité : 2</p>
+                    <p>Chambre Saturne #70</p>
+                    <p>WiFi Gratuit</p>
+                </div>
+            </div>
+            <div class="chambre">
+                <img src="mars.jpg" alt="Chambre Mars">
+                <div class="details">
+                    <p>Détail de la chambre</p>
+                    <p>Capacité : Double</p>
+                    <p>Chambre Mars #66</p>
+                    <p>WiFi Gratuit</p>
+                </div>
+            </div>
+            <div class="chambre">
+                <img src="terre.jpg" alt="Chambre Terre">
+                <div class="details">
+                    <p>Détail de la chambre</p>
+                    <p>Capacité : 2</p>
+                    <p>Chambre Terre #60</p>
+                    <p>WiFi Gratuit</p>
+                </div>
+            </div>
+            <div class="chambre">
+                <img src="lune.jpg" alt="Chambre Lune">
+                <div class="details">
+                    <p>Détail de la chambre</p>
+                    <p>Capacité : Double</p>
+                    <p>Chambre Lune #50</p>
+                    <p>WiFi Gratuit</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="contact">
+            <h3>HÔTEL NEPTUNE</h3>
+            <p>2 RUE DU DEPOT, 8200 FRANCE</p>
+            <p>Tel: 06 00 00 00 00</p>
+        </div>
+       
+        
+        {% endblock %}
+    </main>
+    <footer>
+    <div class="contact">
+            <h3>HÔTEL NEPTUNE</h3>
+            <p>2 RUE DU DEPOT, 8200 FRANCE</p>
+            <p>Tel: 06 00 00 00 00</p>
+        </div>
+        <form action="contact.php" method="POST">
+            <input type="text" name="nom" placeholder="Nom" required>
+            <input type="text" name="prenom" placeholder="Prénom" required>
+            <input type="tel" name="tel" placeholder="Tel" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="message" placeholder="Message" required></textarea>
+            <button type="submit">Envoyer</button>
+        </form>
+    </footer>
+</body>
+</html>

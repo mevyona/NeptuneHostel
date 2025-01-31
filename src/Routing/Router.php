@@ -30,7 +30,8 @@ class Router
             'administrateurs' => [DefaultController::class, 'administrateurs'],
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500'],
-            'login' => [DefaultController::class, 'login']
+            'login' => [DefaultController::class, 'login'],
+            'chambres' => [DefaultController::class, 'chambres'],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';

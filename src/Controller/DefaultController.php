@@ -55,4 +55,8 @@ class DefaultController
     {
         echo $this->twig->render('defaultController/error500.html.twig', []);
     }
+    public function chambres()
+    {
+        echo $this->twig->render('defaultController/chambres.html.twig', []);
+    }
 }
