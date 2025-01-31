@@ -5,54 +5,37 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% block css %}
-			<!-- Bootstrap CSS -->
-        <link href="https://bootswatch.com/5/cyborg/bootstrap.min.css" rel="stylesheet">			
-	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-		<link rel='stylesheet' href='css/styles.css'>
+			<!-- Bootstrap Icons -->
+			<link
+			rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+			<!-- Styles personnalisés -->
+			<link rel='stylesheet' href='css/styles.css'>
 		{% endblock %}
 		<title>
-			{% block title %}Hôtel Neptune - {% endblock %}
+			{% block title %}Hôtel Neptune -
+			{% endblock %}
 		</title>
-		<link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1329366775846142019/1331289243955499102/image.png?ex=6799a4f9&is=67985379&hm=24670c515659ed2a28d8267c52edbbaa9e21bc255f0a4880904548ad218b6c26&">
-
 	</head>
 	<body class="bg-white">
 
-<nav class="navbar navbar-expand-lg navbar-white bg-white p-3">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
-		</button>
-			<div class="logo"> 	<img src="https://cdn.discordapp.com/attachments/1329366775846142019/1331291590458605599/image.png?ex=679e4469&is=679cf2e9&hm=97d0c805292e613f4cab784f747c082875336831e8d54ce7dea50da65f495b10&" alt="Logo Hôtel" class="logohotel" width="85" height="80"> </div>
-			
+		<nav
+			class="navbar">
+			<!-- Logo de l'hôtel -->
+			<div class="logo">
+				<a href='index.php'><img src="images/logo.png" alt="Logo Hôtel"></a>
+			</div>
 
-    <div 
-		<ul class="navbar-nav mx-auto ">
-            <li class="nav-item">
-              <a class="nav-link" href=".">Accueil</a>
-            </li>
-            <li class="nav-item">
-			  <a class="nav-link" href="index.php?page=contact">Contact</a>
-            </li>
-            <li class="nav-item">
-			  <a class="nav-link" href="index.php?page=legals">Mentions Légales</a>
-            </li>
-			<li class="nav-item">
-			  <a class="nav-link" href="index.php?page=administrateurs">Liste des administrateurs</a>
-            </li>
-			<li class="nav-item">
-			  <a class="nav-link" href="index.php?page=chambres">Liste des chambres</a>
-            </li>
-              </ul>
-            </li>
-          </ul>
-    </div>
-			<a class="nav-link" href=".">Réserver</a>
-			<div class="logo"> <img src="https://cdn.discordapp.com/attachments/1329366775846142019/1333800917379579904/image.png?ex=679a3667&is=6798e4e7&hm=785bb7c2e657fe8a91982adabe997abac6c7aab7c3bca09cc7b889f67e71934e&" alt="Logo Personne" class="logoicon" width="85" height="80"></div>
+			<div
+				class="nav-links">
+				<!-- Lien de réservation -->
+				<a class="link-reserver" href=".">Réserver</a>
 
-    </nav>
-
-  <!-- Navbar content -->
-</nav>
-
+				<!-- Icône utilisateur -->
+				<div class="icon">
+					<a href=""><img src="images/account-icon.svg" alt="Icone Personne"></a>
+				</div>
+			</div>
+		</nav>
 
 		{% block content %}{% endblock %}
 		{% block js %}
@@ -60,18 +43,40 @@
 		{% endblock %}
 	</body>
 
-<footer>&copy; 
-<p> HÔTEL NEPTUNE </p>
+	<footer>
+		<div class="args">
+			<div class="contact-info">
+				<h3>HÔTEL NEPTUNE</h3>
+				<div>
+					<img src="images/location.svg" alt="Icône Location">
+					<p>2 RUE DU DEPOT,<br>8200 FRANCE</p>
+				</div>
+				<div>
+					<img src="images/phone.svg" alt="Icône Phone">
+					<p>Tel: 06 00 00 00 00</p>
+				</div>
+			</div>
+			<div class="footer-links">
+				<a href="index.php?page=legals">Mentions légales</a>
+				-
+				<a href="index.php?page=cgu">CGU</a>
+			</div>
+		</div>
 
-<p> <img src="https://cdn-icons-png.freepik.com/512/6615/6615039.png" alt="Logo gps" width="40" height="38">
-    2 RUE DU DEPOT
-    <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 62000 ARRAS
-	<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FRANCE </p>
-        
-<p> &nbsp; <img src="https://cdn-icons-png.flaticon.com/256/455/455705.png" alt="Logo telephone" width="29" height="29">
-	06 00 00 00 00 </p>
+		<hr class="solid">
 
-</footer>
+		<form action="contact.php" method="POST">
+			<div class="input-group">
+				<input type="text" name="nom" placeholder="Nom" required>
+				<input type="text" name="prenom" placeholder="Prénom" required>
+			</div>
+			<div class="input-group">
+				<input type="tel" name="tel" placeholder="Tel" required>
+				<input type="email" name="email" placeholder="Email" required>
+			</div>
+			<textarea name="message" placeholder="Message" required></textarea>
+			<button type="submit">Envoyer</button>
+		</form>
 
+	</footer>
 </html>
-
