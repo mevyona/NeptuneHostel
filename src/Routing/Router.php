@@ -31,6 +31,7 @@ class Router
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500'],
             'login' => [DefaultController::class, 'login'],
+            'register' => [DefaultController::class, 'register'],
             'chambres' => [DefaultController::class, 'chambres'],
         ];
         $this->defaultPage = 'home';
