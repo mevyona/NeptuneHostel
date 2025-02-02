@@ -4,6 +4,7 @@ namespace MyApp\Service;
 use PDO;
 
 use MyApp\Model\AdministrateurModel;
+use MyApp\Model\ChambreModel;
 
 class DependencyContainer
 {
@@ -30,6 +31,9 @@ class DependencyContainer
             case 'AdministrateurModel' :
                 $pdo = $this->get('PDO');
                 return new AdministrateurModel($pdo);
+            case 'ChambreModel' :
+                $pdo = $this->get('PDO');
+                return new ChambreModel($pdo);
             default:
                 throw new \Exception("No service found for key: " . $key);
         }
