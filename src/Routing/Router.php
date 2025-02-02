@@ -33,6 +33,9 @@ class Router
             'login' => [DefaultController::class, 'login'],
             'register' => [DefaultController::class, 'register'],
             'chambres' => [DefaultController::class, 'chambres'],
+            'updateChambre'=> [DefaultController::class, 'updateChambre'],
+            'deleteChambre'=> [DefaultController::class, 'deleteChambre'],
+            'addChambre'=> [DefaultController::class, 'addChambre'],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';
