@@ -16,6 +16,7 @@ CREATE TABLE `Administrateur` (
 
 CREATE TABLE `Chambre` (
   `num_chambre` int(11) NOT NULL,
+  `nom_chambre` varchar(30),
   `disponibilite` boolean NOT NULL,
   `id_photos` int(11),
   `prix` float(10) NOT NULL
