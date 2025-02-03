@@ -66,7 +66,8 @@ class DefaultController
     }
     public function chambres()
     {
-        echo $this->twig->render('defaultController/chambres.html.twig', []);
+        $chambres = $this->chambreModel->getAllChambres();
+        echo $this->twig->render('defaultController/chambres.html.twig', ['chambres' => $chambres]);
     }
 
 
