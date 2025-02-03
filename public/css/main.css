@@ -263,6 +263,11 @@ footer button:hover {
 }
 
 .image_accueil {
-     
+    padding-right: 20px;
+    width: 40px;
     filter: blur(5px);
 } 
+.text-center_text-light {
+    text-align: center;
+    
+}
