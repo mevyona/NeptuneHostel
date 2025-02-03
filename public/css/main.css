@@ -261,3 +261,8 @@ footer button {
 footer button:hover {
     background-color: #5E75C9;
 }
+
+.image_accueil {
+    
+    filter: blur(5px);
+} 
