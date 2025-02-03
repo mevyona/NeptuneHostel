@@ -1,6 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block title %} {{ parent() }} Liste des chambre {% endblock %}
+
+{% block css %} {{ parent() }} <link rel='stylesheet' href='css/chambre.css'> {% endblock %}
+
 {% block content %}
 <section class="chambres">
     <div class="chambre">
