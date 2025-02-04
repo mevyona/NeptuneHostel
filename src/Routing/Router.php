@@ -36,6 +36,9 @@ class Router
             'updateChambre'=> [DefaultController::class, 'updateChambre'],
             'deleteChambre'=> [DefaultController::class, 'deleteChambre'],
             'addChambre'=> [DefaultController::class, 'addChambre'],
+            'paiement'=> [DefaultController::class, 'paiement'],
+            'reservation'=> [DefaultController::class, 'reservation'],
+
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';
