@@ -8,11 +8,11 @@ USE dbHotelNeptune;
 
 -- Table Photo (créée en premier pour éviter l'erreur de clé étrangère)
 CREATE TABLE `Photo` (
-  `id_photos` int(11) NOT NULL AUTO_INCREMENT,
+  `id_photo` int(11) NOT NULL AUTO_INCREMENT,
   `nom_img` varchar(100) NOT NULL,
   `taille_img` int(11) NOT NULL,
   `chemin_fichier` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_photos`)
+  PRIMARY KEY (`id_photo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table Administrateur
@@ -44,11 +44,11 @@ CREATE TABLE `Chambre` (
   `type_chambre` varchar(50) NOT NULL,
   `disponibilite` BOOLEAN DEFAULT TRUE,
   `prix` DECIMAL(10,2) NOT NULL,
-  `id_photos` int(11),
+  `id_photo` int(11),
   `capacite` int NOT NULL,
   `description` TEXT,
   PRIMARY KEY (`num_chambre`),
-  FOREIGN KEY (`id_photos`) REFERENCES `Photo`(`id_photos`) ON DELETE SET NULL
+  FOREIGN KEY (`id_photo`) REFERENCES `Photo`(`id_photo`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table Réservation
@@ -112,7 +112,7 @@ CREATE TABLE `Options_Chambre` (
   `id_option` int(11),
   PRIMARY KEY (`num_chambre`, `id_option`),
   FOREIGN KEY (`num_chambre`) REFERENCES `Chambre`(`num_chambre`) ON DELETE CASCADE,
-  FOREIGN KEY (`id_option`) REFERENCES `Options_Chambre`(`id_option`) ON DELETE CASCADE
+  FOREIGN KEY (`id_option`) REFERENCES `Options`(`id_option`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table Avis
