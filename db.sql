@@ -98,16 +98,16 @@ CREATE TABLE `Annulation` (
   FOREIGN KEY (`num_reservation`) REFERENCES `Reservation`(`num_reservation`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table Options de Chambre
-CREATE TABLE `Options_Chambre` (
+-- Table Options
+CREATE TABLE `Options` (
   `id_option` int(11) NOT NULL AUTO_INCREMENT,
   `nom_option` varchar(100) NOT NULL,
   `prix_supplementaire` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id_option`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table de relation Chambre-Option
-CREATE TABLE `Chambre_Option` (
+-- Table de relation Chambre-Options
+CREATE TABLE `Options_Chambre` (
   `num_chambre` int(11),
   `id_option` int(11),
   PRIMARY KEY (`num_chambre`, `id_option`),
