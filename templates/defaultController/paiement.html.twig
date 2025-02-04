@@ -8,6 +8,7 @@
 
 <a href="index.php?page=home">Accueil</a> >> <a href="index.php?page=reservation">Réservation</a> >> <a href="index.php?page=paiement">Paiement</a> <br> <br>
 
+<section>
 <div class="titrepaiement"> Information personnelles : </div> <br>
     <div class="textepaiement"> Nom : <input type="text" placeholder="Saisir votre nom" name="text" required/><br> </div>
     <div class="textepaiement"> Email : <input type="email" placeholder="Saisir votre Email" name="email" required/><br> </div>
@@ -26,11 +27,23 @@
 <br> <br>
 
 <div class="titrepaiement"> Methode de paiement : <img src="images/moyen_paiement.png" alt="Icône Paiement" width="79" height="30" > </div> <br>
+    <div class="textepaiement"> <input type="checkbox"> Paiement instantanée 
     <div class="textepaiement"> Nom de la carte : <input type="text" placeholder="Saisir votre nom de la carte" name="text" required/><br> </div>
     <div class="textepaiement"> Num de la carte : <input type="text" placeholder="Saisir votre num carte" name="text" required/><br> </div>
     <div class="textepaiement"> Date expiration : <input type="text" placeholder="Saisir votre date expiration" name="text" required/><br> </div>
     <div class="textepaiement"> CVC : <input type="text" placeholder="Saisir CVC" name="text" required/><br> </div>     
 <br> <br>
+</section>
+
+<section class="rightchambres">
+    <div class="titrepaiement"> Chambres : </div> <br>
+    <div class="textepaiement"> Total : 
+    <div class="textepaiement"> Rabais : 
+    <div class="textepaiement"> Taxe de séjour : 
+        <p> -------------------------- </p>
+    <div class="textepaiement"> Total : 
+        <div > <input type="submit" value="Passer au payement"> </div>
+</section>
 
 
 {% endblock %} 
