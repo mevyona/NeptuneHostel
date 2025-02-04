@@ -2,19 +2,18 @@
 
 {% block title %} {{ parent() }} Accueil {% endblock %}
 
-{% block css %} {{ parent() }} <link rel='stylesheet' href='css/main.css'> {% endblock %}
+{% block css %} {{ parent() }} <link rel='stylesheet' href='css/home.css'> {% endblock %}
 
-{% block content %} 
-    <div class="container-fluid">
-		<div class="row justify-content-center">
-			<div class="image_accueil">
-				<img src="https://files.oaiusercontent.com/file-QRNarCKyXCWoV8bCEHU4ZR?se=2025-02-03T13%3A22%3A16Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D106d22d3-87e9-469a-89d3-b442d842a0c4.webp&sig=GFbsanDbX1h9hM/k4UlpxATqTldl8tF1XioVpcSHOzk%3D">
-			</div>
-			<div class="col-12 col-md-10">
-				 <h1 class="text-center_text-light">L'hôtel Neptune</h1> <br>
-			</div>
-			<p> L'Hôtel Neptune vous invite à découvrir un havre de sérénité alliant confort, élégance et service personnalisé. Que vous soyez en voyage d'affaires ou en quête de détente, notre établissement vous propose des chambres spacieuses et chaleureusement décorées, dotées de toute les commodités modernes. </p>
-			<p> Profitez de notre atmosphère conviviale et laissez-vous séduire par notre emplacement privilégié à proximité des principales attractions de la région. Chaque séjour à l'Hôtel Neptune est une expérience unique ou bien-être et hospitalité se rencontrent. </p> <br>
-		</div>
-	</div>
-{% endblock %} 
+{% block content %}
+<div class='img_container'>
+    <img class='img_accueil' src="images/accueil.png">
+        <div class="text_overlay">
+            <h1>Bienvenue<br>à l'Hôtel Neptune</h1>
+        </div>
+</div>
+<div class='message'>
+    <h1>L'hôtel Neptune</h1>
+    <p> L'Hôtel Neptune vous invite à découvrir un havre de sérénité alliant confort, élégance et service personnalisé. Que vous soyez en voyage d'affaires ou en quête de détente, notre établissement vous propose des chambres spacieuses et chaleureusement décorées, dotées de toute les commodités modernes.<br><br>
+    Profitez de notre atmosphère conviviale et laissez-vous séduire par notre emplacement privilégié à proximité des principales attractions de la région. Chaque séjour à l'Hôtel Neptune est une expérience unique ou bien-être et hospitalité se rencontrent. </p>
+</div>
+{% endblock %}
