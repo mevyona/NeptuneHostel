@@ -18,7 +18,7 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+figure, figcaption, footer.normal, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -30,7 +30,7 @@ time, mark, audio, video {
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
+footer.normal, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
@@ -55,6 +55,7 @@ table {
 /* Navbar */
 .navbar {
     display: flex;
+    height: 5%;
     align-items: center;
     justify-content: space-between;
     background-color: white;
@@ -143,16 +144,17 @@ table {
 }
 
 /* Footer */
-footer {
+footer.normal {
     display: flex;
     padding: 3%;
     background-color: #E8E8E8;
+    height: 300px;
 }
 
 /* Separateur */
-hr.solid {
+hr.solid-normal {
     border-left: 1vw solid rgba(0,0,0,0,45%);
-    height: 15vw;
+    height: 95%;
     width: 0;
 }
 
@@ -162,13 +164,13 @@ hr.solid {
     align-self: center;
 }
 
-.args, .footer-links a {
+.args, footer.normal .footer-links a {
     font-family: 'Space Mono', serif;
     text-decoration: none;
     color: black;
 }
 
-.footer-links a {
+footer.normal .footer-links a {
     font-size: 12px;
 }
 
@@ -201,7 +203,7 @@ hr.solid {
 }
 
 /* Formulaire de contact */
-footer form {
+footer.normal form {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -210,17 +212,13 @@ footer form {
     margin-right: 10%;
 }
 
-.input-group {
+footer.normal .input-group {
     display: flex;
     gap: 15px;
     width: 100%;
 }
 
-.input-group input {
-    flex: 1;
-}
-
-footer input, footer textarea {
+footer.normal input, footer.normal textarea {
     font-family: Arial, sans-serif;
     font-size: 16px;
     width: 100%;
@@ -232,22 +230,22 @@ footer input, footer textarea {
     transition: border-color 0.3s ease-in-out;
 }
 
-footer input::placeholder, footer textarea::placeholder {
+footer.normal input::placeholder, footer.normal textarea::placeholder {
     font-family: 'Space Mono', monospace;
     color: #666;
 }
 
-footer input:focus, footer textarea:focus {
+footer.normal input:focus, footer.normal textarea:focus {
     border-bottom: 2px solid #5E75C9;
 }
 
-footer textarea {
+footer.normal textarea {
     resize: none;
     height: 100px;
     width: 100%;
 }
 
-footer button {
+footer.normal button {
     font-size: 16px;
     font-weight: bold;
     padding: 10px;
@@ -259,6 +257,155 @@ footer button {
     width: 100%; /* Largeur complète */
 }
 
-footer button:hover {
+footer.normal button:hover {
     background-color: #5E75C9;
+}
+
+
+/* Par défaut : le footer mobile est masqué */
+footer.mobile {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3%;
+    background-color: #E8E8E8;
+    height: auto;
+    gap: 20px;
+}
+
+/* Affichage en colonne et centrage */
+footer.mobile .args {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer.mobile .contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+footer.mobile .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+footer.mobile .contact-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10%;
+}
+
+footer.mobile .contact-info div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+footer.mobile .contact-info img {
+    width: 20px;
+    height: 20px;
+}
+
+hr.solid-mobile {
+    border-left: 1vw solid rgba(0,0,0,0,45%);
+    height: 0;
+    width: 20%;
+}
+
+footer.mobile .footer-links {
+    display: flex;
+    gap: 10px;
+}
+
+footer.mobile .footer-links a {
+    font-family: 'Space Mono', serif;
+    font-size: 12px;
+    text-decoration: none;
+    color: black;
+}
+
+/* Formulaire centré */
+footer.mobile form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 500px;
+    gap: 15px;
+}
+
+footer.mobile .input-group {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+footer.mobile .input-group input {
+    flex: 1;
+}
+
+/* Inputs et textarea centrés */
+footer.mobile input,
+footer.mobile textarea {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    width: 50%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #000;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.3s ease-in-out;
+    text-align: center;
+}
+
+footer.mobile textarea {
+    resize: none;
+    height: 100px;
+}
+
+/* Placeholder styling */
+footer.mobile input::placeholder,
+footer.mobile textarea::placeholder {
+    font-family: 'Space Mono', monospace;
+    color: #666;
+}
+
+/* Focus effet */
+footer.mobile input:focus,
+footer.mobile textarea:focus {
+    border-bottom: 2px solid #5E75C9;
+}
+
+/* Bouton stylisé */
+footer.mobile button {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 50%;
+}
+
+footer.mobile button:hover {
+    background-color: #5E75C9;
+}
+
+/* Responsive : affiche le footer mobile sous 960px et cache l'autre */
+@media screen and (max-width: 960px) {
+    footer.normal {
+        display: none;
+    }
+    footer.mobile {
+        display: flex;
+    }
 }

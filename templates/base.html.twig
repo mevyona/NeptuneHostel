@@ -21,11 +21,7 @@
 				<a href='.'><img src="images/logo.png" alt="Logo Hôtel"></a>
 			</div>
 
-			<div
-				class="nav-links">
-				<!-- Lien de réservation -->
-				<a class="link-reserver" href="index.php?page=chambres">Réserver</a>
-
+			<div class="nav-links">
 				<!-- Icône utilisateur -->
 				<div class="icon">
 					<a href="index.php?page=login"><img src="images/account-icon.svg" alt="Icone Personne"></a>
@@ -39,7 +35,7 @@
 		{% endblock %}
 	</body>
 
-	<footer>
+	<footer class='normal'>
 		<div class="args">
 			<div class="contact-info">
 				<h3>HÔTEL NEPTUNE</h3>
@@ -59,7 +55,37 @@
 			</div>
 		</div>
 
-		<hr class="solid">
+		<hr class="solid-normal">
+
+		<form action="contact.php" method="POST">
+			<div class="input-group">
+				<input type="text" name="nom" placeholder="Nom" required>
+				<input type="text" name="prenom" placeholder="Prénom" required>
+			</div>
+			<div class="input-group">
+				<input type="tel" name="tel" placeholder="Tel" required>
+				<input type="email" name="email" placeholder="Email" required>
+			</div>
+			<textarea name="message" placeholder="Message" required></textarea>
+			<button type="submit">Envoyer</button>
+		</form>
+	</footer>
+	<footer class="mobile">
+		<div class="args">
+			<div class="contact-info">
+				<h3>HÔTEL NEPTUNE</h3>
+				<div class='info'>
+					<img src="images/location.svg" alt="Icône Location">
+					<p>2 RUE DU DEPOT,<br>8200 FRANCE</p>
+				</div>
+				<div class='info'>
+					<img src="images/phone.svg" alt="Icône Phone">
+					<p>Tel: 06 00 00 00 00</p>
+				</div>
+			</div>
+		</div>
+
+		<hr class="solid-mobile">
 
 		<form action="contact.php" method="POST">
 			<div class="input-group">
@@ -74,5 +100,9 @@
 			<button type="submit">Envoyer</button>
 		</form>
 
+		<div class="footer-links">
+			<a href="index.php?page=legals">Mentions légales</a>
+			<a href="index.php?page=cgv">CGV</a>
+		</div>
 	</footer>
 </html>
