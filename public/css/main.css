@@ -355,19 +355,20 @@ footer.mobile input,
 footer.mobile textarea {
     font-family: Arial, sans-serif;
     font-size: 16px;
-    width: 50%;
     padding: 10px;
+    width: 50%;
     border: none;
     border-bottom: 2px solid #000;
     outline: none;
     background: transparent;
     transition: border-color 0.3s ease-in-out;
-    text-align: center;
+    text-align: left;
 }
 
 footer.mobile textarea {
     resize: none;
     height: 100px;
+    width: 96%;
 }
 
 /* Placeholder styling */
@@ -387,6 +388,7 @@ footer.mobile textarea:focus {
 footer.mobile button {
     font-size: 16px;
     font-weight: bold;
+    margin: 20px;
     padding: 10px;
     border: none;
     background-color: #000;
