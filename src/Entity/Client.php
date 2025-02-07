@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 namespace MyApp\Entity;
 
-class Clien{
+class Client{
     private ?int $id_admin = null;
     private string $nom_client;
     private string $prenom_client;
