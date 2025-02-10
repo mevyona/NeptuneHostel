@@ -1,49 +1,63 @@
 {% extends "base.html.twig" %}
 
-{% block title %} {{ parent() }} Page de connexion {% endblock %}
+{% block title %} {{ parent() }} Page de paiement {% endblock %}
 
 {% block css %} {{ parent() }} <link rel='stylesheet' href='css/paiement.css'> {% endblock %}
        
 {% block content %} 
 
 <a href="index.php?page=home">Accueil</a> >> <a href="index.php?page=reservation">Réservation</a> >> <a href="index.php?page=paiement">Paiement</a> <br> <br>
+<div class="row">
+    <div class="col-75">
+        <div class="container">
+            <form>
 
-<section>
-<div class="titrepaiement"> Information personnelles : </div> <br>
-    <div class="textepaiement"> Nom : <input type="text" placeholder="Saisir votre nom" name="text" required/><br> </div>
-    <div class="textepaiement"> Email : <input type="email" placeholder="Saisir votre Email" name="email" required/><br> </div>
-    <div class="textepaiement"> Numéro de téléphone : <input type="number" placeholder="Saisir votre numéro de téléphone" name="text" required/><br> </div>
-<br> <br> 
+        <div class="row">
+            <div class="col-50">
+                <h3>Information personnelles :</h3> <hr>
+                <label for="nom"> Nom : </label>
+                <input type="text" id="fname" name="firstname" placeholder="Saisir votre nom prénom ">
+                <label for="email"> Email : </label>
+                <input type="text" id="email" name="email" placeholder="Saisir votre adresse email">
+                <label for="numtel"> Numéro de téléphone : </label>
+                <input type="text" id="numtel" name="numtel" placeholder="Saisir votre numéro de téléphone">
 
-<div class="titrepaiement"> Adresse de facturation : </div> <br>
-    <div class="textepaiement"> Adresse : <input type="text" placeholder="Saisir votre adresse" name="text" required/><br> </div>
-    <div class="textepaiement"> Code postal : <input type="text" placeholder="Saisir votre code postal" name="text" required/><br> </div>
-    <div class="textepaiement"> Ville : <input type="text" placeholder="Saisir votre ville" name="text" required/><br> </div>
-    <div class="textepaiement"> Pays : <input type="text" placeholder="Saisir votre pays" name="text" required/><br> </div>    
-<br> <br> 
+            <div class="row">
+                <div class="col-50">
+                    <h3> Adresse de facturation :</h3> <hr>
+                    <label for="adresse"> Adresse : </label>
+                    <input type="text" id="adresse" name="adresse" placeholder="Saisir votre adresse">
+                    <label for="codepostal"> Code postal : </label>
+                    <input type="text" id="codepostal" name="codepostal" placeholder="Saisir votre code postal">
+                    <label for="ville"> Ville : </label>
+                    <input type="text" id="ville" name="ville" placeholder="Saisir votre ville"> 
+                    <label for="pays"> Pays : </label>
+                    <input type="text" id="pays" name="pays" placeholder="Saisir votre pays">
 
-<div class="titrepaiement"> Numéro de commande : </div> <br> 
-    <input type="text"> 
-<br> <br>
-
-<div class="titrepaiement"> Methode de paiement : <img src="images/moyen_paiement.png" alt="Icône Paiement" width="79" height="30" > </div> <br>
-    <div class="textepaiement"> <input type="checkbox"> Paiement instantanée 
-    <div class="textepaiement"> Nom de la carte : <input type="text" placeholder="Saisir votre nom de la carte" name="text" required/><br> </div>
-    <div class="textepaiement"> Num de la carte : <input type="text" placeholder="Saisir votre num carte" name="text" required/><br> </div>
-    <div class="textepaiement"> Date expiration : <input type="text" placeholder="Saisir votre date expiration" name="text" required/><br> </div>
-    <div class="textepaiement"> CVC : <input type="text" placeholder="Saisir CVC" name="text" required/><br> </div>     
-<br> <br>
-</section>
-
-<section class="rightchambres">
-    <div class="titrepaiement"> Chambres : </div> <br>
-    <div class="textepaiement"> Total : 
-    <div class="textepaiement"> Rabais : 
-    <div class="textepaiement"> Taxe de séjour : 
-        <p> -------------------------- </p>
-    <div class="textepaiement"> Total : 
-        <div > <input type="submit" value="Passer au payement"> </div>
-</section>
-
+            <div class="row">
+                <div class="col-50">
+                    <h3> Méthode de paiement : <img src="images/moyen_paiement.png" alt="Icône Paiement" width="79" height="30" > <br> </h3> <hr>
+                    <label> <input type="checkbox" checked="checked" name="sameadr">  Paiement instantanée </label>
+                    <label for="nomcarte"> Nom de la carte : </label>
+                    <input type="text" name="nomcarte" placeholder="Saisir le nom de la carte">
+                    <label for="numcarte"> Num de la carte : </label>
+                    <input type="text" name="numcarte" placeholder="Saisir le num de la carte">
+                    <label for="dateexpiration"> Date expiration :</label>
+                    <input type="text" name="dateexpiration" placeholder="Saisir la date d'expiration">
+                    <label for="cvc"> CVC :</label> 
+                    <input type="text" name="cvc" placeholder="Saisir le CVC"> </div> </div> </div>
+        </div> </div> </form> </div> </div> </div>
+  <div class="col-25">
+    <div class="container">
+      <h4> Chambres </h4>
+      <p> Total : <span class="price"> 500 euros </span></p>
+      <p> Rabais : <span class="price"> 0 euros </span></p>
+      <p> Taxe de séjour : <span class="price"> 15 euros </span></p>
+      <hr>
+      <p> Total : <span class="price" style="color:black"><b> 515 euros </b></span></p>
+      <input type="submit" value="Passer au paiement" class="btn" href="">
+    </div>
+</div>
+</div>
 
 {% endblock %} 

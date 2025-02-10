@@ -55,6 +55,16 @@ class DefaultController
         echo $this->twig->render('defaultController/register.html.twig');
     }
 
+    public function paiement()
+    {
+        echo $this->twig->render('defaultController/paiement.html.twig');
+    }
+
+    public function reservation()
+    {
+        echo $this->twig->render('defaultController/reservation.html.twig');
+    }
+
     public function error404()
     {
         echo $this->twig->render('defaultController/error404.html.twig', []);
