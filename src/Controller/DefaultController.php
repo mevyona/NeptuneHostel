@@ -60,6 +60,11 @@ class DefaultController
         echo $this->twig->render('defaultController/paiement.html.twig');
     }
 
+    public function paiementfini()
+    {
+        echo $this->twig->render('defaultController/paiementfini.html.twig');
+    }
+
     public function reservation()
     {
         echo $this->twig->render('defaultController/reservation.html.twig');

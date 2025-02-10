@@ -37,6 +37,7 @@ class Router
             'deleteChambre'=> [DefaultController::class, 'deleteChambre'],
             'addChambre'=> [DefaultController::class, 'addChambre'],
             'paiement'=> [DefaultController::class, 'paiement'],
+            'paiementfini'=> [DefaultController::class, 'paiementfini'],
             'reservation'=> [DefaultController::class, 'reservation'],
 
         ];
