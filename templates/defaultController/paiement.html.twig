@@ -6,6 +6,7 @@
        
 {% block content %} 
 
+<br> 
 <a href="index.php?page=home">Accueil</a> >> <a href="index.php?page=reservation">Réservation</a> >> <a href="index.php?page=paiement">Paiement</a> <br> <br>
 <div class="row">
     <div class="col-75">
@@ -13,7 +14,7 @@
             <form>
 
         <div class="row">
-            <div class="col-50">
+            <div class="col-50"> <br>
                 <h3>Information personnelles :</h3> <hr>
                 <label for="nom"> Nom : </label>
                 <input type="text" id="fname" name="firstname" placeholder="Saisir votre nom prénom ">
@@ -23,7 +24,7 @@
                 <input type="text" id="numtel" name="numtel" placeholder="Saisir votre numéro de téléphone">
 
             <div class="row">
-                <div class="col-50">
+                <div class="col-50"> <br>
                     <h3> Adresse de facturation :</h3> <hr>
                     <label for="adresse"> Adresse : </label>
                     <input type="text" id="adresse" name="adresse" placeholder="Saisir votre adresse">
@@ -35,7 +36,7 @@
                     <input type="text" id="pays" name="pays" placeholder="Saisir votre pays">
 
             <div class="row">
-                <div class="col-50">
+                <div class="col-50"> <br>
                     <h3> Méthode de paiement : <img src="images/moyen_paiement.png" alt="Icône Paiement" width="79" height="30" > <br> </h3> <hr>
                     <label> <input type="checkbox" checked="checked" name="sameadr">  Paiement instantanée </label>
                     <label for="nomcarte"> Nom de la carte : </label>
@@ -48,7 +49,7 @@
                     <input type="text" name="cvc" placeholder="Saisir le CVC"> </div> </div> </div>
         </div> </div> </form> </div> </div> </div>
   <div class="col-25">
-    <div class="container">
+    <div class="container"> <br>
       <h4> Chambres </h4>
       <p> Total : <span class="price"> 500 euros </span></p>
       <p> Rabais : <span class="price"> 0 euros </span></p>
@@ -59,5 +60,5 @@
     </div>
 </div>
 </div>
-
+<br> <br>
 {% endblock %} 
