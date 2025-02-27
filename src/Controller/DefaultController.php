@@ -5,8 +5,8 @@ namespace MyApp\Controller;
 use MyApp\Service\DependencyContainer;
 use Twig\Environment;
 
-use MyApp\Entity\Administrateurs;
-use MyApp\Model\AdministrateurModel;
+use MyApp\Entity\Admin;
+use MyApp\Model\AdminModel;
 use MyApp\Entity\Chambre;
 use MyApp\Model\ChambreModel;
 
@@ -20,7 +20,7 @@ class DefaultController
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer)
     {
         $this->twig = $twig;
-        $this->administrateurModel = $dependencyContainer->get('AdministrateurModel');
+        $this->adminModel = $dependencyContainer->get('AdminModel');
         $this->chambreModel = $dependencyContainer->get('ChambreModel');
     }
 

@@ -28,9 +28,9 @@ class DependencyContainer
         switch ($key) {
             case 'PDO':
                 return $this->createPDOInstance();
-            case 'AdministrateurModel' :
+            case 'AdminModel' :
                 $pdo = $this->get('PDO');
-                return new AdministrateurModel($pdo);
+                return new AdminModel($pdo);
             case 'ChambreModel' :
                 $pdo = $this->get('PDO');
                 return new ChambreModel($pdo);
