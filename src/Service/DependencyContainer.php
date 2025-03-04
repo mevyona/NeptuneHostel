@@ -3,7 +3,7 @@ namespace MyApp\Service;
 
 use PDO;
 
-use MyApp\Model\AdministrateurModel;
+use MyApp\Model\AdminModel;
 use MyApp\Model\ChambreModel;
 
 class DependencyContainer
