@@ -14,7 +14,7 @@ use MyApp\Model\ChambreModel;
 class DefaultController
 {
     private $twig;
-    private $administrateurModel;
+    private $adminModel;
     private $chambreModel;
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer)
@@ -41,7 +41,7 @@ class DefaultController
 
     public function administrateurs()
     {
-        $administrateurs = $this->administrateurModel->getAllAdministrateurs();
+        $administrateurs = $this->adminModel->getAllAdmins();
         echo $this->twig->render('defaultController/administrateurs.html.twig', ['administrateurs' => $administrateurs]);
     }
 

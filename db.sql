@@ -1,157 +1,167 @@
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
--- Base de données : `dbHotelNeptune`
-CREATE DATABASE IF NOT EXISTS dbHotelNeptune;
-USE dbHotelNeptune;
--- Table Administrateur
-CREATE TABLE admin (
-   id_admin INT AUTO_INCREMENT,
-   nom_admin VARCHAR(50),
-   prenom_admin VARCHAR(50),
-   email_admin VARCHAR(255) UNIQUE,
-   mot_de_passe VARCHAR(255),
-   super_admin TINYINT(1) DEFAULT 0,
-   PRIMARY KEY(id_admin)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Base de données: `NeptuneHotelDB`
+DROP DATABASE IF EXISTS NeptuneHotelDB;
+CREATE DATABASE NeptuneHotelDB;
+USE NeptuneHotelDB;
 
--- Table Client
-CREATE TABLE client (
-   id_client INT AUTO_INCREMENT,
-   nom_client VARCHAR(50),
-   prenom_client VARCHAR(50),
-   numero_telephone VARCHAR(15),
-   email_client VARCHAR(50) UNIQUE,
-   numero_chambre VARCHAR(50),
-   historique_reservation TEXT,
-   mot_de_passe VARCHAR(255),
-   adresse VARCHAR(100),
-   PRIMARY KEY(id_client)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Supprime d'abord toutes les tables pour éviter les problèmes de contraintes de clé étrangère
+DROP TABLE IF EXISTS Cancellation;
+DROP TABLE IF EXISTS ContactMessage;
+DROP TABLE IF EXISTS Notification;
+DROP TABLE IF EXISTS Review;
+DROP TABLE IF EXISTS Payment;
+DROP TABLE IF EXISTS Invoice;
+DROP TABLE IF EXISTS Reservation;
+DROP TABLE IF EXISTS Room;
+DROP TABLE IF EXISTS Media;
+DROP TABLE IF EXISTS User;
 
--- Table Photo
-CREATE TABLE photo (
-   id_photos INT AUTO_INCREMENT,
-   nom_img VARCHAR(50),
-   taille_img TEXT,
-   chemin_fichier VARCHAR(255),
-   PRIMARY KEY(id_photos)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Table Utilisateur
+CREATE TABLE User (
+   id INT AUTO_INCREMENT,
+   first_name VARCHAR(50) NOT NULL,
+   last_name VARCHAR(50) NOT NULL,
+   email VARCHAR(100) NOT NULL UNIQUE,
+   phone VARCHAR(15),
+   password VARCHAR(255) NOT NULL,
+   role ENUM('client', 'admin', 'staff') NOT NULL DEFAULT 'client',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table Facture
-CREATE TABLE facture (
-   id_facture INT AUTO_INCREMENT,
-   numero_cb VARCHAR(16),
-   date_facture DATE,
-   chemin_pdf VARCHAR(255),
-   montant_total DECIMAL(10,2),
-   PRIMARY KEY(id_facture)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Table Option Chambre
-CREATE TABLE options (
-   id_option INT AUTO_INCREMENT,
-   nom_option VARCHAR(50),
-   prix_supplementaire DECIMAL(10,2),
-   PRIMARY KEY(id_option)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Table Notification
-CREATE TABLE notification (
-   id_notification INT AUTO_INCREMENT,
-   message TEXT,
-   date_envoi DATETIME,
-   statut VARCHAR(50),
-   id_client INT NOT NULL,
-   PRIMARY KEY(id_notification),
-   FOREIGN KEY(id_client) REFERENCES client(id_client)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Table Contact
-CREATE TABLE contact (
-   id_message INT AUTO_INCREMENT,
-   nom VARCHAR(50) NOT NULL,
-   prenom VARCHAR(50) NOT NULL,
-   telephone VARCHAR(15) NOT NULL,
-   message TEXT NOT NULL,
-   PRIMARY KEY(id_message)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Table Média
+CREATE TABLE Media (
+   id INT AUTO_INCREMENT,
+   file_name VARCHAR(255) NOT NULL,
+   file_path VARCHAR(255) NOT NULL,
+   file_type VARCHAR(50) NOT NULL,
+   file_size INT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table Chambre
-CREATE TABLE chambre (
-   num_chambre INT AUTO_INCREMENT,
-   chambre_disponible BOOLEAN DEFAULT TRUE,
-   prix_chambre DECIMAL(10,2),
-   capacite DECIMAL(10,2),
+CREATE TABLE Room (
+   id INT AUTO_INCREMENT,
+   name VARCHAR(100) NOT NULL,
+   is_available BOOLEAN DEFAULT TRUE,
+   price DECIMAL(10,2) NOT NULL,
+   capacity INT NOT NULL,
    description TEXT,
-   nom_chambre VARCHAR(50) NOT NULL,
-   id_photos INT,
-   PRIMARY KEY(num_chambre),
-   FOREIGN KEY(id_photos) REFERENCES photo(id_photos)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+   featured_image_id INT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY(id),
+   FOREIGN KEY(featured_image_id) REFERENCES Media(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table Avis
-CREATE TABLE avis (
-   id_avis INT AUTO_INCREMENT,
-   note DECIMAL(2,1),
-   commentaire TEXT,
-   date_avis DATE,
-   id_client INT NOT NULL,
-   num_chambre INT NOT NULL,
-   PRIMARY KEY(id_avis),
-   FOREIGN KEY(id_client) REFERENCES client(id_client),
-   FOREIGN KEY(num_chambre) REFERENCES chambre(num_chambre)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Table Réservation
+CREATE TABLE Reservation (
+   id INT AUTO_INCREMENT,
+   user_id INT NOT NULL,
+   room_id INT NOT NULL,
+   check_in DATETIME NOT NULL,
+   check_out DATETIME NOT NULL,
+   status ENUM('pending', 'confirmed', 'checked_in', 'completed', 'cancelled') DEFAULT 'pending',
+   total_price DECIMAL(10,2) NOT NULL,
+   special_requests TEXT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   PRIMARY KEY(id),
+   FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE,
+   FOREIGN KEY(room_id) REFERENCES Room(id) ON DELETE CASCADE,
+   INDEX(check_in),
+   INDEX(check_out),
+   INDEX(status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Table Reservation
-CREATE TABLE reservation (
-   num_reservation INT AUTO_INCREMENT,
-   date_debut DATETIME,
-   date_fin DATETIME,
-   facture_reservation TEXT,
-   date_reservation DATE,
-   statut VARCHAR(50),
-   id_client INT NOT NULL,
-   num_chambre INT NOT NULL,
-   PRIMARY KEY(num_reservation),
-   FOREIGN KEY(id_client) REFERENCES client(id_client),
-   FOREIGN KEY(num_chambre) REFERENCES chambre(num_chambre)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Table Facture
+CREATE TABLE Invoice (
+   id INT AUTO_INCREMENT,
+   reservation_id INT NOT NULL UNIQUE,
+   invoice_number VARCHAR(20) NOT NULL UNIQUE,
+   amount DECIMAL(10,2) NOT NULL,
+   tax_amount DECIMAL(10,2) NOT NULL,
+   total_amount DECIMAL(10,2) NOT NULL,
+   invoice_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   due_date DATE NOT NULL,
+   status ENUM('pending', 'paid', 'cancelled', 'refunded') DEFAULT 'pending',
+   pdf_path VARCHAR(255),
+   PRIMARY KEY(id),
+   FOREIGN KEY(reservation_id) REFERENCES Reservation(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table Paiement
-CREATE TABLE paiement (
-   id_paiement INT AUTO_INCREMENT,
-   numero_cb VARCHAR(16) NOT NULL,
-   date_expiration DATE,
-   ccv_cb VARCHAR(4),
-   montant DECIMAL(10,2),
-   statut VARCHAR(50),
-   id_facture INT NOT NULL,
-   num_reservation INT NOT NULL,
-   PRIMARY KEY(id_paiement),
-   FOREIGN KEY(id_facture) REFERENCES facture(id_facture),
-   FOREIGN KEY(num_reservation) REFERENCES reservation(num_reservation)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE Payment (
+   id INT AUTO_INCREMENT,
+   invoice_id INT NOT NULL,
+   amount DECIMAL(10,2) NOT NULL,
+   payment_method ENUM('credit_card', 'bank_transfer', 'cash', 'paypal') NOT NULL,
+   transaction_id VARCHAR(100),
+   status ENUM('pending', 'completed', 'failed', 'refunded') DEFAULT 'pending',
+   payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   last_four_digits VARCHAR(4),
+   PRIMARY KEY(id),
+   FOREIGN KEY(invoice_id) REFERENCES Invoice(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table Avis
+CREATE TABLE Review (
+   id INT AUTO_INCREMENT,
+   user_id INT NOT NULL,
+   room_id INT NOT NULL,
+   reservation_id INT NOT NULL,
+   rating DECIMAL(2,1) NOT NULL CHECK (rating >= 1 AND rating <= 5),
+   comment TEXT,
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY(id),
+   FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE,
+   FOREIGN KEY(room_id) REFERENCES Room(id) ON DELETE CASCADE,
+   FOREIGN KEY(reservation_id) REFERENCES Reservation(id) ON DELETE CASCADE,
+   UNIQUE KEY(user_id, reservation_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table Notification
+CREATE TABLE Notification (
+   id INT AUTO_INCREMENT,
+   user_id INT NOT NULL,
+   title VARCHAR(100) NOT NULL,
+   message TEXT NOT NULL,
+   is_read BOOLEAN DEFAULT FALSE,
+   notification_type ENUM('reservation', 'payment', 'system', 'other') NOT NULL DEFAULT 'system',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY(id),
+   FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Table Message de Contact
+CREATE TABLE ContactMessage (
+   id INT AUTO_INCREMENT,
+   first_name VARCHAR(50) NOT NULL,
+   last_name VARCHAR(50) NOT NULL,
+   email VARCHAR(100) NOT NULL,
+   phone VARCHAR(15),
+   message TEXT NOT NULL,
+   status ENUM('new', 'read', 'replied', 'archived') DEFAULT 'new',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Table Annulation
-CREATE TABLE annulation (
-   id_annulation INT AUTO_INCREMENT,
-   motif_annulation TEXT,
-   date_annulation DATE,
-   num_reservation INT NOT NULL,
-   PRIMARY KEY(id_annulation),
-   FOREIGN KEY(num_reservation) REFERENCES reservation(num_reservation)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- Table Option Chambre (Many to Many)
-CREATE TABLE option_chambre (
-   num_chambre INT,
-   id_option INT,
-   PRIMARY KEY(num_chambre, id_option),
-   FOREIGN KEY(num_chambre) REFERENCES chambre(num_chambre),
-   FOREIGN KEY(id_option) REFERENCES options(id_option)
-);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE Cancellation (
+   id INT AUTO_INCREMENT,
+   reservation_id INT NOT NULL UNIQUE,
+   reason TEXT,
+   refund_amount DECIMAL(10,2),
+   cancellation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   cancelled_by_id INT NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(reservation_id) REFERENCES Reservation(id) ON DELETE CASCADE,
+   FOREIGN KEY(cancelled_by_id) REFERENCES User(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 COMMIT;

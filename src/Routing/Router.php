@@ -27,7 +27,6 @@ class Router
             'home' => [DefaultController::class, 'home'],
             'contact' => [DefaultController::class, 'contact'],
             'legals' => [DefaultController::class, 'legals'],
-            'administrateurs' => [DefaultController::class, 'administrateurs'],
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500'],
             'login' => [DefaultController::class, 'login'],
