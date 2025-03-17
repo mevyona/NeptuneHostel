@@ -5,6 +5,7 @@ declare (strict_types = 1);
 namespace MyApp\Routing;
 
 use MyApp\Controller\DefaultController;
+use MyApp\Controller\UserController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -13,35 +14,41 @@ class Router
     private $pageMappings;
     private $defaultPage;
     private $errorPage;
+    private $unauthorizedPage;
 
     public function __construct(DependencyContainer $dependencyContainer)
     {
         $this->dependencyContainer = $dependencyContainer;
         // Tableau contenant l'ensemble des pages (controller) de votre site
         // La clé est le mot qui sera récupéré dans la variable page de l'url
-        // La valeur est un tableau composé de 2 colonnes
+        // La valeur est un tableau composé de 3 colonnes
         // Colonne 1 : classe du contrôleur
         // Colonne 2 : nom de la méthode à appeler
+        // Colonne 3 : rôle requis (null si accessible à tous)
 
         $this->pageMappings = [
-            'home' => [DefaultController::class, 'home'],
-            'contact' => [DefaultController::class, 'contact'],
-            'legals' => [DefaultController::class, 'legals'],
-            '404' => [DefaultController::class, 'error404'],
-            '500' => [DefaultController::class, 'error500'],
-            'login' => [DefaultController::class, 'login'],
-            'register' => [DefaultController::class, 'register'],
-            'chambres' => [DefaultController::class, 'chambres'],
-            'updateChambre'=> [DefaultController::class, 'updateChambre'],
-            'deleteChambre'=> [DefaultController::class, 'deleteChambre'],
-            'addChambre'=> [DefaultController::class, 'addChambre'],
-            'paiement'=> [DefaultController::class, 'paiement'],
-            'paiementfini'=> [DefaultController::class, 'paiementfini'],
-            'reservation'=> [DefaultController::class, 'reservation'],
+            // Routes par défaut - accessibles à tous
+            'home' => [DefaultController::class, 'home', null],
+            '404' => [DefaultController::class, 'error404', null],
+            '500' => [DefaultController::class, 'error500', null],
+            '403' => [DefaultController::class, 'error403', null],
 
+            // Routes utilisateurs avec permissions
+            'users' => [UserController::class, 'listUsers', 'admin'],
+            'listUsers' => [UserController::class, 'listUsers', 'admin'],
+            'showUser' => [UserController::class, 'showUser', 'admin'],
+            'addUser' => [UserController::class, 'addUser', 'admin'],
+            'updateUser' => [UserController::class, 'updateUser', 'admin'],
+            'deleteUser' => [UserController::class, 'deleteUser', 'admin'],
+            'changePassword' => [UserController::class, 'changePassword', 'client'],
+            'profile' => [UserController::class, 'profile', null],
+            'login' => [UserController::class, 'login', null],
+            'register' => [UserController::class, 'register', null],
+            'logout' => [UserController::class, 'logout', null],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';
+        $this->unauthorizedPage = '403';
     }
 
     public function route($twig)
@@ -60,9 +67,23 @@ class Router
 
         // Récupère la ligne qui correspond à la clé comprise dans page
         $controllerInfo = $this->pageMappings[$requestedPage];
-        /* Destructuration du tableau en mettant la première valeur du tableau de la ligne dans $controllerClass et la deuxième
-        valeur dans $method */
-        [$controllerClass, $method] = $controllerInfo;
+        /* Destructuration du tableau en récupérant les informations du contrôleur */
+        [$controllerClass, $method, $requiredRole] = $controllerInfo;
+
+        // Vérifier les permissions si un rôle est requis
+        if ($requiredRole !== null) {
+            $userRole = $this->getUserRole();
+            
+            // Vérifier si l'utilisateur est connecté et a le rôle requis
+            if (!$this->hasPermission($userRole, $requiredRole)) {
+                // Rediriger vers la page non autorisée
+                $unauthorizedInfo = $this->pageMappings[$this->unauthorizedPage];
+                [$errorControllerClass, $errorMethod] = $unauthorizedInfo;
+                $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
+                call_user_func([$errorController, $errorMethod]);
+                return;
+            }
+        }
 
         // Vérification de l'existence de la classe et de la méthode du contrôleur a appeler
         if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
@@ -77,5 +98,57 @@ class Router
             $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
             call_user_func([$errorController, $errorMethod]);
         }
+    }
+    
+    /**
+     * Récupère le rôle de l'utilisateur connecté
+     * @return string|null Le rôle de l'utilisateur ou null s'il n'est pas connecté
+     */
+    private function getUserRole(): ?string
+    {
+        // Vérifier si l'utilisateur est connecté via la session
+        if (isset($_SESSION['user_role'])) {
+            return $_SESSION['user_role'];
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Vérifie si l'utilisateur a la permission nécessaire
+     * @param string|null $userRole Le rôle de l'utilisateur
+     * @param string $requiredRole Le rôle requis
+     * @return bool True si l'utilisateur a la permission, sinon false
+     */
+    private function hasPermission(?string $userRole, string $requiredRole): bool
+    {
+        // Si l'utilisateur n'est pas connecté
+        if ($userRole === null) {
+            return false;
+        }
+        
+        // Si l'utilisateur est admin, il a accès à tout
+        if ($userRole === 'admin') {
+            return true;
+        }
+        
+        // Si la page nécessite un rôle admin et que l'utilisateur n'est pas admin
+        if ($requiredRole === 'admin' && $userRole !== 'admin') {
+            return false;
+        }
+        
+        // Si la page nécessite un rôle staff
+        if ($requiredRole === 'staff') {
+            // Admin et staff ont accès
+            return $userRole === 'admin' || $userRole === 'staff';
+        }
+        
+        // Si la page nécessite un rôle client
+        if ($requiredRole === 'client') {
+            // Tout utilisateur connecté a accès (client, staff, admin)
+            return true;
+        }
+        
+        return false;
     }
 }

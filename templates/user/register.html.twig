@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Inscription {% endblock %}
+
+{% block css %} {{ parent() }} <link rel='stylesheet' href='css/user/auth.css'> {% endblock %}
+       
+{% block content %} 
+
+{% if session.message is defined and session.message %}
+    {% set messageClass = session.success is defined and session.success ? 'success' : 'error' %}
+    <div class="alert alert-info {{ messageClass }}">{{ session.message }}</div>
+    {% set session = session|merge({'message': null, 'success': null}) %}
+{% endif %}
+
+<a href="index.php" class="home-link">Accueil</a>
+<div class="page-container">
+    <div class="login-form">
+        <div class="textelogin"> 
+            Inscription
+        </div>
+        
+        <form method="post" action="index.php?page=register">
+            <label class="form-label">Nom</label>
+            <input class="form-input" type="text" placeholder="Saisir votre nom" name="last_name" required/>
+
+            <label class="form-label">Prénom</label>
+            <input class="form-input" type="text" placeholder="Saisir votre prénom" name="first_name" required/>
+
+            <label class="form-label">Numéro de téléphone</label>
+            <input class="form-input" type="text" placeholder="Saisir votre numéro de téléphone" name="phone"/>
+
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="Saisir votre email" name="email" required/>
+            
+            <label class="form-label">Mot de passe</label>
+            <input class="form-input" type="password" placeholder="Saisir votre mot de passe" name="password" required/>
+
+            <label class="form-label">Confirmation de mot de passe</label>
+            <input class="form-input" type="password" placeholder="Confirmez votre mot de passe" name="confirm_password" required/>
+            
+            <button type="submit" class="submit-button">S'inscrire</button>
+        </form>
+        
+        <div class="form-links">
+            <a href="index.php?page=login" class="form-link">Se connecter</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

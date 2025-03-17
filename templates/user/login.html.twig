@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Connexion {% endblock %}
+
+{% block css %} {{ parent() }} <link rel='stylesheet' href='css/user/auth.css'> {% endblock %}
+       
+{% block content %} 
+
+{% if session.message is defined and session.message %}
+    {% set messageClass = session.success is defined and session.success ? 'success' : 'error' %}
+    <div class="alert alert-info {{ messageClass }}">{{ session.message }}</div>
+    {% set session = session|merge({'message': null, 'success': null}) %}
+{% endif %}
+
+<a href="index.php" class="home-link">Accueil</a>
+<div class="page-container">
+    <div class="login-form">
+        <div class="textelogin"> 
+            Connexion
+        </div>
+        
+        <form method="post" action="index.php?page=login">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="Entrez votre email" name="email" required/>
+            
+            <label class="form-label">Mot de passe</label>
+            <input class="form-input" type="password" placeholder="Entrez votre mot de passe" name="password" required/>
+            
+            <button type="submit" class="submit-button">Se connecter</button>
+        </form>
+        
+        <div class="form-links">
+            <a href="index.php?page=register" class="form-link">S'inscrire</a>
+            <a href="index.php?page=forgot_password" class="form-link">Mot de passe oublié?</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

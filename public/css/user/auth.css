@@ -151,13 +151,68 @@
     margin-right: 8px;
 }
 
-/* Hide navbar and footer on login page */
 body:has(.login-form) nav,
 body:has(.login-form) footer {
     display: none;
 }
 
-/* Responsive adjustments */
+.alert {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 90%;
+    text-align: center;
+    animation: slideDown 0.5s ease forwards, fadeOut 0.5s ease 5s forwards;
+}
+
+.alert-info.success {
+    background-color: #10b981;
+    color: white;
+    border-left: none;
+}
+
+.alert-info.error {
+    background-color: #ef4444;
+    color: white;
+    border-left: none;
+}
+
+.alert-info {
+    background-color: #ef4444;
+    color: white;
+    border-left: none;
+}
+
+@keyframes slideDown {
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+    100% {
+        top: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
 @media (max-width: 480px) {
     .home-link {
         top: 10px;
