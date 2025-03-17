@@ -23,7 +23,6 @@ class UserController
             session_start();
         }
         
-        // Redirect if user is already logged in
         if (isset($_SESSION['user_id'])) {
             header('Location: index.php?page=profile');
             exit();
@@ -39,7 +38,7 @@ class UserController
                 if ($user !== null && password_verify($password, $user->getPassword())) {
                     $_SESSION['user_id'] = $user->getId();
                     $_SESSION['user_name'] = $user->getFirstName() . ' ' . $user->getLastName();
-                    $_SESSION['user_role'] = $user->getRole();
+                    $_SESSION['user_role'] = $user->getRole(); // Utilisation de getRole()
                     $_SESSION['message'] = 'Bienvenue, ' . $user->getFirstName() . ' !';
                     $_SESSION['success'] = true;
                     
@@ -56,7 +55,16 @@ class UserController
             }
         }
         
-        echo $this->twig->render('user/login.html.twig', ['session' => $_SESSION ?? []]);
+        $message = $_SESSION['message'] ?? null;
+        $success = $_SESSION['success'] ?? null;
+        unset($_SESSION['message'], $_SESSION['success']);
+        
+        echo $this->twig->render('user/login.html.twig', [
+            'session' => [
+                'message' => $message,
+                'success' => $success
+            ]
+        ]);
     }
 
     public function logout()
@@ -124,17 +132,9 @@ class UserController
                         $success = $this->userModel->createUser($user);
                         
                         if ($success) {
-                            // Récupérer l'utilisateur nouvellement créé pour avoir son ID
-                            $newUser = $this->userModel->getUserByEmail($email);
-                            
-                            // Créer la session pour l'utilisateur (connexion automatique)
-                            $_SESSION['user_id'] = $newUser->getId();
-                            $_SESSION['user_name'] = $newUser->getFirstName() . ' ' . $newUser->getLastName();
-                            $_SESSION['user_role'] = $newUser->getRole();
-                            $_SESSION['message'] = 'Bienvenue ' . $firstName . ' ! Votre compte a été créé avec succès.';
+                            $_SESSION['message'] = 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.';
                             $_SESSION['success'] = true;
-                            
-                            header('Location: index.php?page=profile');
+                            header('Location: index.php?page=login');
                             exit;
                         } else {
                             $_SESSION['message'] = 'Erreur lors de l\'inscription.';
@@ -416,8 +416,6 @@ class UserController
         }
         
         if (!isset($_SESSION['user_id'])) {
-            $_SESSION['message'] = 'Veuillez vous connecter pour accéder à votre profil.';
-            $_SESSION['success'] = false;
             header('Location: index.php?page=login');
             exit;
         }

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace MyApp\Routing;
 
@@ -41,7 +41,7 @@ class Router
             'updateUser' => [UserController::class, 'updateUser', 'admin'],
             'deleteUser' => [UserController::class, 'deleteUser', 'admin'],
             'changePassword' => [UserController::class, 'changePassword', 'client'],
-            'profile' => [UserController::class, 'profile', null],
+            'profile' => [UserController::class, 'profile', 'client'],
             'login' => [UserController::class, 'login', null],
             'register' => [UserController::class, 'register', null],
             'logout' => [UserController::class, 'logout', null],
@@ -100,10 +100,6 @@ class Router
         }
     }
     
-    /**
-     * Récupère le rôle de l'utilisateur connecté
-     * @return string|null Le rôle de l'utilisateur ou null s'il n'est pas connecté
-     */
     private function getUserRole(): ?string
     {
         // Vérifier si l'utilisateur est connecté via la session
@@ -114,41 +110,26 @@ class Router
         return null;
     }
     
-    /**
-     * Vérifie si l'utilisateur a la permission nécessaire
-     * @param string|null $userRole Le rôle de l'utilisateur
-     * @param string $requiredRole Le rôle requis
-     * @return bool True si l'utilisateur a la permission, sinon false
-     */
     private function hasPermission(?string $userRole, string $requiredRole): bool
     {
-        // Si l'utilisateur n'est pas connecté
         if ($userRole === null) {
             return false;
         }
         
-        // Si l'utilisateur est admin, il a accès à tout
-        if ($userRole === 'admin') {
-            return true;
-        }
+        $roleHierarchy = [
+            'client' => 1,
+            'staff' => 2,
+            'admin' => 3
+        ];
         
-        // Si la page nécessite un rôle admin et que l'utilisateur n'est pas admin
-        if ($requiredRole === 'admin' && $userRole !== 'admin') {
+        if (!isset($roleHierarchy[$userRole])) {
             return false;
         }
         
-        // Si la page nécessite un rôle staff
-        if ($requiredRole === 'staff') {
-            // Admin et staff ont accès
-            return $userRole === 'admin' || $userRole === 'staff';
+        if (!isset($roleHierarchy[$requiredRole])) {
+            return false;
         }
         
-        // Si la page nécessite un rôle client
-        if ($requiredRole === 'client') {
-            // Tout utilisateur connecté a accès (client, staff, admin)
-            return true;
-        }
-        
-        return false;
+        return $roleHierarchy[$userRole] >= $roleHierarchy[$requiredRole];
     }
 }
