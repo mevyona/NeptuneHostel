@@ -24,31 +24,76 @@ class PaymentModel
 
     public function getAllPayments(): array
     {
-        $sql = "SELECT p.*, i.id as invoice_id, i.reservation_id, i.invoice_number, i.amount as invoice_amount, i.tax_amount, i.total_amount, i.invoice_date, i.due_date, i.status as invoice_status, i.pdf_path
+        $sql = "SELECT p.*, 
+                       i.id as invoice_id, i.reservation_id, i.invoice_number, i.amount as invoice_amount, i.tax_amount, i.total_amount, i.invoice_date, i.due_date, i.status as invoice_status, i.pdf_path,
+                       r.id as reservation_id, r.user_id, r.room_id, r.check_in, r.check_out, r.status as reservation_status, r.total_price, r.special_requests, r.created_at as reservation_created, r.updated_at as reservation_updated,
+                       u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
+                       ro.name as room_name, ro.is_available, ro.price, ro.capacity, ro.description, ro.featured_image_id, ro.created_at as room_created, ro.updated_at as room_updated
                 FROM Payment p
                 INNER JOIN Invoice i ON p.invoice_id = i.id
+                INNER JOIN Reservation r ON i.reservation_id = r.id
+                INNER JOIN User u ON r.user_id = u.id
+                INNER JOIN Room ro ON r.room_id = ro.id
                 ORDER BY p.payment_date DESC";
+    
         $stmt = $this->db->query($sql);
         $payments = [];
-
+    
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $user = new User(
+                $row['user_id'],
+                $row['first_name'],
+                $row['last_name'],
+                $row['email'],
+                $row['phone'],
+                $row['password'],
+                $row['role'],
+                $row['user_created'],
+                $row['user_updated']
+            );
+    
+            $room = new Room(
+                $row['room_id'],
+                $row['room_name'],
+                (bool)$row['is_available'],
+                (float)$row['price'],
+                (int)$row['capacity'],
+                $row['description'],
+                null,
+                $row['room_created'],
+                $row['room_updated']
+            );
+    
+            $reservation = new Reservation(
+                $row['reservation_id'],
+                $user,
+                $room,
+                $row['check_in'],
+                $row['check_out'],
+                $row['reservation_status'],
+                (float)$row['total_price'],
+                $row['special_requests'],
+                $row['reservation_created'],
+                $row['reservation_updated']
+            );
+    
             $invoice = new Invoice(
                 $row['invoice_id'],
-                new Reservation($row['reservation_id'], new User(0, '', '', '', null, '', '', '', ''), new Room(0, '', true, 0, 0, '', null, '', ''), '', '', '', 0, '', '', ''),
+                $reservation,
                 $row['invoice_number'],
-                $row['invoice_amount'],
-                $row['tax_amount'],
-                $row['total_amount'],
+                (float)$row['invoice_amount'],
+                (float)$row['tax_amount'],
+                (float)$row['total_amount'],
                 $row['invoice_date'],
                 $row['due_date'],
                 $row['invoice_status'],
                 $row['pdf_path']
             );
-
+    
             $payments[] = new Payment(
                 $row['id'],
                 $invoice,
-                $row['amount'],
+                (float)$row['amount'],
                 $row['payment_method'],
                 $row['transaction_id'],
                 $row['status'],
@@ -56,40 +101,85 @@ class PaymentModel
                 $row['last_four_digits']
             );
         }
-
+    
         return $payments;
     }
-
+    
     public function getOnePayment(int $id): ?Payment
     {
-        $sql = "SELECT p.*, i.id as invoice_id, i.reservation_id, i.invoice_number, i.amount as invoice_amount, i.tax_amount, i.total_amount, i.invoice_date, i.due_date, i.status as invoice_status, i.pdf_path
+        $sql = "SELECT p.*, 
+                       i.id as invoice_id, i.reservation_id, i.invoice_number, i.amount as invoice_amount, i.tax_amount, i.total_amount, i.invoice_date, i.due_date, i.status as invoice_status, i.pdf_path,
+                       r.id as reservation_id, r.user_id, r.room_id, r.check_in, r.check_out, r.status as reservation_status, r.total_price, r.special_requests, r.created_at as reservation_created, r.updated_at as reservation_updated,
+                       u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
+                       ro.name as room_name, ro.is_available, ro.price, ro.capacity, ro.description, ro.featured_image_id, ro.created_at as room_created, ro.updated_at as room_updated
                 FROM Payment p
                 INNER JOIN Invoice i ON p.invoice_id = i.id
+                INNER JOIN Reservation r ON i.reservation_id = r.id
+                INNER JOIN User u ON r.user_id = u.id
+                INNER JOIN Room ro ON r.room_id = ro.id
                 WHERE p.id = :id";
+    
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         if (!$row) return null;
-
+    
+        $user = new User(
+            $row['user_id'],
+            $row['first_name'],
+            $row['last_name'],
+            $row['email'],
+            $row['phone'],
+            $row['password'],
+            $row['role'],
+            $row['user_created'],
+            $row['user_updated']
+        );
+    
+        $room = new Room(
+            $row['room_id'],
+            $row['room_name'],
+            (bool)$row['is_available'],
+            (float)$row['price'],
+            (int)$row['capacity'],
+            $row['description'],
+            null,
+            $row['room_created'],
+            $row['room_updated']
+        );
+    
+        $reservation = new Reservation(
+            $row['reservation_id'],
+            $user,
+            $room,
+            $row['check_in'],
+            $row['check_out'],
+            $row['reservation_status'],
+            (float)$row['total_price'],
+            $row['special_requests'],
+            $row['reservation_created'],
+            $row['reservation_updated']
+        );
+    
         $invoice = new Invoice(
             $row['invoice_id'],
-            new Reservation($row['reservation_id'], new User(0, '', '', '', null, '', '', '', ''), new Room(0, '', true, 0, 0, '', null, '', ''), '', '', '', 0, '', '', ''),
+            $reservation,
             $row['invoice_number'],
-            $row['invoice_amount'],
-            $row['tax_amount'],
-            $row['total_amount'],
+            (float)$row['invoice_amount'],
+            (float)$row['tax_amount'],
+            (float)$row['total_amount'],
             $row['invoice_date'],
             $row['due_date'],
             $row['invoice_status'],
             $row['pdf_path']
         );
-
+    
         return new Payment(
             $row['id'],
             $invoice,
-            $row['amount'],
+            (float)$row['amount'],
             $row['payment_method'],
             $row['transaction_id'],
             $row['status'],
@@ -97,7 +187,7 @@ class PaymentModel
             $row['last_four_digits']
         );
     }
-
+    
     public function createPayment(Payment $payment): bool
     {
         $sql = "INSERT INTO Payment (invoice_id, amount, payment_method, transaction_id, status, payment_date, last_four_digits)
