@@ -6,6 +6,9 @@ namespace MyApp\Routing;
 
 use MyApp\Controller\DefaultController;
 use MyApp\Controller\UserController;
+use MyApp\Controller\ReservationController;
+use MyApp\Controller\RoomController;
+use MyApp\Controller\PaymentController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -26,14 +29,13 @@ class Router
         // Colonne 2 : nom de la méthode à appeler
         // Colonne 3 : rôle requis (null si accessible à tous)
 
+        // Organize routes by controller for better readability
         $this->pageMappings = [
-            // Routes par défaut - accessibles à tous
             'home' => [DefaultController::class, 'home', null],
             '404' => [DefaultController::class, 'error404', null],
             '500' => [DefaultController::class, 'error500', null],
             '403' => [DefaultController::class, 'error403', null],
-
-            // Routes utilisateurs avec permissions
+            
             'users' => [UserController::class, 'listUsers', 'admin'],
             'listUsers' => [UserController::class, 'listUsers', 'admin'],
             'showUser' => [UserController::class, 'showUser', 'admin'],
@@ -45,6 +47,24 @@ class Router
             'login' => [UserController::class, 'login', null],
             'register' => [UserController::class, 'register', null],
             'logout' => [UserController::class, 'logout', null],
+            
+            'reservations' => [ReservationController::class, 'listReservations', 'staff'],
+            'showReservation' => [ReservationController::class, 'showReservation', 'client'],
+            'addReservation' => [ReservationController::class, 'addReservation', 'client'],
+            'updateReservation' => [ReservationController::class, 'updateReservation', 'staff'],
+            'deleteReservation' => [ReservationController::class, 'deleteReservation', 'staff'],
+
+            'payment' => [PaymentController::class, 'payment', 'client'],
+            
+            'cancellations' => [CancellationController::class, 'listCancellations', 'staff'],
+            'showCancellation' => [CancellationController::class, 'showCancellation', 'client'],
+            'addCancellation' => [CancellationController::class, 'addCancellation', 'client'],
+            
+            'rooms' => [RoomController::class, 'listRooms', null],
+            'showRoom' => [RoomController::class, 'showRoom', null],
+            'addRoom' => [RoomController::class, 'addRoom', 'admin'],
+            'updateRoom' => [RoomController::class, 'updateRoom', 'admin'],
+            'deleteRoom' => [RoomController::class, 'deleteRoom', 'admin'],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';
@@ -53,6 +73,11 @@ class Router
 
     public function route($twig)
     {
+        // Start the session to access $_SESSION variables
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
         $requestedPage = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING);
 
         // Si l'url ne contient pas la variable page, redirection vers la page d'accueil
@@ -117,9 +142,9 @@ class Router
         }
         
         $roleHierarchy = [
-            'client' => 1,
-            'staff' => 2,
-            'admin' => 3
+            'client' => 0,
+            'staff' => 1,
+            'admin' => 2
         ];
         
         if (!isset($roleHierarchy[$userRole])) {

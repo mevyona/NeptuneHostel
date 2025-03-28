@@ -1,0 +1,364 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {{ parent() }} 
+    {% if user.isAdmin %}
+        Dashboard Administration
+    {% elseif user.isStaff %}
+        Dashboard Personnel
+    {% else %}
+        Mon Profil
+    {% endif %}
+{% endblock %}
+
+{% block css %} 
+    {{ parent() }} 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel='stylesheet' href='css/user/dashboard.css'> 
+{% endblock %}
+
+{% block content %}
+    <div class="dashboard-container">
+        <!-- User Welcome Banner -->
+        <div class="welcome-banner">
+            <div class="user-welcome">
+                <h1>
+                    {% if user.isAdmin %}
+                        <i class="bi bi-speedometer2"></i> Dashboard Administration
+                    {% elseif user.isStaff %}
+                        <i class="bi bi-speedometer"></i> Dashboard Personnel
+                    {% else %}
+                        <i class="bi bi-person-circle"></i> Mon Espace Client
+                    {% endif %}
+                </h1>
+                <p>Bienvenue, {{ user.firstName }}! <span class="user-role-badge 
+                    {% if user.role == 'admin' %}badge-admin{% elseif user.role == 'staff' %}badge-staff{% else %}badge-client{% endif %}">
+                    {% if user.role == 'admin' %}
+                        Administrateur
+                    {% elseif user.role == 'staff' %}
+                        Personnel
+                    {% else %}
+                        Client
+                    {% endif %}
+                </span></p>
+            </div>
+
+            <div class="user-actions">
+                <a href="index.php?page=updateUser&id={{ user.id }}" class="dashboard-btn primary"><i class="bi bi-pencil-square"></i> Modifier profil</a>
+                <a href="index.php?page=changePassword&id={{ user.id }}" class="dashboard-btn warning"><i class="bi bi-key"></i> Changer mot de passe</a>
+                <a href="index.php?page=logout" class="dashboard-btn danger"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Personal Information Card (All Users) -->
+            <div class="dashboard-card personal-info">
+                <div class="card-header">
+                    <h2><i class="bi bi-person"></i> Informations Personnelles</h2>
+                </div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <div class="info-label">Nom complet:</div>
+                        <div class="info-value">{{ user.fullName }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value">{{ user.email }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Téléphone:</div>
+                        <div class="info-value">{{ user.phone ?? 'Non renseigné' }}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Membre depuis:</div>
+                        <div class="info-value">{{ user.createdAt|date('j F Y') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.isClient or user.isStaff or user.isAdmin %}
+            <!-- Client Reservations Card -->
+            <div class="dashboard-card reservations">
+                <div class="card-header">
+                    <h2><i class="bi bi-calendar-check"></i> Mes Réservations</h2>
+                    {% if user.reservations is not empty %}
+                        <span class="counter">{{ user.reservations|length }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if user.reservations is not empty %}
+                        <div class="table-responsive">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Chambre</th>
+                                        <th>Dates</th>
+                                        <th>Statut</th>
+                                        <th>Total</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reservation in user.reservations %}
+                                        <tr>
+                                            <td>#{{ reservation.id }}</td>
+                                            <td>{{ reservation.room_id }}</td>
+                                            <td>
+                                                <div>{{ reservation.check_in|date('d/m/Y') }}</div>
+                                                <div class="text-muted"><i class="bi bi-arrow-down"></i></div>
+                                                <div>{{ reservation.check_out|date('d/m/Y') }}</div>
+                                            </td>
+                                            <td>
+                                                <span class="status-badge status-{{ reservation.status|lower }}">
+                                                    {{ reservation.status }}
+                                                </span>
+                                            </td>
+                                            <td>{{ reservation.total_price }}€</td>
+                                            <td>
+                                                <a href="index.php?page=showReservation&id={{ reservation.id }}" class="action-btn info"><i class="bi bi-eye"></i></a>
+                                                {% if reservation.status == 'Confirmée' %}
+                                                    <a href="index.php?page=addCancellation&id={{ reservation.id }}" class="action-btn danger"><i class="bi bi-x-circle"></i></a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-calendar-x"></i>
+                            <p>Vous n'avez aucune réservation pour le moment.</p>
+                            <a href="index.php?page=rooms" class="dashboard-btn primary">Découvrir nos chambres</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if user.isClient or user.isStaff or user.isAdmin %}
+            <!-- Client Reviews Card -->
+            <div class="dashboard-card reviews">
+                <div class="card-header">
+                    <h2><i class="bi bi-star"></i> Mes Avis</h2>
+                    {% if user.reviews is not empty %}
+                        <span class="counter">{{ user.reviews|length }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if user.reviews is not empty %}
+                        <div class="reviews-list">
+                            {% for review in user.reviews %}
+                                <div class="review-item">
+                                    <div class="review-header">
+                                        <div class="rating">
+                                            {% for i in 1..5 %}
+                                                <i class="bi {% if i <= review.rating %}bi-star-fill{% else %}bi-star{% endif %}"></i>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="review-date">{{ review.created_at|date('d M Y') }}</div>
+                                    </div>
+                                    <div class="review-content">
+                                        <p>{{ review.comment }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-chat-square-text"></i>
+                            <p>Vous n'avez pas encore laissé d'avis.</p>
+                            <p class="small">Après votre séjour, vous pourrez évaluer votre expérience.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if user.isClient or user.isStaff or user.isAdmin %}
+            <!-- Notifications Card -->
+            <div class="dashboard-card notifications">
+                <div class="card-header">
+                    <h2><i class="bi bi-bell"></i> Notifications</h2>
+                    {% if user.notifications is not empty %}
+                        <span class="counter">{{ user.notifications|length }}</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if user.notifications is not empty %}
+                        <div class="notifications-list">
+                            {% for notification in user.notifications %}
+                                <div class="notification-item">
+                                    <div class="notification-header">
+                                        <h4>{{ notification.title }}</h4>
+                                        <span class="notification-date">{{ notification.created_at|date('d/m/Y') }}</span>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p>{{ notification.message }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-bell-slash"></i>
+                            <p>Pas de notifications pour le moment.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if user.isStaff or user.isAdmin %}
+            <!-- Staff: Recent Reservations Overview -->
+            <div class="dashboard-card recent-activity wide">
+                <div class="card-header">
+                    <h2><i class="bi bi-activity"></i> Activité Récente</h2>
+                </div>
+                <div class="card-body">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="recent-reservations">Réservations récentes</button>
+                        <button class="tab-btn" data-tab="recent-cancellations">Annulations récentes</button>
+                    </div>
+                    
+                    <div class="tab-content" id="recent-reservations-tab">
+                        <div class="table-responsive">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Client</th>
+                                        <th>Chambre</th>
+                                        <th>Dates</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- This would be populated from a dedicated method in the controller -->
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <a href="index.php?page=reservations" class="dashboard-btn secondary">Voir toutes les réservations</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="recent-cancellations-tab" style="display: none;">
+                        <div class="table-responsive">
+                            <table class="dashboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Client</th>
+                                        <th>Réservation</th>
+                                        <th>Date</th>
+                                        <th>Motif</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- This would be populated from a dedicated method in the controller -->
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <a href="index.php?page=cancellations" class="dashboard-btn secondary">Voir toutes les annulations</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if user.isAdmin %}
+            <!-- Admin: User Management Overview -->
+            <div class="dashboard-card user-management">
+                <div class="card-header">
+                    <h2><i class="bi bi-people"></i> Gestion des Utilisateurs</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-value">XX</div>
+                            <div class="stat-label">Total clients</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">XX</div>
+                            <div class="stat-label">Personnel</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">XX</div>
+                            <div class="stat-label">Admins</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons centered">
+                        <a href="index.php?page=listUsers" class="dashboard-btn primary"><i class="bi bi-list-ul"></i> Liste des utilisateurs</a>
+                        <a href="index.php?page=addUser" class="dashboard-btn success"><i class="bi bi-person-plus"></i> Ajouter un utilisateur</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if user.isAdmin %}
+            <!-- Admin: Room Management Overview -->
+            <div class="dashboard-card room-management">
+                <div class="card-header">
+                    <h2><i class="bi bi-building"></i> Gestion des Chambres</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-value">XX</div>
+                            <div class="stat-label">Total chambres</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">XX</div>
+                            <div class="stat-label">Disponibles</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">XX%</div>
+                            <div class="stat-label">Taux d'occupation</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons centered">
+                        <a href="index.php?page=rooms" class="dashboard-btn primary"><i class="bi bi-list-ul"></i> Liste des chambres</a>
+                        <a href="index.php?page=addRoom" class="dashboard-btn success"><i class="bi bi-plus-circle"></i> Ajouter une chambre</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality for staff/admin dashboard
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Hide all content sections
+                    tabContents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    
+                    // Show the selected content section
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId + '-tab').style.display = 'block';
+                });
+            });
+        });
+    </script>
+{% endblock %}

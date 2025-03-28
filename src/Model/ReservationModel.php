@@ -81,6 +81,42 @@ class ReservationModel
         );
     }
 
+    public function getReservationsByUserId(int $userId): array
+    {
+        $sql = "SELECT r.*, 
+            u.id as user_id, u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
+            rm.id as room_id, rm.name as room_name, rm.is_available, rm.price, rm.capacity, rm.description, rm.featured_image_id, rm.created_at as room_created, rm.updated_at as room_updated
+        FROM Reservation r
+        INNER JOIN User u ON r.user_id = u.id
+        INNER JOIN Room rm ON r.room_id = rm.id
+        WHERE r.user_id = :user_id
+        ORDER BY r.check_in DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $reservations = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $user = new User(
+                $row['user_id'], $row['first_name'], $row['last_name'], $row['email'],
+                $row['phone'], $row['password'], $row['role'], $row['user_created'], $row['user_updated']
+            );
+            
+            $room = new Room(
+                $row['room_id'], $row['room_name'], (bool)$row['is_available'], (float)$row['price'],
+                (int)$row['capacity'], $row['description'], null, $row['room_created'], $row['room_updated']
+            );
+            
+            $reservations[] = new Reservation(
+                $row['id'], $user, $room, $row['check_in'], $row['check_out'],
+                $row['status'], (float)$row['total_price'], $row['special_requests'],
+                $row['created_at'], $row['updated_at']
+            );
+        }
+        return $reservations;
+    }
+
     public function createReservation(Reservation $reservation): bool
     {
         $sql = "INSERT INTO Reservation (user_id, room_id, check_in, check_out, status, total_price, special_requests)

@@ -56,15 +56,21 @@ class MediaModel
 
     public function createMedia(Media $media): bool
     {
-        $sql = "INSERT INTO Media (file_name, file_path, file_type, file_size) VALUES (:file_name, :file_path, :file_type, :file_size)";
+        $sql = "INSERT INTO Media (file_name, file_path, file_type, file_size) 
+                VALUES (:file_name, :file_path, :file_type, :file_size)";
         $stmt = $this->db->prepare($sql);
-
         $stmt->bindValue(':file_name', $media->getFileName(), PDO::PARAM_STR);
         $stmt->bindValue(':file_path', $media->getFilePath(), PDO::PARAM_STR);
         $stmt->bindValue(':file_type', $media->getFileType(), PDO::PARAM_STR);
         $stmt->bindValue(':file_size', $media->getFileSize(), PDO::PARAM_INT);
-
-        return $stmt->execute();
+        
+        $result = $stmt->execute();
+        
+        if ($result) {
+            $media->setId((int)$this->db->lastInsertId());
+        }
+        
+        return $result;
     }
 
     public function updateMedia(Media $media): bool

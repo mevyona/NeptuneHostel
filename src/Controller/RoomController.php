@@ -28,7 +28,8 @@ class RoomController
     {
         $rooms = $this->roomModel->getAllRooms();
         echo $this->twig->render('roomController/listRooms.html.twig', [
-            'rooms' => $rooms
+            'rooms' => $rooms,
+            'session' => $_SESSION ?? []
         ]);
     }
 
@@ -42,22 +43,78 @@ class RoomController
             $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
             $capacity = filter_input(INPUT_POST, 'capacity', FILTER_SANITIZE_NUMBER_INT);
             $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
-            $image_id = filter_input(INPUT_POST, 'featured_image_id', FILTER_SANITIZE_NUMBER_INT);
-
-            if ($name && $price && $capacity) {
+            
+            $media = null;
+            
+            // Vérifier s'il s'agit d'une nouvelle image ou d'une image existante
+            if (!empty($_FILES['image_file']['name'])) {
+                // Traitement de l'upload d'image
+                $uploadDir = 'uploads/rooms/';
+                
+                // Créer le répertoire s'il n'existe pas
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                
+                $fileName = $_FILES['image_file']['name'];
+                $fileType = $_FILES['image_file']['type'];
+                $fileSize = $_FILES['image_file']['size'];
+                $fileTmpName = $_FILES['image_file']['tmp_name'];
+                
+                // Générer un nom unique pour le fichier
+                $uniqueName = uniqid('room_') . '_' . $fileName;
+                $filePath = $uploadDir . $uniqueName;
+                
+                // Valider le type de fichier
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!in_array($fileType, $allowedTypes)) {
+                    $_SESSION['message'] = 'Type de fichier non autorisé. Seuls JPG, PNG et GIF sont acceptés.';
+                    $_SESSION['success'] = false;
+                } 
+                // Valider la taille du fichier (5MB maximum)
+                elseif ($fileSize > 5 * 1024 * 1024) {
+                    $_SESSION['message'] = 'Le fichier est trop volumineux. La taille maximale est de 5MB.';
+                    $_SESSION['success'] = false;
+                } 
+                // Déplacer le fichier uploadé
+                elseif (move_uploaded_file($fileTmpName, $filePath)) {
+                    // Créer une nouvelle entité Media
+                    $media = new Media(null, $fileName, $filePath, $fileType, $fileSize, '');
+                    $this->mediaModel->createMedia($media);
+                } else {
+                    $_SESSION['message'] = "Erreur lors de l'upload du fichier.";
+                    $_SESSION['success'] = false;
+                }
+            } 
+            // Si une image existante a été sélectionnée
+            elseif (!empty($_POST['featured_image_id'])) {
+                $image_id = filter_input(INPUT_POST, 'featured_image_id', FILTER_SANITIZE_NUMBER_INT);
                 $media = $this->mediaModel->getOneMedia((int)$image_id);
+            }
+            
+            // Si tous les champs obligatoires sont remplis et qu'on a une image
+            if ($name && $price && $capacity && $media) {
                 $room = new Room(null, $name, $is_available, (float)$price, (int)$capacity, $description, $media, '', '');
-                $this->roomModel->createRoom($room);
-                $_SESSION['message'] = 'Chambre ajoutée avec succès';
-                header('Location: index.php?page=list-rooms');
-                exit();
+                if ($this->roomModel->createRoom($room)) {
+                    $_SESSION['message'] = 'Chambre ajoutée avec succès';
+                    $_SESSION['success'] = true;
+                    header('Location: index.php?page=rooms');
+                    exit();
+                } else {
+                    $_SESSION['message'] = "Erreur lors de l'ajout de la chambre";
+                    $_SESSION['success'] = false;
+                }
             } else {
-                $_SESSION['message'] = 'Veuillez remplir tous les champs obligatoires';
+                if (!isset($_SESSION['message'])) {
+                    $_SESSION['message'] = 'Veuillez remplir tous les champs obligatoires et fournir une image';
+                    $_SESSION['success'] = false;
+                }
             }
         }
 
         echo $this->twig->render('roomController/addRoom.html.twig', [
-            'mediaList' => $mediaList
+            'mediaList' => $mediaList,
+            'session' => $_SESSION ?? []
         ]);
     }
 
@@ -100,7 +157,8 @@ class RoomController
 
         echo $this->twig->render('roomController/updateRoom.html.twig', [
             'room' => $room,
-            'mediaList' => $mediaList
+            'mediaList' => $mediaList,
+            'session' => $_SESSION ?? []
         ]);
     }
 
@@ -111,12 +169,17 @@ class RoomController
 
         if (!$room) {
             $_SESSION['message'] = 'Chambre introuvable';
-            header('Location: index.php?page=list-rooms');
+            header('Location: index.php?page=rooms');
             exit();
         }
 
+        // Récupérer d'autres chambres avec une capacité similaire à suggérer
+        $similarRooms = $this->roomModel->getSimilarRooms($room->getCapacity(), $room->getId());
+
         echo $this->twig->render('roomController/showRoom.html.twig', [
-            'room' => $room
+            'room' => $room,
+            'similarRooms' => $similarRooms, 
+            'session' => $_SESSION ?? []
         ]);
     }
 

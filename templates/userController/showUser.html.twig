@@ -4,17 +4,10 @@
     Profil Utilisateur
 {% endblock %}
 {% block content %}
-
-{% if session.message is defined and session.message %}
-    {% set messageClass = session.success is defined and session.success ? 'success' : 'error' %}
-    <div class="alert alert-info {{ messageClass }}">{{ session.message }}</div>
-    {% set session = session|merge({'message': null, 'success': null}) %}
-{% endif %}
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <h1 class="text-center text-primary fw-bold m-2">Mon Profil</h1>
+                <h1 class="text-center text-primary fw-bold m-2">Profil Utilisateur</h1>
                 
                 <div class="card mb-4">
                     <div class="card-header">
@@ -23,7 +16,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Nom:</strong> {{ user.fullName }}</p>
+                                <p><strong>Nom:</strong> {{ user.firstName }} {{ user.lastName }}</p>
                                 <p><strong>Email:</strong> {{ user.email }}</p>
                                 <p><strong>Téléphone:</strong> {{ user.phone ?? 'Non renseigné' }}</p>
                             </div>
@@ -43,15 +36,14 @@
                         <div class="mt-3">
                             <a href="index.php?page=updateUser&id={{ user.id }}" class="btn btn-primary">Modifier Profil</a>
                             <a href="index.php?page=changePassword&id={{ user.id }}" class="btn btn-warning">Changer Mot de Passe</a>
-                            <a href="index.php?page=logout" class="btn btn-danger">Déconnexion</a>
                         </div>
                     </div>
                 </div>
                 
-                {% if user.reservations is not empty %}
+                {% if user.reservations is defined and user.reservations is not empty %}
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h3>Mes Réservations</h3>
+                            <h3>Réservations</h3>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -71,10 +63,20 @@
                                         {% for reservation in user.reservations %}
                                             <tr>
                                                 <td>{{ reservation.id }}</td>
-                                                <td>{{ reservation.room_id }}</td>
-                                                <td>{{ reservation.check_in }}</td>
-                                                <td>{{ reservation.check_out }}</td>
-                                                <td>{{ reservation.status }}</td>
+                                                <td>{{ reservation.room_name ?? reservation.room_id }}</td>
+                                                <td>{{ reservation.check_in|date('d-m-Y') }}</td>
+                                                <td>{{ reservation.check_out|date('d-m-Y') }}</td>
+                                                <td>
+                                                    {% if reservation.status == 'confirmed' %}
+                                                        <span class="badge bg-success">Confirmée</span>
+                                                    {% elseif reservation.status == 'pending' %}
+                                                        <span class="badge bg-warning">En attente</span>
+                                                    {% elseif reservation.status == 'cancelled' %}
+                                                        <span class="badge bg-danger">Annulée</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">{{ reservation.status }}</span>
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{ reservation.total_price }}€</td>
                                                 <td>
                                                     <a href="index.php?page=viewReservation&id={{ reservation.id }}" class="btn btn-sm btn-info">Voir</a>
@@ -88,10 +90,10 @@
                     </div>
                 {% endif %}
                 
-                {% if user.reviews is not empty %}
+                {% if user.reviews is defined and user.reviews is not empty %}
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h3>Mes Avis</h3>
+                            <h3>Avis</h3>
                         </div>
                         <div class="card-body">
                             <div class="list-group">
@@ -109,7 +111,7 @@
                     </div>
                 {% endif %}
                 
-                {% if user.notifications is not empty %}
+                {% if user.notifications is defined and user.notifications is not empty %}
                     <div class="card mb-4">
                         <div class="card-header">
                             <h3>Notifications</h3>

@@ -64,6 +64,33 @@ class NotificationModel
         );
     }
 
+    public function getNotificationsByUserId(int $userId): array
+    {
+        $sql = "SELECT n.*, u.id as user_id, u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated
+                FROM Notification n
+                INNER JOIN User u ON n.user_id = u.id
+                WHERE n.user_id = :user_id
+                ORDER BY n.created_at DESC";
+                
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $notifications = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $user = new User(
+                $row['user_id'], $row['first_name'], $row['last_name'], $row['email'],
+                $row['phone'], $row['password'], $row['role'], $row['user_created'], $row['user_updated']
+            );
+            
+            $notifications[] = new Notification(
+                $row['id'], $user, $row['title'], $row['message'],
+                (bool)$row['is_read'], $row['notification_type'], $row['created_at']
+            );
+        }
+        return $notifications;
+    }
+
     public function createNotification(Notification $notification): bool
     {
         $sql = "INSERT INTO Notification (user_id, title, message, is_read, notification_type)

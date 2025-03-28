@@ -59,7 +59,7 @@ class UserController
         $success = $_SESSION['success'] ?? null;
         unset($_SESSION['message'], $_SESSION['success']);
         
-        echo $this->twig->render('user/login.html.twig', [
+        echo $this->twig->render('userController/login.html.twig', [
             'session' => [
                 'message' => $message,
                 'success' => $success
@@ -148,13 +148,13 @@ class UserController
             }
         }
         
-        echo $this->twig->render('user/register.html.twig', ['session' => $_SESSION ?? []]);
+        echo $this->twig->render('userController/register.html.twig', ['session' => $_SESSION ?? []]);
     }
 
     public function listUsers()
     {
         $users = $this->userModel->getAllUsers();
-        echo $this->twig->render('user/listUsers.html.twig', [
+        echo $this->twig->render('userController/listUsers.html.twig', [
             'users' => $users,
             'session' => $_SESSION ?? []
         ]);
@@ -175,7 +175,7 @@ class UserController
         // Charger les relations
         $this->userModel->loadUserRelations($user);
         
-        echo $this->twig->render('user/showUser.html.twig', [
+        echo $this->twig->render('userController/showUser.html.twig', [
             'user' => $user,
             'session' => $_SESSION ?? []
         ]);
@@ -231,7 +231,7 @@ class UserController
             }
         }
         
-        echo $this->twig->render('user/addUser.html.twig', [
+        echo $this->twig->render('userController/addUser.html.twig', [
             'session' => $_SESSION ?? []
         ]);
     }
@@ -304,7 +304,7 @@ class UserController
                 exit;
             }
             
-            echo $this->twig->render('user/updateUser.html.twig', [
+            echo $this->twig->render('userController/updateUser.html.twig', [
                 'user' => $user,
                 'session' => $_SESSION ?? []
             ]);
@@ -375,7 +375,7 @@ class UserController
                 exit;
             }
             
-            echo $this->twig->render('user/changePassword.html.twig', [
+            echo $this->twig->render('userController/changePassword.html.twig', [
                 'user' => $user,
                 'session' => $_SESSION ?? []
             ]);
@@ -437,7 +437,7 @@ class UserController
                 $_SESSION['success'] = false;
             }
             
-            echo $this->twig->render('user/profile.html.twig', [
+            echo $this->twig->render('userController/profile.html.twig', [
                 'user' => $user,
                 'session' => $_SESSION ?? []
             ]);

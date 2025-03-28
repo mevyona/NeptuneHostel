@@ -3,15 +3,66 @@ declare(strict_types=1);
 namespace MyApp\Model;
 
 use MyApp\Entity\User;
+use MyApp\Entity\Reservation;
+use MyApp\Entity\Review;
+use MyApp\Entity\Notification;
+use MyApp\Entity\Cancellation;
+use MyApp\Entity\Room;
 use PDO;
 
 class UserModel
 {
     private PDO $db;
+    private ?ReservationModel $reservationModel = null;
+    private ?ReviewModel $reviewModel = null;
+    private ?NotificationModel $notificationModel = null;
+    private ?CancellationModel $cancellationModel = null;
+    private ?RoomModel $roomModel = null;
     
     public function __construct(PDO $db)
     {
         $this->db = $db;
+    }
+    
+    // Méthodes d'accès aux autres modèles
+    private function getReservationModel(): ReservationModel
+    {
+        if ($this->reservationModel === null) {
+            $this->reservationModel = new ReservationModel($this->db);
+        }
+        return $this->reservationModel;
+    }
+    
+    private function getReviewModel(): ReviewModel
+    {
+        if ($this->reviewModel === null) {
+            $this->reviewModel = new ReviewModel($this->db);
+        }
+        return $this->reviewModel;
+    }
+    
+    private function getNotificationModel(): NotificationModel
+    {
+        if ($this->notificationModel === null) {
+            $this->notificationModel = new NotificationModel($this->db);
+        }
+        return $this->notificationModel;
+    }
+    
+    private function getCancellationModel(): CancellationModel
+    {
+        if ($this->cancellationModel === null) {
+            $this->cancellationModel = new CancellationModel($this->db);
+        }
+        return $this->cancellationModel;
+    }
+    
+    private function getRoomModel(): RoomModel
+    {
+        if ($this->roomModel === null) {
+            $this->roomModel = new RoomModel($this->db);
+        }
+        return $this->roomModel;
     }
 
     public function createUser(User $user): bool
@@ -205,74 +256,22 @@ class UserModel
     
     public function getUserReservations(int $userId): array
     {
-        $sql = "SELECT r.* FROM Reservation r 
-                WHERE r.user_id = :user_id 
-                ORDER BY r.check_in DESC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $reservations = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Nécessite une classe ReservationModel pour construire les objets
-            // $reservations[] = new Reservation(...);
-            $reservations[] = $row; // Retourne les données brutes en attendant
-        }
-        return $reservations;
+        return $this->getReservationModel()->getReservationsByUserId($userId);
     }
     
     public function getUserReviews(int $userId): array
     {
-        $sql = "SELECT r.* FROM Review r 
-                WHERE r.user_id = :user_id 
-                ORDER BY r.created_at DESC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $reviews = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Nécessite une classe ReviewModel pour construire les objets
-            // $reviews[] = new Review(...);
-            $reviews[] = $row; // Retourne les données brutes en attendant
-        }
-        return $reviews;
+        return $this->getReviewModel()->getReviewsByUserId($userId);
     }
     
     public function getUserNotifications(int $userId): array
     {
-        $sql = "SELECT n.* FROM Notification n 
-                WHERE n.user_id = :user_id 
-                ORDER BY n.created_at DESC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $notifications = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Nécessite une classe NotificationModel pour construire les objets
-            // $notifications[] = new Notification(...);
-            $notifications[] = $row; // Retourne les données brutes en attendant
-        }
-        return $notifications;
+        return $this->getNotificationModel()->getNotificationsByUserId($userId);
     }
     
     public function getUserCancellations(int $userId): array
     {
-        $sql = "SELECT c.* FROM Cancellation c 
-                WHERE c.cancelled_by_id = :user_id 
-                ORDER BY c.cancellation_date DESC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $cancellations = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Nécessite une classe CancellationModel pour construire les objets
-            // $cancellations[] = new Cancellation(...);
-            $cancellations[] = $row; // Retourne les données brutes en attendant
-        }
-        return $cancellations;
+        return $this->getCancellationModel()->getCancellationsByUserId($userId);
     }
     
     // Méthode pour charger toutes les relations d'un utilisateur

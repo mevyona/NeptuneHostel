@@ -24,6 +24,11 @@ class PaymentController
         $this->invoiceModel = $container->get('InvoiceModel');
     }
 
+    public function payment()
+    {
+        echo $this->twig->render('paymentController/payment.html.twig', []);
+    }
+
     public function listPayments()
     {
         $payments = $this->paymentModel->getAllPayments();
@@ -59,22 +64,6 @@ class PaymentController
 
         echo $this->twig->render('paymentController/addPayment.html.twig', [
             'invoices' => $invoices
-        ]);
-    }
-
-    public function showPayment()
-    {
-        $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-        $payment = $this->paymentModel->getOnePayment((int)$id);
-
-        if (!$payment) {
-            $_SESSION['message'] = 'Paiement introuvable';
-            header('Location: index.php?page=list-payments');
-            exit();
-        }
-
-        echo $this->twig->render('paymentController/showPayment.html.twig', [
-            'payment' => $payment
         ]);
     }
 

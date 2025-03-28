@@ -5,13 +5,6 @@
 {% block css %} {{ parent() }} <link rel='stylesheet' href='css/user/auth.css'> {% endblock %}
        
 {% block content %} 
-
-{% if session.message is defined and session.message %}
-    {% set messageClass = session.success is defined and session.success ? 'success' : 'error' %}
-    <div class="alert alert-info {{ messageClass }}">{{ session.message }}</div>
-    {% set session = session|merge({'message': null, 'success': null}) %}
-{% endif %}
-
 <a href="index.php" class="home-link">Accueil</a>
 <div class="page-container">
     <div class="login-form">

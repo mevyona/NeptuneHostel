@@ -1,0 +1,230 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Chambre {{ room.name }} {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel='stylesheet' href='css/room/room.css'>
+    <link rel='stylesheet' href='css/room/roomPage.css'>
+{% endblock %}
+
+{% block content %}
+<div class="room-detail-container">
+    <div class="room-header">
+        <div class="room-title">
+            <h1>Chambre {{ room.name }}</h1>
+            <div class="room-tags">
+                <span class="room-tag">{{ room.capacity }} personnes</span>
+                <span class="room-tag">{{ room.price }}€/nuit</span>
+                {% if room.isAvailable %}
+                    <span class="room-tag available">Disponible</span>
+                {% else %}
+                    <span class="room-tag unavailable">Non disponible</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="room-actions">
+            <a href="index.php?page=rooms" class="btn btn-secondary">Retour aux chambres</a>
+        </div>
+    </div>
+
+    <div class="room-content">
+        <div class="room-gallery">
+            <div class="main-image">
+                {% if room.featuredImage %}
+                    <img src="{{ room.featuredImage.filePath }}" alt="{{ room.name }}" id="featured-image">
+                {% else %}
+                    <img src="images/chambres/{{ room.name|lower }}.png" alt="{{ room.name }}" id="featured-image">
+                {% endif %}
+            </div>
+            
+            {% if roomImages is defined and roomImages|length > 0 %}
+                <div class="image-thumbnails">
+                    <!-- Include the featured image first -->
+                    {% if room.featuredImage %}
+                        <div class="thumbnail active" data-src="{{ room.featuredImage.filePath }}">
+                            <img src="{{ room.featuredImage.filePath }}" alt="{{ room.name }}">
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Then display all other images -->
+                    {% for image in roomImages %}
+                        {% if not room.featuredImage or image.id != room.featuredImage.id %}
+                            <div class="thumbnail" data-src="{{ image.filePath }}">
+                                <img src="{{ image.filePath }}" alt="{{ room.name }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="room-info">
+            <div class="room-description">
+                <h2>Description</h2>
+                <p>{{ room.description }}</p>
+            </div>
+            
+            <div class="room-amenities">
+                <h2>Équipements</h2>
+                <ul>
+                    <li><i class="bi bi-wifi"></i> WiFi gratuit</li>
+                    <li><i class="bi bi-tv"></i> Télévision à écran plat</li>
+                    <li><i class="bi bi-snow"></i> Climatisation</li>
+                    <li><i class="bi bi-droplet"></i> Salle de bain privative</li>
+                    <li><i class="bi bi-cup-hot"></i> Machine à café</li>
+                </ul>
+            </div>
+            
+            <div class="room-rules">
+                <h2>Règles</h2>
+                <ul>
+                    <li><i class="bi bi-clock"></i> Check-in: 14h00 - 18h00</li>
+                    <li><i class="bi bi-clock-history"></i> Check-out: avant 11h00</li>
+                    <li><i class="bi bi-x-circle"></i> Non-fumeur</li>
+                    <li><i class="bi bi-exclamation-triangle"></i> Pas d'animaux autorisés</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="booking-container">
+        <div class="booking-form">
+            <h2>Réserver cette chambre</h2>
+            {% if room.isAvailable %}
+                <form action="index.php?page=addReservation" method="POST">
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <input type="hidden" name="room_price" value="{{ room.price }}">
+                    
+                    <div class="form-group">
+                        <label for="check_in">Date d'arrivée</label>
+                        <input type="date" id="check_in" name="check_in" required min="{{ "now"|date("Y-m-d") }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="check_out">Date de départ</label>
+                        <input type="date" id="check_out" name="check_out" required min="{{ "now"|date("Y-m-d") }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="special_requests">Demandes spéciales</label>
+                        <textarea id="special_requests" name="special_requests" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="price-summary">
+                        <div class="price-line">
+                            <span>Prix par nuit:</span>
+                            <span>{{ room.price }}€</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Taxe de séjour:</span>
+                            <span>{{ (room.price * 0.1)|round(2) }}€</span>
+                        </div>
+                        <div class="price-line total">
+                            <span>Prix estimé par nuit (avec taxes):</span>
+                            <span>{{ (room.price + (room.price * 0.1))|round(2) }}€</span>
+                        </div>
+                        <div class="price-info">
+                            <small>Le prix total sera calculé lors de la réservation en fonction de la durée de votre séjour.</small>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Réserver maintenant</button>
+                </form>
+            {% else %}
+                <div class="unavailable-message">
+                    <p>Cette chambre n'est malheureusement pas disponible actuellement.</p>
+                    <p>Consultez nos autres chambres ou contactez-nous pour plus d'informations.</p>
+                    <a href="index.php?page=rooms" class="btn btn-secondary">Voir d'autres chambres</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="booking-info">
+            <h3>Pourquoi réserver chez nous?</h3>
+            <ul>
+                <li><i class="bi bi-check-circle"></i> Meilleur prix garanti</li>
+                <li><i class="bi bi-check-circle"></i> Annulation gratuite jusqu'à 48h avant l'arrivée</li>
+                <li><i class="bi bi-check-circle"></i> Petit-déjeuner inclus</li>
+                <li><i class="bi bi-check-circle"></i> WiFi gratuit</li>
+                <li><i class="bi bi-check-circle"></i> Support client 24/7</li>
+            </ul>
+            
+            <div class="contact-support">
+                <p>Besoin d'aide pour votre réservation?</p>
+                <a href="tel:+33600000000" class="support-phone"><i class="bi bi-telephone"></i> 06 00 00 00 00</a>
+            </div>
+        </div>
+    </div>
+
+    {% if session.user_role is defined %}
+        <div class="login-prompt">
+            <p>Vous devez être connecté pour effectuer une réservation.</p>
+            <a href="index.php?page=login" class="btn btn-primary">Se connecter</a>
+            <a href="index.php?page=register" class="btn btn-secondary">S'inscrire</a>
+        </div>
+    {% endif %}
+
+    {% if similarRooms is defined and similarRooms|length > 0 %}
+        <div class="similar-rooms">
+            <h2>Autres chambres qui pourraient vous intéresser</h2>
+            <div class="similar-rooms-container">
+                {% for similarRoom in similarRooms %}
+                    {% if similarRoom.id != room.id %}
+                        <div class="similar-room">
+                            {% if similarRoom.featuredImage %}
+                                <img src="{{ similarRoom.featuredImage.filePath }}" alt="Chambre {{ similarRoom.name }}">
+                            {% else %}
+                                <img src="images/chambres/{{ similarRoom.name|lower }}.png" alt="Chambre {{ similarRoom.name }}">
+                            {% endif %}
+                            <h3>Chambre {{ similarRoom.name }}</h3>
+                            <p>À partir de {{ similarRoom.price }}€/nuit</p>
+                            <a href="index.php?page=showRoom&id={{ similarRoom.id }}" class="btn btn-outline">Voir détails</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Image gallery functionality
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const featuredImage = document.getElementById('featured-image');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                // Update featured image
+                featuredImage.src = this.getAttribute('data-src');
+                
+                // Update active state
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Date validation for booking form
+        const checkInInput = document.getElementById('check_in');
+        const checkOutInput = document.getElementById('check_out');
+        
+        if (checkInInput && checkOutInput) {
+            checkInInput.addEventListener('change', function() {
+                // Set minimum date for checkout to be at least the check-in date + 1 day
+                const checkInDate = new Date(this.value);
+                const nextDay = new Date(checkInDate);
+                nextDay.setDate(checkInDate.getDate() + 1);
+                
+                const formattedDate = nextDay.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+                checkOutInput.min = formattedDate;
+                
+                // If current checkout date is now invalid, update it
+                if (new Date(checkOutInput.value) <= new Date(this.value)) {
+                    checkOutInput.value = formattedDate;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

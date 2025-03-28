@@ -90,6 +90,107 @@ class RoomModel
         );
     }
 
+    public function getSimilarRooms(int $capacity, int $currentRoomId, int $limit = 3): array
+    {
+        // Récupérer des chambres avec une capacité similaire (±1) mais pas la chambre actuelle
+        $sql = "SELECT r.*, m.id as media_id, m.file_name, m.file_path, m.file_type, m.file_size, m.created_at as media_created
+                FROM Room r
+                LEFT JOIN Media m ON r.featured_image_id = m.id
+                WHERE r.id != :current_room_id 
+                AND (r.capacity BETWEEN :min_capacity AND :max_capacity)
+                ORDER BY r.is_available DESC, ABS(r.capacity - :capacity) ASC
+                LIMIT :limit";
+                
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':current_room_id', $currentRoomId, PDO::PARAM_INT);
+        $stmt->bindValue(':min_capacity', $capacity - 1, PDO::PARAM_INT);
+        $stmt->bindValue(':max_capacity', $capacity + 1, PDO::PARAM_INT);
+        $stmt->bindValue(':capacity', $capacity, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $rooms = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $media = null;
+            if ($row['media_id']) {
+                $media = new Media(
+                    $row['media_id'],
+                    $row['file_name'],
+                    $row['file_path'],
+                    $row['file_type'],
+                    $row['file_size'],
+                    $row['media_created']
+                );
+            }
+            $rooms[] = new Room(
+                $row['id'],
+                $row['name'],
+                (bool)$row['is_available'],
+                (float)$row['price'],
+                (int)$row['capacity'],
+                $row['description'],
+                $media,
+                $row['created_at'],
+                $row['updated_at']
+            );
+        }
+        
+        // Si nous n'avons pas assez de chambres similaires par capacité, compléter avec d'autres chambres
+        if (count($rooms) < $limit) {
+            $additionalLimit = $limit - count($rooms);
+            $existingIds = array_merge([$currentRoomId], array_map(function($room) {
+                return $room->getId();
+            }, $rooms));
+            
+            $placeholders = implode(',', array_fill(0, count($existingIds), '?'));
+            
+            $sql = "SELECT r.*, m.id as media_id, m.file_name, m.file_path, m.file_type, m.file_size, m.created_at as media_created
+                    FROM Room r
+                    LEFT JOIN Media m ON r.featured_image_id = m.id
+                    WHERE r.id NOT IN ($placeholders)
+                    ORDER BY r.is_available DESC, r.price
+                    LIMIT ?";
+                    
+            $stmt = $this->db->prepare($sql);
+            
+            // Bind all existing IDs
+            $paramIndex = 1;
+            foreach ($existingIds as $id) {
+                $stmt->bindValue($paramIndex++, $id, PDO::PARAM_INT);
+            }
+            
+            $stmt->bindValue($paramIndex, $additionalLimit, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $media = null;
+                if ($row['media_id']) {
+                    $media = new Media(
+                        $row['media_id'],
+                        $row['file_name'],
+                        $row['file_path'],
+                        $row['file_type'],
+                        $row['file_size'],
+                        $row['media_created']
+                    );
+                }
+                $rooms[] = new Room(
+                    $row['id'],
+                    $row['name'],
+                    (bool)$row['is_available'],
+                    (float)$row['price'],
+                    (int)$row['capacity'],
+                    $row['description'],
+                    $media,
+                    $row['created_at'],
+                    $row['updated_at']
+                );
+            }
+        }
+        
+        return $rooms;
+    }
+
     public function createRoom(Room $room): bool
     {
         $sql = "INSERT INTO Room (name, is_available, price, capacity, description, featured_image_id)

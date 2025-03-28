@@ -175,6 +175,56 @@ class CancellationModel
             $cancelledBy
         );
     }
+
+    public function getCancellationsByUserId(int $userId): array
+    {
+        $sql = "SELECT c.*, 
+            u.id as user_id, u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
+            cb.id as cancelled_by_id, cb.first_name as cancelled_by_first_name, cb.last_name as cancelled_by_last_name, cb.email as cancelled_by_email, cb.phone as cancelled_by_phone, cb.password as cancelled_by_password, cb.role as cancelled_by_role, cb.created_at as cancelled_by_created, cb.updated_at as cancelled_by_updated,
+            r.id as reservation_id, r.check_in, r.check_out, r.status, r.total_price, r.special_requests, r.created_at as reservation_created, r.updated_at as reservation_updated,
+            rm.id as room_id, rm.name as room_name, rm.is_available, rm.price, rm.capacity, rm.description, rm.featured_image_id, rm.created_at as room_created, rm.updated_at as room_updated
+        FROM Cancellation c
+        INNER JOIN Reservation r ON c.reservation_id = r.id
+        INNER JOIN User u ON r.user_id = u.id
+        INNER JOIN User cb ON c.cancelled_by_id = cb.id
+        INNER JOIN Room rm ON r.room_id = rm.id
+        WHERE c.cancelled_by_id = :user_id
+        ORDER BY c.cancellation_date DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $cancellations = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $user = new User(
+                $row['user_id'], $row['first_name'], $row['last_name'], $row['email'],
+                $row['phone'], $row['password'], $row['role'], $row['user_created'], $row['user_updated']
+            );
+            
+            $room = new Room(
+                $row['room_id'], $row['room_name'], (bool)$row['is_available'], (float)$row['price'],
+                (int)$row['capacity'], $row['description'], null, $row['room_created'], $row['room_updated']
+            );
+            
+            $reservation = new Reservation(
+                $row['reservation_id'], $user, $room, $row['check_in'], $row['check_out'],
+                $row['status'], (float)$row['total_price'], $row['special_requests'],
+                $row['reservation_created'], $row['reservation_updated']
+            );
+            
+            $cancelledBy = new User(
+                $row['cancelled_by_id'], $row['cancelled_by_first_name'], $row['cancelled_by_last_name'], $row['cancelled_by_email'],
+                $row['cancelled_by_phone'], $row['cancelled_by_password'], $row['cancelled_by_role'], $row['cancelled_by_created'], $row['cancelled_by_updated']
+            );
+            
+            $cancellations[] = new Cancellation(
+                $row['id'], $reservation, $row['reason'], (float)$row['refund_amount'],
+                $row['cancellation_date'], $cancelledBy
+            );
+        }
+        return $cancellations;
+    }
     
     public function createCancellation(Cancellation $cancellation): bool
     {

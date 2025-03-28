@@ -1,0 +1,240 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Ajouter une chambre {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel='stylesheet' href='css/room/form.css'>
+{% endblock %}
+
+{% block content %}
+<div class="room-form-container">
+    <div class="form-header">
+        <h1>Ajouter une nouvelle chambre</h1>
+        <a href="index.php?page=rooms" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+    <div class="room-form">
+        <!-- Changement de l'attribut enctype pour permettre l'upload de fichiers -->
+        <form action="index.php?page=addRoom" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Nom de la chambre <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required class="form-control" placeholder="Ex: Neptune, Mars, Jupiter...">
+                <small>Donnez un nom à votre chambre basé sur un thème spatial</small>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Prix par nuit (€) <span class="required">*</span></label>
+                <input type="number" id="price" name="price" required class="form-control" min="1" step="0.01" placeholder="Ex: 99.99">
+            </div>
+
+            <div class="form-group">
+                <label for="capacity">Capacité (personnes) <span class="required">*</span></label>
+                <input type="number" id="capacity" name="capacity" required class="form-control" min="1" max="10" placeholder="Ex: 2">
+                <small>Nombre maximum de personnes pouvant séjourner dans cette chambre</small>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="5" placeholder="Décrivez les caractéristiques et l'ambiance de la chambre..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <input type="checkbox" id="is_available" name="is_available" checked>
+                    <label for="is_available">Chambre disponible à la réservation</label>
+                </div>
+            </div>
+
+            <div class="form-tabs">
+                <div class="tab-navigation">
+                    <button type="button" class="tab-btn active" data-tab="upload">Ajouter une nouvelle image</button>
+                    <button type="button" class="tab-btn" data-tab="select">Sélectionner une image existante</button>
+                </div>
+                
+                <div class="tab-content" id="upload-tab">
+                    <div class="form-group">
+                        <label for="image_file">Télécharger une image <span class="required">*</span></label>
+                        <input type="file" id="image_file" name="image_file" class="form-control" accept="image/*">
+                        <small>Formats acceptés : JPG, PNG, GIF (Max: 5MB)</small>
+                    </div>
+                    
+                    <div class="form-group image-preview">
+                        <label>Aperçu de l'image</label>
+                        <div id="upload-preview-container" class="preview-container">
+                            <img id="upload-preview" src="" alt="Aperçu" style="display: none;">
+                            <div id="upload-placeholder">Aucune image sélectionnée</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="select-tab" style="display: none;">
+                    <div class="form-group">
+                        <label for="featured_image_id">Sélectionner une image existante</label>
+                        <select id="featured_image_id" name="featured_image_id" class="form-control">
+                            <option value="">-- Sélectionnez une image --</option>
+                            {% for media in mediaList %}
+                                <option value="{{ media.id }}">{{ media.fileName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group image-preview">
+                        <label>Aperçu de l'image</label>
+                        <div id="select-preview-container" class="preview-container">
+                            <img id="select-preview" src="" alt="Aperçu" style="display: none;">
+                            <div id="select-placeholder">Aucune image sélectionnée</div>
+                        </div>
+                    </div>
+                    
+                    {% if mediaList is empty %}
+                        <div class="alert alert-info">
+                            <p>Aucune image disponible dans la galerie. Veuillez télécharger une nouvelle image.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Ajouter la chambre</button>
+                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestion des onglets
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Activer le bouton cliqué et désactiver les autres
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Afficher le contenu de l'onglet correspondant
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById(tabId + '-tab').style.display = 'block';
+                
+                // Mettre à jour le champ required en fonction de l'onglet actif
+                const imageFileInput = document.getElementById('image_file');
+                const imageSelectInput = document.getElementById('featured_image_id');
+                
+                if (tabId === 'upload') {
+                    imageFileInput.setAttribute('required', '');
+                    imageSelectInput.removeAttribute('required');
+                } else {
+                    imageFileInput.removeAttribute('required');
+                    imageSelectInput.setAttribute('required', '');
+                }
+            });
+        });
+        
+        // Prévisualisation de l'image téléchargée
+        const imageFileInput = document.getElementById('image_file');
+        const uploadPreview = document.getElementById('upload-preview');
+        const uploadPlaceholder = document.getElementById('upload-placeholder');
+        
+        imageFileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    uploadPreview.src = e.target.result;
+                    uploadPreview.style.display = 'block';
+                    uploadPlaceholder.style.display = 'none';
+                };
+                
+                reader.readAsDataURL(this.files[0]);
+            } else {
+                uploadPreview.style.display = 'none';
+                uploadPlaceholder.style.display = 'block';
+            }
+        });
+        
+        // Prévisualisation de l'image sélectionnée
+        const imageSelect = document.getElementById('featured_image_id');
+        const selectPreview = document.getElementById('select-preview');
+        const selectPlaceholder = document.getElementById('select-placeholder');
+        
+        // Mapping des IDs d'images aux URLs
+        const imageMap = {
+            {% for media in mediaList %}
+                {{ media.id }}: "{{ media.filePath }}",
+            {% endfor %}
+        };
+        
+        imageSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            
+            if (selectedValue && imageMap[selectedValue]) {
+                selectPreview.src = imageMap[selectedValue];
+                selectPreview.style.display = 'block';
+                selectPlaceholder.style.display = 'none';
+            } else {
+                selectPreview.style.display = 'none';
+                selectPlaceholder.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+<style>
+    .form-tabs {
+        margin-bottom: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .tab-navigation {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 1rem;
+        background: #f8f9fa;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .tab-btn.active {
+        background: #fff;
+        font-weight: 600;
+        border-bottom: 3px solid #5E75C9;
+    }
+    
+    .tab-content {
+        padding: 1.5rem;
+        background: #fff;
+    }
+    
+    .preview-container {
+        width: 100%;
+        height: 200px;
+        border: 1px dashed #ced4da;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.5rem;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
+{% endblock %}

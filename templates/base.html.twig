@@ -35,6 +35,13 @@
         </nav>
     </header>
 
+    {% if session.message is defined and session.message %}
+        <div class="alert {% if session.success is defined and session.success %}alert-success{% else %}alert-danger{% endif %}">
+            {{ session.message }}
+        </div>
+    {% endif %}
+
+
     <main>
         {% block content %}{% endblock %}
     </main>

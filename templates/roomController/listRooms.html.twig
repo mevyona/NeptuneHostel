@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Liste des chambres {% endblock %}
+
+{% block css %} 
+    {{ parent() }} 
+    <link rel='stylesheet' href='css/room/room.css'> 
+{% endblock %}
+
+{% block content %}
+<section class="rooms-header">
+    <h1>Nos chambres</h1>
+    <p>Découvrez nos chambres à thème inspirées de l'espace</p>
+</section>
+
+<section class="rooms">
+    {% if rooms is empty %}
+        <div class="no-rooms">
+            <p>Aucune chambre disponible pour le moment.</p>
+        </div>
+    {% else %}
+        {% for room in rooms %}
+            <a href="index.php?page=showRoom&id={{ room.id }}" class="room-link">
+                <div class="room">
+                    {% if room.featuredImage %}
+                        <img src="{{ room.featuredImage.filePath }}" alt="Chambre {{ room.name }}">
+                    {% else %}
+                        <img src="images/chambres/{{ room.name|lower }}.png" alt="Chambre {{ room.name }}">
+                    {% endif %}
+                    <div class="details">
+                        <div class="room-info">
+                            <p class="room-name">Chambre {{ room.name }} #{{ room.id }}</p>
+                            <p class="room-capacity">Capacité : {{ room.capacity }} personne{% if room.capacity > 1 %}s{% endif %}</p>
+                            <p class="room-price">{{ room.price }}€ / nuit</p>
+                        </div>
+                        <div class="room-amenities">
+                            <p><i class="bi bi-wifi"></i> WiFi Gratuit</p>
+                            {% if room.isAvailable %}
+                                <span class="badge available">Disponible</span>
+                            {% else %}
+                                <span class="badge unavailable">Indisponible</span>
+                            {% endif %}
+                        </div>
+                        <div class="room-action">
+                            <span class="view-details">Voir détails</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+    {% endif %}
+</section>
+
+{% if session.user_role is defined and session.user_role == 'admin' %}
+    <div class="admin-actions">
+        <a href="index.php?page=addRoom" class="btn btn-primary">Ajouter une chambre</a>
+    </div>
+{% endif %}
+{% endblock %}
