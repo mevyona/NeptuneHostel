@@ -3,17 +3,20 @@ declare(strict_types=1);
 namespace MyApp\Controller;
 
 use MyApp\Service\DependencyContainer;
+use MyApp\Model\RoomModel;
 use Twig\Environment;
 
 class DefaultController
 {
     private Environment $twig;
     private $dependencyContainer;
+    private RoomModel $roomModel;
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer) 
     {
         $this->twig = $twig;
         $this->dependencyContainer = $dependencyContainer;
+        $this->roomModel = $dependencyContainer->get('RoomModel');
     }
 
     /**
@@ -21,7 +24,43 @@ class DefaultController
      */
     public function home()
     {
-        echo $this->twig->render('default/home.html.twig');
+        // Récupère toutes les chambres pour compter
+        $allRooms = $this->roomModel->getAllRooms();
+        $totalRooms = count($allRooms);
+        
+        // Prépare les statistiques
+        $roomStats = [
+            'total' => $totalRooms,
+            'yearsOfExperience' => 12, // Vous pourriez stocker cela en configuration ou calculer depuis une date de fondation
+            'averageRating' => 4.8 // Idéalement calculé à partir de ReviewModel
+        ];
+        
+        // Récupère jusqu'à 4 chambres pour la galerie
+        // Priorise les chambres disponibles
+        $featuredRooms = [];
+        $availableRooms = array_filter($allRooms, function($room) {
+            return $room->isAvailable();
+        });
+        
+        // Si nous avons des chambres disponibles
+        if (!empty($availableRooms)) {
+            // Trie par prix (ou autre critère si souhaité)
+            usort($availableRooms, function($a, $b) {
+                return $a->getPrice() <=> $b->getPrice();
+            });
+            
+            // Prend les 4 premières ou moins si pas assez
+            $featuredRooms = array_slice($availableRooms, 0, min(4, count($availableRooms)));
+        } else {
+            // Sinon utilise n'importe quelle chambre
+            $featuredRooms = array_slice($allRooms, 0, min(4, count($allRooms)));
+        }
+
+        echo $this->twig->render('default/home.html.twig', [
+            'roomStats' => $roomStats,
+            'featuredRooms' => $featuredRooms,
+            'session' => $_SESSION ?? []
+        ]);
     }
 
     /**

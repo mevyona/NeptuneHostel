@@ -1,77 +1,601 @@
-.img_container {
-    margin: 0 auto;
-    position: relative;
-    width: 98vw;
-    height: 85vh;
-    overflow: hidden;
+/* ==========================================================================
+   STYLES DE PAGE D'ACCUEIL - HÔTEL NEPTUNE
+   Feuille de style pour la page d'accueil, avec design moderne,
+   sections interactives et mise en page responsive
+   ========================================================================== */
+
+/* -----------------------------
+   IMPORTATION DES POLICES
+   ----------------------------- */
+
+/* Importation des polices Raleway et Playfair Display depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* -----------------------------
+   BASE
+   ----------------------------- */
+
+/* Conteneur principal limité en largeur pour une meilleure lisibilité */
+.container {
+    max-width: 1200px; /* Largeur maximale pour grands écrans */
+    margin: 0 auto; /* Centrage horizontal */
+    padding: 0 20px; /* Espacement latéral pour éviter le collage aux bords */
 }
 
-.img_accueil {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: blur(5px) brightness(0.5);
-    display: block;
+/* -----------------------------
+   SECTION HÉRO
+   ----------------------------- */
+
+/* Configuration du panneau d'accueil principal pleine hauteur */
+.hero {
+    position: relative; /* Pour positionnement des éléments enfants */
+    height: 100vh; /* Hauteur complète de la fenêtre */
+    min-height: 600px; /* Hauteur minimale même sur petits écrans */
+    overflow: hidden; /* Masquage du contenu débordant */
+    display: flex; /* Disposition en flexbox */
+    align-items: center; /* Centrage vertical */
+    justify-content: center; /* Centrage horizontal */
+    text-align: center; /* Alignement central du texte */
 }
 
-.text_overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 1.6em;
-    font-family: 'Space Mono', monospace;    ;
-    font-weight: bold;
-    text-align: center;
-    width: 80%;
+/* Conteneur pour l'image d'arrière-plan du héro */
+.hero-image-container {
+    position: absolute; /* Positionnement absolu par rapport au héro */
+    top: 0; /* Aligné au bord supérieur */
+    left: 0; /* Aligné au bord gauche */
+    width: 100%; /* Occupe toute la largeur */
+    height: 100%; /* Occupe toute la hauteur */
+    z-index: -1; /* Placé derrière les autres éléments */
 }
 
-.message_bvn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    margin: 10% 18% 10% 18%;
+/* Style de l'image d'arrière-plan avec animation de zoom */
+.hero-image {
+    width: 100%; /* Occupe toute la largeur du conteneur */
+    height: 100%; /* Occupe toute la hauteur du conteneur */
+    object-fit: cover; /* Couvre tout l'espace sans déformation */
+    object-position: center; /* Centrage de l'image */
+    transform: scale(1.05); /* Légèrement agrandi pour éviter les bords blancs lors de l'animation */
+    animation: slowZoom 30s infinite alternate ease-in-out; /* Animation de zoom lent */
 }
 
-.message_bvn h1 {
-    font-family: "Italianno", serif;
-    font-size: 7rem;
-    text-align: center;
+/* Superposition colorée pour améliorer la lisibilité du texte */
+.hero-overlay {
+    position: absolute; /* Positionnement absolu par rapport au héro */
+    top: 0; /* Aligné au bord supérieur */
+    left: 0; /* Aligné au bord gauche */
+    width: 100%; /* Occupe toute la largeur */
+    height: 100%; /* Occupe toute la hauteur */
+    background: linear-gradient(to bottom, rgba(58, 77, 143, 0.5), rgba(58, 77, 143, 0.8)); /* Dégradé bleu semi-transparent */
 }
 
-.message_bvn p {
-    font-family: "Montserrat", serif;
-    font-size: 1.2rem;
-    text-align: center;
+/* Conteneur du contenu textuel du héro */
+.hero-content {
+    max-width: 800px; /* Largeur maximale pour lisibilité */
+    padding: 0 20px; /* Espacement latéral */
+    color: white; /* Texte blanc pour contraste sur fond foncé */
+    z-index: 1; /* Au-dessus de l'image et de l'overlay */
+    animation: fadeInUp 1s ease-out; /* Animation d'apparition */
 }
 
-@media screen and (max-width: 960px) {
-    .img_container {
-        height: 45vh;
+/* Titre principal avec typographie élégante */
+.hero-title {
+    font-family: 'Playfair Display', serif; /* Police serif pour élégance */
+    font-size: clamp(2.5rem, 8vw, 4rem); /* Taille responsive entre 2.5rem et 4rem */
+    font-weight: 700; /* Police en gras */
+    margin-bottom: 20px; /* Espacement sous le titre */
+    letter-spacing: -0.5px; /* Légèrement resserré pour style */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Ombre portée pour lisibilité */
+}
+
+/* Sous-titre descriptif */
+.hero-subtitle {
+    font-family: 'Raleway', sans-serif; /* Police sans-serif pour contraste */
+    font-size: clamp(1rem, 3vw, 1.25rem); /* Taille responsive */
+    font-weight: 400; /* Graisse normale */
+    margin-bottom: 40px; /* Espacement avant les boutons */
+    max-width: 600px; /* Largeur limitée pour lisibilité */
+    margin-left: auto; /* Centrage horizontal */
+    margin-right: auto; /* Centrage horizontal */
+    opacity: 0.9; /* Légèrement transparent pour hiérarchie visuelle */
+}
+
+/* Groupe de boutons d'action */
+.hero-actions {
+    display: flex; /* Disposition en flexbox */
+    gap: 15px; /* Espacement entre boutons */
+    justify-content: center; /* Centrage horizontal */
+    flex-wrap: wrap; /* Passage à la ligne si nécessaire */
+}
+
+/* Indicateur de défilement vers le bas */
+.scroll-indicator {
+    position: absolute; /* Positionnement absolu */
+    bottom: 30px; /* À 30px du bas */
+    left: 50%; /* Centré horizontalement */
+    transform: translateX(-50%); /* Ajustement du centrage */
+    animation: bounce 2s infinite; /* Animation de rebond perpétuelle */
+}
+
+/* Lien de l'indicateur de défilement */
+.scroll-indicator a {
+    color: white; /* Couleur blanche */
+    font-size: 1.5rem; /* Taille d'icône lisible */
+    opacity: 0.8; /* Légèrement transparent au repos */
+    transition: opacity 0.3s; /* Transition douce de l'opacité */
+}
+
+/* Animation au survol de l'indicateur */
+.scroll-indicator a:hover {
+    opacity: 1; /* Pleinement opaque au survol */
+}
+
+/* -----------------------------
+   BOUTONS
+   ----------------------------- */
+
+/* Styles communs aux boutons primaire et secondaire */
+.primary-button, .secondary-button {
+    display: inline-flex; /* Disposition en ligne avec propriétés flex */
+    align-items: center; /* Centrage vertical des éléments internes */
+    gap: 10px; /* Espacement entre texte et icône */
+    padding: 12px 24px; /* Espacement interne généreux */
+    border-radius: 30px; /* Coins très arrondis pour style moderne */
+    font-family: 'Raleway', sans-serif; /* Police cohérente */
+    font-weight: 600; /* Semi-gras pour lisibilité */
+    font-size: 1rem; /* Taille standard */
+    text-decoration: none; /* Suppression du soulignement des liens */
+    transition: all 0.3s ease; /* Animation douce pour tous les changements */
+    cursor: pointer; /* Curseur main au survol */
+}
+
+/* Bouton d'action principale en couleur accent */
+.primary-button {
+    background-color: #5E75C9; /* Fond bleu accent */
+    color: white; /* Texte blanc pour contraste */
+    border: none; /* Pas de bordure */
+    box-shadow: 0 4px 10px rgba(94, 117, 201, 0.3); /* Ombre légère pour effet de profondeur */
+}
+
+/* Animation au survol du bouton principal */
+.primary-button:hover {
+    background-color: #4c61b8; /* Bleu légèrement plus foncé */
+    transform: translateY(-2px); /* Effet de flottement subtil */
+    box-shadow: 0 6px 12px rgba(94, 117, 201, 0.4); /* Ombre plus prononcée */
+}
+
+/* Bouton d'action secondaire transparent avec bordure */
+.secondary-button {
+    background-color: transparent; /* Fond transparent */
+    color: white; /* Texte blanc */
+    border: 2px solid white; /* Bordure blanche visible */
+}
+
+/* Animation au survol du bouton secondaire */
+.secondary-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Fond blanc très transparent */
+    transform: translateY(-2px); /* Effet de flottement subtil */
+}
+
+/* -----------------------------
+   SECTION À PROPOS
+   ----------------------------- */
+
+/* Structure de base de la section avec espacement */
+.about-section {
+    padding: 100px 0; /* Espacement vertical généreux */
+    background-color: #fff; /* Fond blanc */
+}
+
+/* En-tête commun à toutes les sections */
+.section-header {
+    text-align: center; /* Centrage du texte */
+    margin-bottom: 50px; /* Espacement avant le contenu */
+}
+
+/* Étiquette thématique au-dessus du titre */
+.section-tag {
+    display: inline-block; /* Comportement en ligne avec propriétés de bloc */
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 0.9rem; /* Taille réduite */
+    font-weight: 600; /* Semi-gras pour lisibilité */
+    color: #5E75C9; /* Couleur accent bleue */
+    text-transform: uppercase; /* Majuscules pour distinction */
+    letter-spacing: 2px; /* Espacement entre lettres pour style */
+    margin-bottom: 10px; /* Espacement avant le titre */
+}
+
+/* Titre principal de la section */
+.section-title {
+    font-family: 'Playfair Display', serif; /* Police serif élégante */
+    font-size: 2.5rem; /* Taille importante */
+    color: #212529; /* Gris très foncé */
+    margin-bottom: 15px; /* Espacement après le titre */
+}
+
+/* Ligne décorative sous le titre */
+.section-divider {
+    width: 60px; /* Largeur limitée */
+    height: 3px; /* Épaisseur visible */
+    background-color: #5E75C9; /* Couleur accent bleue */
+    margin: 0 auto; /* Centrage horizontal */
+}
+
+/* Disposition du contenu avec texte et statistiques */
+.about-content {
+    display: flex; /* Disposition en flexbox */
+    flex-wrap: wrap; /* Passage à la ligne si nécessaire */
+    gap: 50px; /* Espacement entre blocs */
+    justify-content: space-between; /* Répartition de l'espace */
+    align-items: center; /* Alignement vertical centré */
+}
+
+/* Bloc de texte descriptif */
+.about-text {
+    flex: 1; /* Occupe l'espace disponible */
+    min-width: 300px; /* Largeur minimale pour lecture */
+}
+
+/* Paragraphes du texte descriptif */
+.about-text p {
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 1.05rem; /* Taille légèrement augmentée */
+    line-height: 1.7; /* Hauteur de ligne confortable */
+    color: #495057; /* Gris moyen pour lecture facile */
+    margin-bottom: 20px; /* Espacement entre paragraphes */
+}
+
+/* Bloc de statistiques */
+.about-stats {
+    display: flex; /* Disposition en flexbox */
+    flex-wrap: wrap; /* Passage à la ligne si nécessaire */
+    gap: 30px; /* Espacement entre statistiques */
+    justify-content: center; /* Centrage horizontal */
+}
+
+/* Élément individuel de statistique */
+.stat-item {
+    text-align: center; /* Centrage du texte */
+    min-width: 120px; /* Largeur minimale */
+}
+
+/* Chiffre de la statistique */
+.stat-number {
+    display: block; /* Comportement en bloc */
+    font-family: 'Playfair Display', serif; /* Police serif élégante */
+    font-size: 3rem; /* Taille très grande pour impact */
+    font-weight: 700; /* Gras pour emphase */
+    color: #5E75C9; /* Couleur accent bleue */
+    line-height: 1; /* Hauteur de ligne réduite */
+    margin-bottom: 10px; /* Espacement avant le libellé */
+}
+
+/* Libellé de la statistique */
+.stat-label {
+    display: block; /* Comportement en bloc */
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 0.9rem; /* Taille réduite */
+    font-weight: 600; /* Semi-gras pour lisibilité */
+    color: #6c757d; /* Gris moyen */
+    text-transform: uppercase; /* Majuscules pour distinction */
+    letter-spacing: 1px; /* Espacement entre lettres pour style */
+}
+
+/* -----------------------------
+   SECTION CARACTÉRISTIQUES
+   ----------------------------- */
+
+/* Structure de base de la section avec fond gris clair */
+.features-section {
+    padding: 80px 0; /* Espacement vertical généreux */
+    background-color: #f8f9fa; /* Fond gris très clair */
+}
+
+/* Grille des caractéristiques avec disposition responsive */
+.features-grid {
+    display: grid; /* Disposition en grille */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Colonnes adaptatives */
+    gap: 30px; /* Espacement entre cartes */
+}
+
+/* Carte individuelle de caractéristique */
+.feature-card {
+    background-color: white; /* Fond blanc */
+    padding: 40px 30px; /* Espacement intérieur généreux */
+    border-radius: 12px; /* Coins arrondis */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre légère */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation douce */
+    text-align: center; /* Centrage du contenu */
+}
+
+/* Animation au survol de la carte */
+.feature-card:hover {
+    transform: translateY(-5px); /* Effet de flottement */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* Ombre plus prononcée */
+}
+
+/* Icône illustrative de la caractéristique */
+.feature-icon {
+    font-size: 2.5rem; /* Taille importante pour visibilité */
+    color: #5E75C9; /* Couleur accent bleue */
+    margin-bottom: 20px; /* Espacement avant le titre */
+}
+
+/* Titre de la caractéristique */
+.feature-title {
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 1.25rem; /* Taille intermédiaire */
+    font-weight: 700; /* Gras pour emphase */
+    color: #212529; /* Gris très foncé */
+    margin-bottom: 15px; /* Espacement avant le texte */
+}
+
+/* Description de la caractéristique */
+.feature-text {
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 0.95rem; /* Taille légèrement réduite */
+    line-height: 1.6; /* Hauteur de ligne confortable */
+    color: #495057; /* Gris moyen pour lecture facile */
+}
+
+/* -----------------------------
+   SECTION GALERIE
+   ----------------------------- */
+
+/* Structure de base de la section */
+.gallery-section {
+    padding: 100px 0; /* Espacement vertical généreux */
+    background-color: #fff; /* Fond blanc */
+}
+
+/* Grille de disposition des images */
+.gallery-grid {
+    display: grid; /* Disposition en grille */
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes égales */
+    grid-template-rows: repeat(2, 200px); /* 2 rangées de 200px */
+    gap: 15px; /* Espacement entre images */
+    margin-bottom: 40px; /* Espacement avant le bouton d'action */
+}
+
+/* Élément individuel de la galerie */
+.gallery-item {
+    position: relative; /* Pour positionnement des éléments enfants */
+    overflow: hidden; /* Masque le contenu débordant */
+    border-radius: 8px; /* Coins arrondis */
+    cursor: pointer; /* Curseur main au survol */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre légère */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation douce */
+}
+
+/* Élément de grande taille dans la galerie */
+.gallery-item.large {
+    grid-column: span 2; /* Occupe 2 colonnes */
+    grid-row: span 2; /* Occupe 2 rangées */
+}
+
+/* Image dans l'élément de galerie */
+.gallery-item img {
+    width: 100%; /* Occupe toute la largeur */
+    height: 100%; /* Occupe toute la hauteur */
+    object-fit: cover; /* Couvre tout l'espace sans déformation */
+    transition: transform 0.5s ease; /* Animation douce */
+}
+
+/* Animation de l'image au survol */
+.gallery-item:hover img {
+    transform: scale(1.05); /* Légère augmentation de taille */
+}
+
+/* Animation de l'élément au survol */
+.gallery-item:hover {
+    transform: translateY(-5px); /* Effet de flottement */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Ombre plus prononcée */
+}
+
+/* Superposition avec informations */
+.gallery-overlay {
+    position: absolute; /* Positionnement absolu */
+    bottom: 0; /* Aligné au bas */
+    left: 0; /* Aligné à gauche */
+    width: 100%; /* Pleine largeur */
+    padding: 20px; /* Espacement intérieur */
+    background: linear-gradient(to top, rgba(58, 77, 143, 0.7), transparent); /* Dégradé vertical */
+    color: white; /* Texte blanc */
+    opacity: 0; /* Invisible par défaut */
+    transition: opacity 0.3s ease; /* Animation douce */
+}
+
+/* Apparition de la superposition au survol */
+.gallery-item:hover .gallery-overlay {
+    opacity: 1; /* Pleinement visible */
+}
+
+/* Texte dans la superposition */
+.gallery-overlay span {
+    display: block; /* Comportement en bloc */
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 1.1rem; /* Taille intermédiaire */
+    font-weight: 600; /* Semi-gras pour lisibilité */
+    padding-right: 10px; /* Espacement à droite */
+}
+
+/* Lien cliquable couvrant tout l'élément */
+.gallery-link {
+    position: absolute; /* Positionnement absolu */
+    top: 0; /* Aligné en haut */
+    left: 0; /* Aligné à gauche */
+    width: 100%; /* Pleine largeur */
+    height: 100%; /* Pleine hauteur */
+    z-index: 5; /* Au-dessus des autres éléments */
+    cursor: pointer; /* Curseur main */
+}
+
+/* Message en cas d'absence de chambres */
+.no-rooms-message {
+    text-align: center; /* Centrage du texte */
+    padding: 40px; /* Espacement intérieur généreux */
+    background-color: #f8f9fa; /* Fond gris très clair */
+    border-radius: 8px; /* Coins arrondis */
+    margin-bottom: 40px; /* Espacement avant le bouton */
+    color: #6c757d; /* Gris moyen */
+}
+
+/* Conteneur du bouton d'action de la galerie */
+.gallery-action {
+    text-align: center; /* Centrage horizontal */
+}
+
+/* -----------------------------
+   SECTION APPEL À L'ACTION
+   ----------------------------- */
+
+/* Structure de la section avec fond d'image */
+.cta-section {
+    padding: 100px 0; /* Espacement vertical généreux */
+    background: linear-gradient(rgba(58, 77, 143, 0.8), rgba(58, 77, 143, 0.9)), url('images/accueil.png'); /* Superposition de dégradé sur image */
+    background-size: cover; /* Couverture complète */
+    background-position: center; /* Centrage de l'image */
+    background-attachment: fixed; /* Effet parallaxe */
+    color: white; /* Texte blanc */
+    text-align: center; /* Centrage du texte */
+}
+
+/* Conteneur du contenu avec largeur limitée */
+.cta-content {
+    max-width: 700px; /* Largeur maximale */
+    margin: 0 auto; /* Centrage horizontal */
+}
+
+/* Titre principal de l'appel à l'action */
+.cta-title {
+    font-family: 'Playfair Display', serif; /* Police serif élégante */
+    font-size: 2.5rem; /* Taille importante */
+    margin-bottom: 20px; /* Espacement avant le texte */
+}
+
+/* Texte descriptif de l'appel à l'action */
+.cta-text {
+    font-family: 'Raleway', sans-serif; /* Police sans-serif moderne */
+    font-size: 1.1rem; /* Taille légèrement augmentée */
+    margin-bottom: 40px; /* Espacement avant les boutons */
+    opacity: 0.9; /* Légèrement transparent */
+}
+
+/* Groupe de boutons d'action */
+.cta-buttons {
+    display: flex; /* Disposition en flexbox */
+    justify-content: center; /* Centrage horizontal */
+    gap: 20px; /* Espacement entre boutons */
+    flex-wrap: wrap; /* Passage à la ligne si nécessaire */
+}
+
+/* -----------------------------
+   ANIMATIONS
+   ----------------------------- */
+
+/* Animation d'apparition en montant */
+@keyframes fadeInUp {
+    from {
+        opacity: 0; /* Invisible au départ */
+        transform: translateY(20px); /* Décalé vers le bas */
+    }
+    to {
+        opacity: 1; /* Pleinement visible */
+        transform: translateY(0); /* Position normale */
     }
 }
 
-.discover-button {
-    background-color: transparent;
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    padding: 12px 28px;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Animation de rebond pour l'indicateur de défilement */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%); /* Position normale */
+    }
+    40% {
+        transform: translateY(-20px) translateX(-50%); /* Rebond haut */
+    }
+    60% {
+        transform: translateY(-10px) translateX(-50%); /* Rebond intermédiaire */
+    }
 }
 
-.discover-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+/* Animation de zoom lent pour l'image de fond */
+@keyframes slowZoom {
+    from {
+        transform: scale(1); /* Taille normale */
+    }
+    to {
+        transform: scale(1.1); /* Légèrement agrandi */
+    }
+}
+
+/* -----------------------------
+   ADAPTATIONS RESPONSIVES
+   ----------------------------- */
+
+/* Ajustements pour tablettes et écrans moyens */
+@media (max-width: 768px) {
+    /* Réduction de la grille de galerie à 2 colonnes */
+    .gallery-grid {
+        grid-template-columns: 1fr 1fr; /* 2 colonnes égales */
+    }
+    
+    /* Ajustement de l'élément large */
+    .gallery-item.large {
+        grid-column: span 2; /* Occupe 2 colonnes */
+        grid-row: span 1; /* Occupe 1 seule rangée */
+    }
+    
+    /* Réorganisation du contenu "à propos" */
+    .about-content {
+        flex-direction: column; /* Empilage vertical */
+        gap: 40px; /* Espacement réduit */
+    }
+    
+    /* Réduction de la hauteur du héro */
+    .hero {
+        min-height: 500px; /* Hauteur minimale réduite */
+    }
+    
+    /* Réduction de la taille des titres de section */
+    .section-title {
+        font-size: 2rem; /* Taille réduite */
+    }
+}
+
+/* Ajustements pour mobiles et petits écrans */
+@media (max-width: 576px) {
+    /* Passage à une seule colonne pour la galerie */
+    .gallery-grid {
+        grid-template-columns: 1fr; /* 1 seule colonne */
+        grid-template-rows: repeat(4, 200px); /* 4 rangées */
+    }
+    
+    /* Ajustement de l'élément large */
+    .gallery-item.large {
+        grid-column: span 1; /* Occupe 1 seule colonne */
+    }
+    
+    /* Réduction du padding des cartes */
+    .feature-card {
+        padding: 30px 20px; /* Espacement intérieur réduit */
+    }
+    
+    /* Réorganisation verticale des boutons du héro */
+    .hero-actions {
+        flex-direction: column; /* Empilage vertical */
+        width: 100%; /* Pleine largeur */
+        max-width: 300px; /* Largeur maximale */
+        margin: 0 auto; /* Centrage horizontal */
+    }
+    
+    /* Adaptation des boutons en pleine largeur */
+    .primary-button, .secondary-button {
+        width: 100%; /* Pleine largeur */
+        justify-content: center; /* Centrage du contenu */
+    }
+    
+    /* Réduction de la taille du titre CTA */
+    .cta-title {
+        font-size: 2rem; /* Taille réduite */
+    }
 }

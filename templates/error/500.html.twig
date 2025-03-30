@@ -5,5 +5,37 @@
 {% block css %} <link rel='stylesheet' href='css/error.css'> {% endblock %}
 
 {% block content %} 
-    <h2>Erreur 500</h2> 
-{% endblock %} 
+    <div class="error-container error-500">
+        <div class="pulse-animation">
+            <svg width="180" height="180" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.5 3.75H13.5C14.3284 3.75 15 4.42157 15 5.25V6C15 6.41421 15.3358 6.75 15.75 6.75H16.5C17.3284 6.75 18 7.42157 18 8.25V12.75H6V8.25C6 7.42157 6.67157 6.75 7.5 6.75H8.25C8.66421 6.75 9 6.41421 9 6V5.25C9 4.42157 9.67157 3.75 10.5 3.75Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17.25 12.75V16.5C17.25 16.9142 16.9142 17.25 16.5 17.25H7.5C7.08579 17.25 6.75 16.9142 6.75 16.5V12.75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 12V14.25M12 17.25V17.26M9.75 20.25H14.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="9" stroke-width="1.5" stroke-dasharray="2 2"/>
+            </svg>
+        </div>
+        <div class="error-code">500</div>
+        <h2>Erreur Serveur</h2>
+        <p class="error-message">
+            Nous rencontrons actuellement des difficultés techniques.
+            <br>Nos ingénieurs travaillent à résoudre ce problème le plus rapidement possible.
+        </p>
+        <div class="error-actions">
+            <a href="index.php" class="error-button">
+                Retour à l'accueil
+            </a>
+            <a href="javascript:location.reload()" class="error-button secondary-button">
+                Réessayer
+            </a>
+        </div>
+        <div class="technician">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.5 19H17.4M6.6 19H6.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 11H10" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M16.5 7C16.5 8.10457 15.6046 9 14.5 9H9.5C8.39543 9 7.5 8.10457 7.5 7C7.5 5.89543 8.39543 5 9.5 5H14.5C15.6046 5 16.5 5.89543 16.5 7Z" stroke-width="1.5"/>
+                <path d="M5 13.8C5 13.5172 5.21 12.9315 5.40286 12.7048C5.55 12.5302 5.74429 12.4 5.95714 12.4H18.0429C18.2557 12.4 18.4357 12.5302 18.5971 12.7048C18.79 12.9315 19 13.5172 19 13.8V17.9C19 18.5075 18.7629 19.0905 18.341 19.5192C17.9191 19.9478 17.3467 20.1846 16.75 20.1846H7.25C6.65326 20.1846 6.08097 19.9478 5.65901 19.5192C5.23705 19.0905 5 18.5075 5 17.9V13.8Z" stroke-width="1.5"/>
+            </svg>
+            Code d'incident : NHX-500-{% if error is defined %}{{ error.code }}{% else %}{{ "now"|date("Ymd") }}-{{ random(1000, 9999) }}{% endif %}
+        </div>
+    </div>
+{% endblock %}

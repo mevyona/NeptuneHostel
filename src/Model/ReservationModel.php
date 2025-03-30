@@ -1,12 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MyApp\Model;
 
-use MyApp\Entity\Reservation;
-use MyApp\Entity\User;
-use MyApp\Entity\Room;
 use PDO;
+use MyApp\Entity\Reservation;
 
 class ReservationModel
 {
@@ -17,142 +16,162 @@ class ReservationModel
         $this->db = $db;
     }
 
-    public function getAllReservations(): array
+    public function createReservation(array $data): int
     {
-        $sql = "SELECT r.*, 
-                       u.id as user_id, u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
-                       rm.id as room_id, rm.name as room_name, rm.is_available, rm.price, rm.capacity, rm.description, rm.featured_image_id, rm.created_at as room_created, rm.updated_at as room_updated
-                FROM Reservation r
-                INNER JOIN User u ON r.user_id = u.id
-                INNER JOIN Room rm ON r.room_id = rm.id
-                ORDER BY r.check_in";
-        $stmt = $this->db->query($sql);
-        $reservations = [];
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $user = new User(
-                $row['user_id'], $row['first_name'], $row['last_name'], $row['email'],
-                $row['phone'], $row['password'], $row['role'], $row['user_created'], $row['user_updated']
-            );
-
-            $room = new Room(
-                $row['room_id'], $row['room_name'], (bool)$row['is_available'], (float)$row['price'],
-                (int)$row['capacity'], $row['description'], null, $row['room_created'], $row['room_updated']
-            );
-
-            $reservations[] = new Reservation(
-                $row['id'], $user, $room, $row['check_in'], $row['check_out'],
-                $row['status'], $row['total_price'], $row['special_requests'], $row['created_at'], $row['updated_at']
-            );
+        // Si c'est un objet Reservation
+        if ($data instanceof Reservation) {
+            // Convertir l'objet en tableau
+            $user = $data->getUser();
+            $room = $data->getRoom();
+            $data = [
+                'user_id' => $user->getId(),
+                'room_id' => $room->getId(),
+                'check_in' => $data->getCheckIn(),
+                'check_out' => $data->getCheckOut(),
+                'status' => $data->getStatus(),
+                'total_price' => $data->getTotalPrice(),
+                'special_requests' => $data->getSpecialRequests()
+            ];
         }
 
-        return $reservations;
+        $sql = "INSERT INTO Reservation (user_id, room_id, check_in, check_out, status, total_price, special_requests) 
+                VALUES (:user_id, :room_id, :check_in, :check_out, :status, :total_price, :special_requests)";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':room_id', $data['room_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':check_in', $data['check_in'], PDO::PARAM_STR);
+        $stmt->bindValue(':check_out', $data['check_out'], PDO::PARAM_STR);
+        $stmt->bindValue(':status', $data['status'], PDO::PARAM_STR);
+        $stmt->bindValue(':total_price', $data['total_price'], PDO::PARAM_STR);
+        $stmt->bindValue(':special_requests', $data['special_requests'] ?? null, PDO::PARAM_STR);
+        
+        $stmt->execute();
+        return (int)$this->db->lastInsertId();
     }
 
-    public function getOneReservation(int $id): ?Reservation
+    public function getReservationById(int $id): ?array
     {
-        $sql = "SELECT r.*, 
-                       u.id as user_id, u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
-                       rm.id as room_id, rm.name as room_name, rm.is_available, rm.price, rm.capacity, rm.description, rm.featured_image_id, rm.created_at as room_created, rm.updated_at as room_updated
+        $sql = "SELECT r.*, ro.name as room_name, ro.price as room_price, u.first_name, u.last_name, u.email 
                 FROM Reservation r
+                INNER JOIN Room ro ON r.room_id = ro.id
                 INNER JOIN User u ON r.user_id = u.id
-                INNER JOIN Room rm ON r.room_id = rm.id
                 WHERE r.id = :id";
+                
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$row) return null;
-
-        $user = new User(
-            $row['user_id'], $row['first_name'], $row['last_name'], $row['email'],
-            $row['phone'], $row['password'], $row['role'], $row['user_created'], $row['user_updated']
-        );
-
-        $room = new Room(
-            $row['room_id'], $row['room_name'], (bool)$row['is_available'], (float)$row['price'],
-            (int)$row['capacity'], $row['description'], null, $row['room_created'], $row['room_updated']
-        );
-
-        return new Reservation(
-            $row['id'], $user, $room, $row['check_in'], $row['check_out'],
-            $row['status'], $row['total_price'], $row['special_requests'], $row['created_at'], $row['updated_at']
-        );
+        
+        $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $reservation ?: null;
     }
 
-    public function getReservationsByUserId(int $userId): array
+    /**
+     * Récupère les réservations d'un utilisateur spécifique
+     */
+    public function getUserReservations(int $userId): array
     {
-        $sql = "SELECT r.*, 
-            u.id as user_id, u.first_name, u.last_name, u.email, u.phone, u.password, u.role, u.created_at as user_created, u.updated_at as user_updated,
-            rm.id as room_id, rm.name as room_name, rm.is_available, rm.price, rm.capacity, rm.description, rm.featured_image_id, rm.created_at as room_created, rm.updated_at as room_updated
-        FROM Reservation r
-        INNER JOIN User u ON r.user_id = u.id
-        INNER JOIN Room rm ON r.room_id = rm.id
-        WHERE r.user_id = :user_id
-        ORDER BY r.check_in DESC";
+        $sql = "SELECT r.*, ro.name as room_name, ro.price 
+                FROM Reservation r
+                INNER JOIN Room ro ON r.room_id = ro.id
+                WHERE r.user_id = :user_id
+                ORDER BY r.created_at DESC";
         
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->execute();
         
-        $reservations = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $user = new User(
-                $row['user_id'], $row['first_name'], $row['last_name'], $row['email'],
-                $row['phone'], $row['password'], $row['role'], $row['user_created'], $row['user_updated']
-            );
-            
-            $room = new Room(
-                $row['room_id'], $row['room_name'], (bool)$row['is_available'], (float)$row['price'],
-                (int)$row['capacity'], $row['description'], null, $row['room_created'], $row['room_updated']
-            );
-            
-            $reservations[] = new Reservation(
-                $row['id'], $user, $room, $row['check_in'], $row['check_out'],
-                $row['status'], (float)$row['total_price'], $row['special_requests'],
-                $row['created_at'], $row['updated_at']
-            );
-        }
-        return $reservations;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createReservation(Reservation $reservation): bool
+    /**
+     * Alias pour getUserReservations pour maintenir la compatibilité
+     */
+    public function getReservationsByUserId(int $userId): array
     {
-        $sql = "INSERT INTO Reservation (user_id, room_id, check_in, check_out, status, total_price, special_requests)
-                VALUES (:user_id, :room_id, :check_in, :check_out, :status, :total_price, :special_requests)";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':user_id', $reservation->getUser()->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':room_id', $reservation->getRoom()->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':check_in', $reservation->getCheckIn());
-        $stmt->bindValue(':check_out', $reservation->getCheckOut());
-        $stmt->bindValue(':status', $reservation->getStatus(), PDO::PARAM_STR);
-        $stmt->bindValue(':total_price', $reservation->getTotalPrice());
-        $stmt->bindValue(':special_requests', $reservation->getSpecialRequests(), PDO::PARAM_STR);
-        return $stmt->execute();
+        return $this->getUserReservations($userId);
     }
 
-    public function updateReservation(Reservation $reservation): bool
+    public function updateReservationStatus(int $id, string $status): bool
     {
-        $sql = "UPDATE Reservation SET user_id = :user_id, room_id = :room_id, check_in = :check_in, check_out = :check_out,
-                status = :status, total_price = :total_price, special_requests = :special_requests WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':user_id', $reservation->getUser()->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':room_id', $reservation->getRoom()->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':check_in', $reservation->getCheckIn());
-        $stmt->bindValue(':check_out', $reservation->getCheckOut());
-        $stmt->bindValue(':status', $reservation->getStatus(), PDO::PARAM_STR);
-        $stmt->bindValue(':total_price', $reservation->getTotalPrice());
-        $stmt->bindValue(':special_requests', $reservation->getSpecialRequests(), PDO::PARAM_STR);
-        $stmt->bindValue(':id', $reservation->getId(), PDO::PARAM_INT);
-        return $stmt->execute();
-    }
-
-    public function deleteReservation(int $id): bool
-    {
-        $sql = "DELETE FROM Reservation WHERE id = :id";
+        $sql = "UPDATE Reservation SET status = :status WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':status', $status, PDO::PARAM_STR);
         return $stmt->execute();
+    }
+
+    public function cancelReservation(int $id): bool
+    {
+        return $this->updateReservationStatus($id, 'cancelled');
+    }
+
+    public function getAllReservations(): array
+    {
+        $sql = "SELECT r.*, ro.name as room_name, u.first_name, u.last_name, u.email 
+                FROM Reservation r
+                INNER JOIN Room ro ON r.room_id = ro.id
+                INNER JOIN User u ON r.user_id = u.id
+                ORDER BY r.created_at DESC";
+                
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function isRoomBooked(int $roomId, string $checkIn, string $checkOut): bool
+    {
+        $sql = "SELECT COUNT(*) FROM Reservation 
+                WHERE room_id = :room_id 
+                AND status != 'cancelled'
+                AND (
+                    (check_in <= :check_in AND check_out > :check_in)
+                    OR (check_in < :check_out AND check_out >= :check_out)
+                    OR (:check_in <= check_in AND :check_out >= check_out)
+                )";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':room_id', $roomId, PDO::PARAM_INT);
+        $stmt->bindValue(':check_in', $checkIn, PDO::PARAM_STR);
+        $stmt->bindValue(':check_out', $checkOut, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Récupère les réservations dont la date de départ est passée
+     */
+    public function getCompletedReservations(): array
+    {
+        $today = date('Y-m-d H:i:s');
+        $sql = "SELECT * FROM Reservation 
+                WHERE check_out < :today 
+                AND status != 'cancelled' 
+                AND status != 'completed'";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Récupère les réservations futures pour une chambre spécifique
+     */
+    public function getFutureReservationsForRoom(int $roomId): array
+    {
+        $today = date('Y-m-d H:i:s');
+        $sql = "SELECT * FROM Reservation 
+                WHERE room_id = :room_id 
+                AND check_in > :today 
+                AND status != 'cancelled'";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':room_id', $roomId, PDO::PARAM_INT);
+        $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -24,7 +24,7 @@ class UserController
         }
         
         if (isset($_SESSION['user_id'])) {
-            header('Location: index.php?page=profile');
+            header('Location: index.php?page=dashboard');
             exit();
         }
         
@@ -43,7 +43,7 @@ class UserController
                     $_SESSION['success'] = true;
                     
                     ob_clean(); // Clear any output buffers
-                    header('Location: index.php?page=profile');
+                    header('Location: index.php?page=dashboard');
                     exit();
                 } else {
                     $_SESSION['message'] = 'Email ou mot de passe invalide.';
@@ -409,7 +409,7 @@ class UserController
         exit;
     }
     
-    public function profile()
+    public function dashboard()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -437,7 +437,7 @@ class UserController
                 $_SESSION['success'] = false;
             }
             
-            echo $this->twig->render('userController/profile.html.twig', [
+            echo $this->twig->render('userController/dashboard.html.twig', [
                 'user' => $user,
                 'session' => $_SESSION ?? []
             ]);

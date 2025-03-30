@@ -220,6 +220,18 @@ class RoomModel
         return $stmt->execute();
     }
 
+    /**
+     * Met à jour la disponibilité d'une chambre
+     */
+    public function updateRoomAvailability(int $roomId, bool $isAvailable): bool
+    {
+        $sql = "UPDATE Room SET is_available = :is_available WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $roomId, PDO::PARAM_INT);
+        $stmt->bindValue(':is_available', $isAvailable, PDO::PARAM_BOOL);
+        return $stmt->execute();
+    }
+
     public function deleteRoom(int $id): bool
     {
         $sql = "DELETE FROM Room WHERE id = :id";

@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "blank.html.twig" %}
 {% block title %}
     {{ parent() }} 
     {% if user.isAdmin %}
@@ -43,6 +43,7 @@
             </div>
 
             <div class="user-actions">
+                <a href="index.php" class="dashboard-btn secondary"><i class="bi bi-house-door"></i> Retour à l'accueil</a>
                 <a href="index.php?page=updateUser&id={{ user.id }}" class="dashboard-btn primary"><i class="bi bi-pencil-square"></i> Modifier profil</a>
                 <a href="index.php?page=changePassword&id={{ user.id }}" class="dashboard-btn warning"><i class="bi bi-key"></i> Changer mot de passe</a>
                 <a href="index.php?page=logout" class="dashboard-btn danger"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>

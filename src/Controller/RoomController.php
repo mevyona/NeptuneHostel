@@ -137,11 +137,11 @@ class RoomController
                 $updatedRoom = new Room((int)$id, $name, $is_available, (float)$price, (int)$capacity, $description, $media, '', '');
                 $this->roomModel->updateRoom($updatedRoom);
                 $_SESSION['message'] = 'Chambre modifiée avec succès';
-                header('Location: index.php?page=list-rooms');
+                header('Location: index.php?page=rooms');
                 exit();
             } else {
                 $_SESSION['message'] = 'Erreur sur la chambre.';
-                header('Location: index.php?page=list-rooms');
+                header('Location: index.php?page=rooms');
                 exit();
             }
         } else {
@@ -150,7 +150,7 @@ class RoomController
 
             if (!$room) {
                 $_SESSION['message'] = 'Chambre introuvable';
-                header('Location: index.php?page=list-rooms');
+                header('Location: index.php?page=rooms');
                 exit();
             }
         }
@@ -188,6 +188,56 @@ class RoomController
         $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         $this->roomModel->deleteRoom((int)$id);
         $_SESSION['message'] = 'Chambre supprimée';
-        header('Location: index.php?page=list-rooms');
+        header('Location: index.php?page=rooms');
+    }
+
+    /**
+     * Méthode simple pour réserver directement depuis la page de chambre
+     */
+    public function bookRoomDirectly()
+    {
+        // Vérifiez si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['message'] = 'Vous devez être connecté pour effectuer une réservation.';
+            $_SESSION['success'] = false;
+            header('Location: index.php?page=login');
+            exit();
+        }
+
+        // Récupérer les données du formulaire
+        $roomId = filter_input(INPUT_POST, 'room_id', FILTER_SANITIZE_NUMBER_INT);
+        $checkIn = filter_input(INPUT_POST, 'check_in', FILTER_SANITIZE_STRING);
+        $checkOut = filter_input(INPUT_POST, 'check_out', FILTER_SANITIZE_STRING);
+        $specialRequests = filter_input(INPUT_POST, 'special_requests', FILTER_SANITIZE_STRING);
+
+        // Récupérer la chambre
+        $room = $this->roomModel->getOneRoom((int)$roomId);
+
+        // Calculer le nombre de nuits
+        $checkInDate = new \DateTime($checkIn);
+        $checkOutDate = new \DateTime($checkOut);
+        $interval = $checkInDate->diff($checkOutDate);
+        $numberOfNights = $interval->days;
+
+        // Calculer le prix total
+        $roomTotal = $room->getPrice() * $numberOfNights;
+        $taxAmount = $roomTotal * 0.10; // 10% de taxe
+        $totalAmount = $roomTotal + $taxAmount;
+
+        // Stocker les données dans la session
+        $_SESSION['reservation_data'] = [
+            'room_id' => $roomId,
+            'check_in' => $checkIn,
+            'check_out' => $checkOut,
+            'number_of_nights' => $numberOfNights,
+            'room_total' => $roomTotal,
+            'tax_amount' => $taxAmount,
+            'total_amount' => $totalAmount,
+            'special_requests' => $specialRequests
+        ];
+
+        // Rediriger vers la page de paiement
+        header('Location: index.php?page=payment');
+        exit();
     }
 }

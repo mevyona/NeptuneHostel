@@ -188,19 +188,21 @@ class PaymentModel
         );
     }
     
-    public function createPayment(Payment $payment): bool
+    public function createPayment(array $data): int
     {
-        $sql = "INSERT INTO Payment (invoice_id, amount, payment_method, transaction_id, status, payment_date, last_four_digits)
-                VALUES (:invoice_id, :amount, :payment_method, :transaction_id, :status, :payment_date, :last_four_digits)";
+        $sql = "INSERT INTO Payment (invoice_id, amount, payment_method, transaction_id, status, last_four_digits) 
+                VALUES (:invoice_id, :amount, :payment_method, :transaction_id, :status, :last_four_digits)";
+                
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':invoice_id', $payment->getInvoice()->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':amount', $payment->getAmount());
-        $stmt->bindValue(':payment_method', $payment->getPaymentMethod(), PDO::PARAM_STR);
-        $stmt->bindValue(':transaction_id', $payment->getTransactionId(), PDO::PARAM_STR);
-        $stmt->bindValue(':status', $payment->getStatus(), PDO::PARAM_STR);
-        $stmt->bindValue(':payment_date', $payment->getPaymentDate());
-        $stmt->bindValue(':last_four_digits', $payment->getLastFourDigits(), PDO::PARAM_STR);
-        return $stmt->execute();
+        $stmt->bindValue(':invoice_id', $data['invoice_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':amount', $data['amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':payment_method', $data['payment_method'], PDO::PARAM_STR);
+        $stmt->bindValue(':transaction_id', $data['transaction_id'], PDO::PARAM_STR);
+        $stmt->bindValue(':status', $data['status'], PDO::PARAM_STR);
+        $stmt->bindValue(':last_four_digits', $data['last_four_digits'] ?? null, PDO::PARAM_STR);
+        
+        $stmt->execute();
+        return (int)$this->db->lastInsertId();
     }
 
     public function updatePayment(Payment $payment): bool

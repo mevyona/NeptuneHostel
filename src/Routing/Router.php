@@ -9,6 +9,7 @@ use MyApp\Controller\UserController;
 use MyApp\Controller\ReservationController;
 use MyApp\Controller\RoomController;
 use MyApp\Controller\PaymentController;
+use MyApp\Controller\InvoiceController;
 use MyApp\Service\DependencyContainer;
 
 class Router
@@ -43,7 +44,7 @@ class Router
             'updateUser' => [UserController::class, 'updateUser', 'admin'],
             'deleteUser' => [UserController::class, 'deleteUser', 'admin'],
             'changePassword' => [UserController::class, 'changePassword', 'client'],
-            'profile' => [UserController::class, 'profile', 'client'],
+            'dashboard' => [UserController::class, 'dashboard', 'client'],
             'login' => [UserController::class, 'login', null],
             'register' => [UserController::class, 'register', null],
             'logout' => [UserController::class, 'logout', null],
@@ -53,18 +54,26 @@ class Router
             'addReservation' => [ReservationController::class, 'addReservation', 'client'],
             'updateReservation' => [ReservationController::class, 'updateReservation', 'staff'],
             'deleteReservation' => [ReservationController::class, 'deleteReservation', 'staff'],
-
-            'payment' => [PaymentController::class, 'payment', 'client'],
+            'initializePayment' => [ReservationController::class, 'initializePayment', 'client'],
+            'confirmationReservation' => [ReservationController::class, 'showConfirmation', null],
+            'update-room-availability' => [ReservationController::class, 'updateRoomAvailability', 'system'],
             
             'cancellations' => [CancellationController::class, 'listCancellations', 'staff'],
             'showCancellation' => [CancellationController::class, 'showCancellation', 'client'],
             'addCancellation' => [CancellationController::class, 'addCancellation', 'client'],
+
+            'payment' => [PaymentController::class, 'showPaymentPage', 'client'],
+            'processPayment' => [PaymentController::class, 'processPayment', 'client'],
+
+            'reservationConfirmed' => [InvoiceController::class, 'reservationConfirmed', null],
             
             'rooms' => [RoomController::class, 'listRooms', null],
             'showRoom' => [RoomController::class, 'showRoom', null],
             'addRoom' => [RoomController::class, 'addRoom', 'admin'],
             'updateRoom' => [RoomController::class, 'updateRoom', 'admin'],
             'deleteRoom' => [RoomController::class, 'deleteRoom', 'admin'],
+            'bookRoomDirectly' => [RoomController::class, 'bookRoomDirectly', 'client'],
+
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';

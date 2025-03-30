@@ -1,171 +1,224 @@
+/* ==========================================================================
+   STYLES DE FORMULAIRE DE CHAMBRE - HÔTEL NEPTUNE
+   Feuille de style pour les interfaces de création et modification de 
+   chambres, avec prévisualisation d'images et système d'onglets
+   ========================================================================== */
+
+/* -----------------------------
+   CONTENEUR PRINCIPAL
+   ----------------------------- */
+
+/* Conteneur principal du formulaire avec largeur maximale et centrage */
 .room-form-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    max-width: 800px; /* Limite la largeur pour meilleure lisibilité */
+    margin: 2rem auto; /* Centrage horizontal avec espace vertical */
+    padding: 0 1rem; /* Espacement horizontal pour le responsive */
 }
 
+/* En-tête du formulaire avec disposition horizontale */
 .form-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+    display: flex; /* Disposition en flexbox */
+    justify-content: space-between; /* Sépare le titre et les boutons d'action */
+    align-items: center; /* Alignement vertical centré */
+    margin-bottom: 2rem; /* Espace sous l'en-tête */
 }
 
+/* Style du titre principal */
 .form-header h1 {
-    font-size: 2rem;
-    color: #333;
+    font-size: 2rem; /* Taille importante pour hiérarchie visuelle */
+    color: #333; /* Couleur sombre pour lisibilité */
 }
 
+/* Bloc principal du formulaire avec effet d'élévation */
 .room-form {
-    background-color: #f8f9fa;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa; /* Fond légèrement grisé */
+    padding: 2rem; /* Espacement intérieur généreux */
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère pour effet de profondeur */
 }
 
+/* -----------------------------
+   ÉLÉMENTS DE FORMULAIRE
+   ----------------------------- */
+
+/* Groupe contenant un champ et son label */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem; /* Espacement entre les groupes */
 }
 
+/* Étiquettes des champs de formulaire */
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #333;
+    display: block; /* Affichage en bloc sur sa propre ligne */
+    margin-bottom: 0.5rem; /* Espace entre l'étiquette et le champ */
+    font-weight: 500; /* Légèrement en gras pour distinction */
+    color: #333; /* Couleur foncée pour meilleure lisibilité */
 }
 
+/* Style des champs de saisie */
 .form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.15s ease-in-out;
+    width: 100%; /* Occupe toute la largeur disponible */
+    padding: 0.75rem; /* Espacement interne confortable */
+    border: 1px solid #ced4da; /* Bordure légère */
+    border-radius: 4px; /* Coins légèrement arrondis */
+    font-size: 1rem; /* Taille standard */
+    transition: border-color 0.15s ease-in-out; /* Animation au focus */
 }
 
+/* État de focus des champs avec mise en évidence */
 .form-control:focus {
-    border-color: #5E75C9;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(94, 117, 201, 0.25);
+    border-color: #5E75C9; /* Bordure bleue au focus */
+    outline: 0; /* Suppression du contour natif */
+    box-shadow: 0 0 0 0.2rem rgba(94, 117, 201, 0.25); /* Halo de focus */
 }
 
+/* Style des cases à cocher avec disposition horizontale */
 .checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: flex; /* Disposition en flexbox */
+    align-items: center; /* Alignement vertical */
+    gap: 0.5rem; /* Espace entre case et libellé */
 }
 
+/* Style des cases à cocher agrandies */
 .checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 18px; /* Largeur augmentée pour meilleure visibilité */
+    height: 18px; /* Hauteur augmentée pour meilleure visibilité */
 }
 
+/* Texte d'aide sous les champs */
 small {
-    display: block;
-    margin-top: 0.25rem;
-    color: #6c757d;
-    font-size: 0.875rem;
+    display: block; /* Affichage en bloc */
+    margin-top: 0.25rem; /* Petit espace après le champ */
+    color: #6c757d; /* Gris pour texte secondaire */
+    font-size: 0.875rem; /* Taille réduite */
 }
 
+/* Indicateur de champ obligatoire */
 .required {
-    color: #dc3545;
+    color: #dc3545; /* Rouge pour attirer l'attention */
 }
 
+/* -----------------------------
+   PRÉVISUALISATION D'IMAGES
+   ----------------------------- */
+
+/* Section de prévisualisation d'image */
 .image-preview {
-    margin-top: 1.5rem;
+    margin-top: 1.5rem; /* Espace après les champs */
 }
 
+/* Conteneur de l'aperçu d'image */
 #image-preview-container {
-    width: 100%;
-    height: 200px;
-    border: 1px dashed #ced4da;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 0.5rem;
-    background-color: #f1f3f5;
-    border-radius: 4px;
-    overflow: hidden;
+    width: 100%; /* Pleine largeur */
+    height: 200px; /* Hauteur fixe */
+    border: 1px dashed #ced4da; /* Bordure en pointillés */
+    display: flex; /* Disposition en flexbox */
+    align-items: center; /* Centrage vertical */
+    justify-content: center; /* Centrage horizontal */
+    margin-top: 0.5rem; /* Petit espace sous le label */
+    background-color: #f1f3f5; /* Fond légèrement grisé */
+    border-radius: 4px; /* Coins arrondis */
+    overflow: hidden; /* Masque les dépassements */
 }
 
+/* Image prévisualisée avec dimensions maximales */
 #preview-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    max-width: 100%; /* Largeur maximale adaptée au conteneur */
+    max-height: 100%; /* Hauteur maximale adaptée au conteneur */
+    object-fit: contain; /* Conserve les proportions */
 }
 
+/* Message affiché quand aucune image n'est sélectionnée */
 #no-image-selected {
-    color: #6c757d;
-    font-style: italic;
+    color: #6c757d; /* Gris pour texte secondaire */
+    font-style: italic; /* Style italique pour distinction */
 }
 
+/* -----------------------------
+   BOUTONS D'ACTION
+   ----------------------------- */
+
+/* Conteneur des boutons d'action en bas du formulaire */
 .form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
+    display: flex; /* Disposition en flexbox */
+    gap: 1rem; /* Espace entre les boutons */
+    margin-top: 2rem; /* Espace important après le dernier champ */
 }
 
+/* Style commun pour tous les boutons */
 .btn {
-    display: inline-block;
-    font-weight: 500;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    user-select: none;
-    border: 1px solid transparent;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s ease-in-out;
-    text-decoration: none;
+    display: inline-block; /* Comportement en ligne avec largeur */
+    font-weight: 500; /* Légèrement en gras */
+    text-align: center; /* Centrage du texte */
+    white-space: nowrap; /* Évite le retour à la ligne */
+    vertical-align: middle; /* Alignement vertical */
+    user-select: none; /* Empêche la sélection du texte */
+    border: 1px solid transparent; /* Bordure invisible par défaut */
+    padding: 0.75rem 1.5rem; /* Espacement interne confortable */
+    font-size: 1rem; /* Taille standard */
+    line-height: 1.5; /* Hauteur de ligne pour lisibilité */
+    border-radius: 4px; /* Coins arrondis */
+    cursor: pointer; /* Curseur main au survol */
+    transition: all 0.15s ease-in-out; /* Animation au survol */
+    text-decoration: none; /* Supprime le soulignement pour les liens */
 }
 
+/* Bouton principal en bleu */
 .btn-primary {
-    color: #fff;
-    background-color: #5E75C9;
-    border-color: #5E75C9;
+    color: #fff; /* Texte blanc */
+    background-color: #5E75C9; /* Fond bleu identitaire */
+    border-color: #5E75C9; /* Bordure assortie */
 }
 
+/* Animation au survol du bouton principal */
 .btn-primary:hover {
-    background-color: #4c61b8;
-    border-color: #4c61b8;
+    background-color: #4c61b8; /* Bleu légèrement plus foncé */
+    border-color: #4c61b8; /* Bordure assortie */
 }
 
+/* État désactivé du bouton principal */
 .btn-primary:disabled {
-    background-color: #b1bdea;
-    border-color: #b1bdea;
-    cursor: not-allowed;
+    background-color: #b1bdea; /* Bleu fortement désaturé */
+    border-color: #b1bdea; /* Bordure assortie */
+    cursor: not-allowed; /* Curseur indiquant non disponible */
 }
 
+/* Bouton secondaire en gris clair */
 .btn-secondary {
-    color: #212529;
-    background-color: #f8f9fa;
-    border-color: #ced4da;
+    color: #212529; /* Texte foncé */
+    background-color: #f8f9fa; /* Fond gris très clair */
+    border-color: #ced4da; /* Bordure légèrement plus foncée */
 }
 
+/* Animation au survol du bouton secondaire */
 .btn-secondary:hover {
-    background-color: #e2e6ea;
-    border-color: #ced4da;
+    background-color: #e2e6ea; /* Gris légèrement plus foncé */
+    border-color: #ced4da; /* Bordure inchangée */
 }
 
-/* Responsive design */
+/* -----------------------------
+   ADAPTATIONS RESPONSIVES
+   ----------------------------- */
+
+/* Styles spécifiques pour les petits écrans */
 @media (max-width: 576px) {
+    /* Passage de l'en-tête en disposition verticale */
     .form-header {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; /* Empile verticalement */
+        align-items: flex-start; /* Aligne à gauche */
     }
     
+    /* Ajustement du bouton de retour dans l'en-tête */
     .form-header a {
-        margin-top: 1rem;
+        margin-top: 1rem; /* Espace après le titre */
     }
     
+    /* Passage des boutons d'action en disposition verticale */
     .form-actions {
-        flex-direction: column;
+        flex-direction: column; /* Empile verticalement */
     }
     
+    /* Élargissement des boutons pour meilleure accessibilité */
     .btn {
-        width: 100%;
+        width: 100%; /* Pleine largeur */
     }
 }

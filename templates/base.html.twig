@@ -27,20 +27,12 @@
             </div>
 
             <div class="nav-links">
-                <!-- Icône utilisateur -->
-                <div class="icon">
-                    <a href="index.php?page=login"><img src="images/account-icon.svg" alt="Accès compte"></a>
+                <div class="nav-item">
+                    <a href="index.php?page=login" class="btn btn-primary">Dashboard</a>
                 </div>
             </div>
         </nav>
     </header>
-
-    {% if session.message is defined and session.message %}
-        <div class="alert {% if session.success is defined and session.success %}alert-success{% else %}alert-danger{% endif %}">
-            {{ session.message }}
-        </div>
-    {% endif %}
-
 
     <main>
         {% block content %}{% endblock %}

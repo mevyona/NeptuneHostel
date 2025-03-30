@@ -1,0 +1,127 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Confirmation de réservation {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel='stylesheet' href='css/reservation/confirmation.css'>
+{% endblock %}
+
+{% block content %}
+<div class="confirmation-container">
+    <div class="confirmation-header">
+        <div class="success-icon">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <h1>Réservation confirmée</h1>
+        <p>Votre réservation a été enregistrée avec succès!</p>
+    </div>
+
+    <div class="confirmation-details">
+        <div class="reservation-summary">
+            <h2>Détails de votre réservation</h2>
+            
+            <div class="detail-row">
+                <span class="detail-label">Numéro de réservation:</span>
+                <span class="detail-value">#{{ reservation.id }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Chambre:</span>
+                <span class="detail-value">{{ reservation.room_name }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Dates:</span>
+                <span class="detail-value">Du {{ reservation.check_in|date("d/m/Y") }} au {{ reservation.check_out|date("d/m/Y") }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Durée:</span>
+                <span class="detail-value">{{ reservation.number_of_nights }} nuit(s)</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Montant total:</span>
+                <span class="detail-value">{{ reservation.total_amount|number_format(2, ',', ' ') }}€</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Statut:</span>
+                <span class="detail-value status-confirmed">{{ reservation.status|capitalize }}</span>
+            </div>
+            
+            {% if reservation.special_requests %}
+            <div class="detail-row">
+                <span class="detail-label">Demandes spéciales:</span>
+                <span class="detail-value">{{ reservation.special_requests }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="guest-info">
+            <h2>Informations du voyageur</h2>
+            
+            <div class="detail-row">
+                <span class="detail-label">Nom:</span>
+                <span class="detail-value">{{ reservation.first_name }} {{ reservation.last_name }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">{{ reservation.email }}</span>
+            </div>
+            
+            <div class="detail-row">
+                <span class="detail-label">Adresse de facturation:</span>
+                <span class="detail-value">{{ reservation.billing_address }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hotel-info">
+        <h2>Informations pratiques</h2>
+        
+        <div class="info-item">
+            <i class="bi bi-clock"></i>
+            <div>
+                <h3>Horaires d'arrivée et de départ</h3>
+                <p>Check-in: à partir de 14h00<br>
+                   Check-out: jusqu'à 11h00</p>
+            </div>
+        </div>
+        
+        <div class="info-item">
+            <i class="bi bi-geo-alt"></i>
+            <div>
+                <h3>Adresse</h3>
+                <p>Hôtel Neptune<br>
+                   2 Rue du Dépôt<br>
+                   8200 France</p>
+            </div>
+        </div>
+        
+        <div class="info-item">
+            <i class="bi bi-telephone"></i>
+            <div>
+                <h3>Contact</h3>
+                <p>Téléphone: 06 00 00 00 00<br>
+                   Email: contact@neptune-hotel.fr</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <a href="index.php?page=dashboard" class="btn btn-primary">
+            <i class="bi bi-person-circle"></i> Voir mes réservations
+        </a>
+        <a href="index.php?page=rooms" class="btn btn-outline">
+            <i class="bi bi-house-door"></i> Retour à l'accueil
+        </a>
+    </div>
+    
+    <div class="thank-you-message">
+        <p>Merci d'avoir choisi l'Hôtel Neptune. Nous sommes impatients de vous accueillir!</p>
+    </div>
+</div>
+{% endblock %}

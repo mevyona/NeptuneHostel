@@ -18,6 +18,7 @@ class UserModel
     private ?NotificationModel $notificationModel = null;
     private ?CancellationModel $cancellationModel = null;
     private ?RoomModel $roomModel = null;
+    private $dependencyContainer;
     
     public function __construct(PDO $db)
     {
@@ -254,9 +255,35 @@ class UserModel
     
     // Relations - récupération des entités liées
     
+    /**
+     * Récupère les réservations de l'utilisateur
+     */
     public function getUserReservations(int $userId): array
     {
-        return $this->getReservationModel()->getReservationsByUserId($userId);
+        // Vérifier si le modèle de réservation est accessible
+        if (!isset($this->dependencyContainer) || !$this->dependencyContainer->has('ReservationModel')) {
+            return [];
+        }
+        
+        $reservationModel = $this->dependencyContainer->get('ReservationModel');
+        
+        // Appeler la méthode correcte "getUserReservations" au lieu de "getReservationsByUserId"
+        return $reservationModel->getUserReservations($userId);
+    }
+    
+    /**
+     * Charge toutes les relations d'un utilisateur (réservations, avis, etc.)
+     */
+    public function getUserRelationsArray(int $userId): array
+    {
+        $relations = [];
+        
+        // Charger les réservations
+        $relations['reservations'] = $this->getUserReservations($userId);
+        
+        // Autres relations...
+        
+        return $relations;
     }
     
     public function getUserReviews(int $userId): array

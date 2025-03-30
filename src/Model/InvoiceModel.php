@@ -159,20 +159,22 @@ class InvoiceModel
         );
     }
 
-    public function createInvoice(Invoice $invoice): bool
+    public function createInvoice(array $data): int
     {
-        $sql = "INSERT INTO Invoice (reservation_id, invoice_number, amount, tax_amount, total_amount, due_date, status, pdf_path)
-                VALUES (:reservation_id, :invoice_number, :amount, :tax_amount, :total_amount, :due_date, :status, :pdf_path)";
+        $sql = "INSERT INTO Invoice (reservation_id, invoice_number, amount, tax_amount, total_amount, due_date, status) 
+                VALUES (:reservation_id, :invoice_number, :amount, :tax_amount, :total_amount, :due_date, :status)";
+                
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':reservation_id', $invoice->getReservation()->getId(), PDO::PARAM_INT);
-        $stmt->bindValue(':invoice_number', $invoice->getInvoiceNumber(), PDO::PARAM_STR);
-        $stmt->bindValue(':amount', $invoice->getAmount());
-        $stmt->bindValue(':tax_amount', $invoice->getTaxAmount());
-        $stmt->bindValue(':total_amount', $invoice->getTotalAmount());
-        $stmt->bindValue(':due_date', $invoice->getDueDate());
-        $stmt->bindValue(':status', $invoice->getStatus(), PDO::PARAM_STR);
-        $stmt->bindValue(':pdf_path', $invoice->getPdfPath(), PDO::PARAM_STR);
-        return $stmt->execute();
+        $stmt->bindValue(':reservation_id', $data['reservation_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':invoice_number', $data['invoice_number'], PDO::PARAM_STR);
+        $stmt->bindValue(':amount', $data['amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':tax_amount', $data['tax_amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':total_amount', $data['total_amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':due_date', $data['due_date'], PDO::PARAM_STR);
+        $stmt->bindValue(':status', $data['status'], PDO::PARAM_STR);
+        
+        $stmt->execute();
+        return (int)$this->db->lastInsertId();
     }
 
     public function updateInvoice(Invoice $invoice): bool
@@ -199,5 +201,10 @@ class InvoiceModel
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
+    }
+    
+    public function getLastInsertId(): int
+    {
+        return (int)$this->db->lastInsertId();
     }
 }

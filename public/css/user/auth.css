@@ -1,172 +1,235 @@
+/* ==========================================================================
+   STYLES D'AUTHENTIFICATION - HÔTEL NEPTUNE
+   Feuille de style pour les pages de connexion, d'inscription et de gestion
+   de compte utilisateur
+   ========================================================================== */
+
+/* -----------------------------
+   ÉLÉMENTS DE TITRE
+   ----------------------------- */
+
+/* Style pour le titre principal des formulaires d'authentification */
 .textelogin {
-    font-size: clamp(22px, 4vw, 28px);
-    font-weight: 700;
-    margin-bottom: 24px;
-    color: #1e293b;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    font-size: clamp(22px, 4vw, 28px); /* Taille de police responsive */
+    font-weight: 700; /* Police en gras */
+    margin-bottom: 24px; /* Espacement sous le titre */
+    color: #1e293b; /* Couleur sombre, proche du noir mais plus douce */
+    display: flex; /* Disposition en flexbox pour aligner avec l'icône */
+    align-items: center; /* Centrage vertical */
+    gap: 12px; /* Espacement entre le texte et l'icône */
 }
 
+/* Style pour l'icône accompagnant le titre */
 .textelogin img {
-    width: clamp(24px, 4vw, 32px);
-    height: clamp(24px, 4vw, 32px);
+    width: clamp(24px, 4vw, 32px); /* Largeur responsive de l'icône */
+    height: clamp(24px, 4vw, 32px); /* Hauteur responsive de l'icône */
 }
 
+/* -----------------------------
+   CONTENEUR PRINCIPAL
+   ----------------------------- */
+
+/* Configuration du conteneur de page qui centralise le formulaire */
 .page-container {
-    position: relative;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 90vh;
-    background-color: #f8fafc;
-    margin: 0;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
+    position: relative; /* Pour le positionnement des éléments enfants */
+    font-family: 'Poppins', sans-serif; /* Police moderne et lisible */
+    display: flex; /* Disposition en flexbox */
+    flex-direction: column; /* Empile les éléments verticalement */
+    align-items: center; /* Centre horizontalement */
+    justify-content: center; /* Centre verticalement */
+    min-height: 90vh; /* Presque toute la hauteur de l'écran */
+    background-color: #f8fafc; /* Fond très léger, presque blanc */
+    margin: 0; /* Suppression des marges par défaut */
+    padding: 20px; /* Espacement intérieur */
+    width: 100%; /* Pleine largeur */
+    box-sizing: border-box; /* Inclut padding dans la largeur */
 }
 
+/* -----------------------------
+   FORMULAIRE D'AUTHENTIFICATION
+   ----------------------------- */
+
+/* Style du conteneur du formulaire avec effet d'élévation */
 .login-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 450px;
-    padding: clamp(20px, 5vw, 40px);
-    background-color: white;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
-    box-sizing: border-box;
+    display: flex; /* Disposition en flexbox */
+    flex-direction: column; /* Empile les éléments verticalement */
+    width: 100%; /* Pleine largeur du conteneur parent */
+    max-width: 450px; /* Largeur maximale pour lisibilité */
+    padding: clamp(20px, 5vw, 40px); /* Rembourrage responsive */
+    background-color: white; /* Fond blanc pour contraste */
+    border-radius: 16px; /* Coins arrondis */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); /* Ombre portée subtile */
+    transition: transform 0.3s ease; /* Animation douce pour l'effet hover */
+    box-sizing: border-box; /* Inclut padding dans la largeur */
 }
 
+/* Animation subtile au survol du formulaire pour feedback visuel */
 .login-form:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Légère élévation au survol */
 }
 
+/* -----------------------------
+   ÉLÉMENTS DE FORMULAIRE
+   ----------------------------- */
+
+/* Style des étiquettes de champ */
 .form-label {
-    display: block;
-    font-size: clamp(14px, 2vw, 15px);
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #475569;
+    display: block; /* Occupe toute la largeur disponible */
+    font-size: clamp(14px, 2vw, 15px); /* Taille responsive */
+    font-weight: 600; /* Semi-gras pour meilleure visibilité */
+    margin-bottom: 8px; /* Espacement avant le champ de saisie */
+    color: #475569; /* Gris foncé pour contraste modéré */
 }
 
+/* Style des champs de saisie */
 .form-input {
-    display: block;
-    width: 100%;
-    margin-bottom: 20px;
-    padding: clamp(10px, 3vw, 14px) clamp(12px, 3vw, 16px);
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    outline: none;
-    transition: all 0.3s ease;
-    font-size: clamp(14px, 2vw, 16px);
-    box-sizing: border-box;
-    background-color: #f8fafc;
+    display: block; /* Occupe toute la largeur disponible */
+    width: 100%; /* Pleine largeur */
+    margin-bottom: 20px; /* Espacement entre les champs */
+    padding: clamp(10px, 3vw, 14px) clamp(12px, 3vw, 16px); /* Padding responsive */
+    border-radius: 10px; /* Coins arrondis */
+    border: 1px solid #e2e8f0; /* Bordure légère */
+    outline: none; /* Supprime le contour natif au focus */
+    transition: all 0.3s ease; /* Animation douce pour les états */
+    font-size: clamp(14px, 2vw, 16px); /* Taille de texte responsive */
+    box-sizing: border-box; /* Inclut padding dans la largeur */
+    background-color: #f8fafc; /* Fond légèrement grisé */
 }
 
+/* État de focus des champs de saisie avec mise en évidence */
 .form-input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-    background-color: #fff;
+    border-color: #3b82f6; /* Bordure bleue */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Halo de focus */
+    background-color: #fff; /* Fond blanc pour meilleure visibilité */
 }
 
+/* -----------------------------
+   BOUTON DE SOUMISSION
+   ----------------------------- */
+
+/* Style du bouton principal */
 .submit-button {
-    margin-top: 10px;
-    background-color: #3b82f6;
-    color: white;
-    padding: clamp(12px, 3vw, 16px);
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: clamp(14px, 2vw, 16px);
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: clamp(120px, 50%, 200px);
+    margin-top: 10px; /* Espacement après le dernier champ */
+    background-color: #3b82f6; /* Bleu vif */
+    color: white; /* Texte blanc pour contraste */
+    padding: clamp(12px, 3vw, 16px); /* Rembourrage responsive */
+    border: none; /* Pas de bordure */
+    border-radius: 10px; /* Coins arrondis */
+    cursor: pointer; /* Curseur main au survol */
+    font-weight: 600; /* Police semi-grasse */
+    font-size: clamp(14px, 2vw, 16px); /* Taille de texte responsive */
+    transition: all 0.3s ease; /* Animation douce */
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); /* Ombre portée légère */
+    display: block; /* Élément bloc */
+    margin-left: auto; /* Centrage horizontal */
+    margin-right: auto; /* Centrage horizontal */
+    width: clamp(120px, 50%, 200px); /* Largeur responsive */
 }
 
+/* Animation au survol du bouton pour feedback visuel */
 .submit-button:hover {
-    background-color: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+    background-color: #2563eb; /* Bleu plus foncé */
+    transform: translateY(-2px); /* Légère élévation */
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3); /* Ombre plus prononcée */
 }
 
+/* -----------------------------
+   LIENS SECONDAIRES
+   ----------------------------- */
+
+/* Conteneur pour les liens sous le formulaire */
 .form-links {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+    display: flex; /* Disposition en flexbox */
+    flex-direction: column; /* Empile verticalement */
+    align-items: center; /* Centre horizontalement */
+    margin-top: 20px; /* Espacement après le bouton */
 }
 
+/* Style des liens textuels (mot de passe oublié, inscription, etc.) */
 .form-link {
-    color: #3b82f6;
-    text-decoration: none;
-    margin-top: 10px;
-    text-align: center;
-    font-size: clamp(12px, 2vw, 14px);
-    transition: color 0.3s;
-    font-weight: 500;
+    color: #3b82f6; /* Couleur bleue pour indiquer cliquable */
+    text-decoration: none; /* Supprime soulignement par défaut */
+    margin-top: 10px; /* Espacement entre les liens */
+    text-align: center; /* Centrage du texte */
+    font-size: clamp(12px, 2vw, 14px); /* Taille responsive */
+    transition: color 0.3s; /* Animation au survol */
+    font-weight: 500; /* Légèrement en gras */
 }
 
+/* État au survol des liens */
 .form-link:hover {
-    color: #2563eb;
-    text-decoration: underline;
+    color: #2563eb; /* Bleu plus foncé */
+    text-decoration: underline; /* Ajoute soulignement */
 }
 
+/* -----------------------------
+   LIEN DE RETOUR ACCUEIL
+   ----------------------------- */
+
+/* Bouton de retour à l'accueil */
 .home-link {
-    font-family: 'Montserrat', sans-serif;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-size: clamp(13px, 2vw, 15px);
-    font-weight: 600;
-    padding: clamp(8px, 2vw, 12px) clamp(14px, 3vw, 20px);
-    background-color: #3b82f6;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    transition: all 0.3s ease;
-    z-index: 100;
+    font-family: 'Montserrat', sans-serif; /* Police différente pour distinction */
+    position: fixed; /* Position fixe à l'écran */
+    top: 20px; /* Depuis le haut */
+    right: 20px; /* Depuis la droite */
+    display: flex; /* Disposition en flexbox */
+    align-items: center; /* Centre verticalement */
+    justify-content: center; /* Centre horizontalement */
+    color: white; /* Texte blanc */
+    text-decoration: none; /* Supprime soulignement */
+    font-size: clamp(13px, 2vw, 15px); /* Taille responsive */
+    font-weight: 600; /* Semi-gras */
+    padding: clamp(8px, 2vw, 12px) clamp(14px, 3vw, 20px); /* Rembourrage responsive */
+    background-color: #3b82f6; /* Bleu assorti au bouton principal */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* Ombre portée */
+    transition: all 0.3s ease; /* Animation douce */
+    z-index: 100; /* Assure que le lien reste au-dessus des autres éléments */
 }
 
+/* Animation au survol du lien d'accueil */
 .home-link:hover {
-    background-color: #2563eb;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    background-color: #2563eb; /* Bleu plus foncé */
+    transform: translateY(-3px); /* Élévation */
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4); /* Ombre plus prononcée */
 }
 
+/* Style de l'icône dans le lien d'accueil */
 .home-link svg {
-    width: clamp(14px, 2vw, 18px);
-    height: clamp(14px, 2vw, 18px);
-    margin-right: 8px;
+    width: clamp(14px, 2vw, 18px); /* Largeur responsive */
+    height: clamp(14px, 2vw, 18px); /* Hauteur responsive */
+    margin-right: 8px; /* Espacement avant le texte */
 }
 
+/* -----------------------------
+   MASQUAGE DES ÉLÉMENTS DE NAVIGATION
+   ----------------------------- */
+
+/* Cache la navigation et le pied de page sur les pages d'authentification */
 body:has(.login-form) nav,
 body:has(.login-form) footer {
-    display: none;
+    display: none; /* Masque les éléments */
 }
 
+/* -----------------------------
+   ADAPTATIONS MOBILES
+   ----------------------------- */
+
+/* Styles spécifiques pour les petits écrans */
 @media (max-width: 480px) {
+    /* Ajustement du lien d'accueil */
     .home-link {
-        top: 10px;
-        right: 10px;
+        top: 10px; /* Position plus proche du bord */
+        right: 10px; /* Position plus proche du bord */
     }
     
+    /* Réduction du padding du formulaire */
     .login-form {
-        padding: 30px 20px;
+        padding: 30px 20px; /* Espacement intérieur réduit */
     }
     
+    /* Élargissement du bouton */
     .submit-button {
-        width: 100%;
+        width: 100%; /* Pleine largeur sur mobile */
     }
 }

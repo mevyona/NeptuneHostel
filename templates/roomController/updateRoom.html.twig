@@ -1,58 +1,61 @@
 {% extends "base.html.twig" %}
 
-{% block title %} {{ parent() }} Ajouter une chambre {% endblock %}
+{% block title %} {{ parent() }} Modifier la chambre {% endblock %}
 
 {% block css %}
     {{ parent() }}
     <link rel='stylesheet' href='css/room/form.css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 {% endblock %}
 
 {% block content %}
 <div class="room-form-container">
     <div class="form-header">
-        <h1>Ajouter une nouvelle chambre</h1>
-        <a href="index.php?page=rooms" class="btn btn-secondary">Retour à la liste</a>
+        <h1><i class="bi bi-pencil-square"></i> Modifier la chambre {{ room.name }}</h1>
+        <a href="index.php?page=showRoom&id={{ room.id }}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Retour à la chambre</a>
     </div>
     <div class="room-form">
-        <form action="index.php?page=addRoom" method="POST" enctype="multipart/form-data">
+        <form action="index.php?page=updateRoom" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{ room.id }}">
+            
             <div class="form-group">
                 <label for="name">Nom de la chambre <span class="required">*</span></label>
-                <input type="text" id="name" name="name" required class="form-control" placeholder="Ex: Neptune, Mars, Jupiter...">
+                <input type="text" id="name" name="name" required class="form-control" value="{{ room.name }}" placeholder="Ex: Neptune, Mars, Jupiter...">
                 <small>Donnez un nom à votre chambre basé sur un thème spatial</small>
             </div>
 
             <div class="form-group">
                 <label for="price">Prix par nuit (€) <span class="required">*</span></label>
-                <input type="number" id="price" name="price" required class="form-control" min="1" step="0.01" placeholder="Ex: 99.99">
+                <input type="number" id="price" name="price" required class="form-control" min="1" step="0.01" value="{{ room.price }}" placeholder="Ex: 99.99">
             </div>
 
             <div class="form-group">
                 <label for="capacity">Capacité (personnes) <span class="required">*</span></label>
-                <input type="number" id="capacity" name="capacity" required class="form-control" min="1" max="10" placeholder="Ex: 2">
+                <input type="number" id="capacity" name="capacity" required class="form-control" min="1" max="10" value="{{ room.capacity }}" placeholder="Ex: 2">
                 <small>Nombre maximum de personnes pouvant séjourner dans cette chambre</small>
             </div>
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-control" rows="5" placeholder="Décrivez les caractéristiques et l'ambiance de la chambre..."></textarea>
+                <textarea id="description" name="description" class="form-control" rows="5" placeholder="Décrivez les caractéristiques et l'ambiance de la chambre...">{{ room.description }}</textarea>
             </div>
 
             <div class="form-group">
                 <div class="checkbox">
-                    <input type="checkbox" id="is_available" name="is_available" checked>
+                    <input type="checkbox" id="is_available" name="is_available" {% if room.isAvailable %}checked{% endif %}>
                     <label for="is_available">Chambre disponible à la réservation</label>
                 </div>
             </div>
 
             <div class="form-tabs">
                 <div class="tab-navigation">
-                    <button type="button" class="tab-btn active" data-tab="upload">Ajouter une nouvelle image</button>
-                    <button type="button" class="tab-btn" data-tab="select">Sélectionner une image existante</button>
+                    <button type="button" class="tab-btn" data-tab="upload">Ajouter une nouvelle image</button>
+                    <button type="button" class="tab-btn active" data-tab="select">Choisir une image</button>
                 </div>
                 
-                <div class="tab-content" id="upload-tab">
+                <div class="tab-content" id="upload-tab" style="display: none;">
                     <div class="form-group">
-                        <label for="image_file">Télécharger une image <span class="required">*</span></label>
+                        <label for="image_file">Télécharger une image</label>
                         <input type="file" id="image_file" name="image_file" class="form-control" accept="image/*">
                         <small>Formats acceptés : JPG, PNG, GIF (Max: 5MB)</small>
                     </div>
@@ -66,22 +69,29 @@
                     </div>
                 </div>
                 
-                <div class="tab-content" id="select-tab" style="display: none;">
+                <div class="tab-content" id="select-tab">
                     <div class="form-group">
-                        <label for="featured_image_id">Sélectionner une image existante</label>
-                        <select id="featured_image_id" name="featured_image_id" class="form-control">
+                        <label for="featured_image_id">Sélectionner une image <span class="required">*</span></label>
+                        <select id="featured_image_id" name="featured_image_id" class="form-control" required>
                             <option value="">-- Sélectionnez une image --</option>
                             {% for media in mediaList %}
-                                <option value="{{ media.id }}">{{ media.fileName }}</option>
+                                <option value="{{ media.id }}" {% if room.featuredImage and room.featuredImage.id == media.id %}selected{% endif %}>
+                                    {{ media.fileName }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
                     
                     <div class="form-group image-preview">
-                        <label>Aperçu de l'image</label>
+                        <label>Image actuelle</label>
                         <div id="select-preview-container" class="preview-container">
-                            <img id="select-preview" src="" alt="Aperçu" style="display: none;">
-                            <div id="select-placeholder">Aucune image sélectionnée</div>
+                            {% if room.featuredImage %}
+                                <img id="select-preview" src="{{ room.featuredImage.filePath }}" alt="Image actuelle" style="display: block;">
+                                <div id="select-placeholder" style="display: none;">Aucune image sélectionnée</div>
+                            {% else %}
+                                <img id="select-preview" src="" alt="Aperçu" style="display: none;">
+                                <div id="select-placeholder">Aucune image sélectionnée</div>
+                            {% endif %}
                         </div>
                     </div>
                     
@@ -94,8 +104,8 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Ajouter la chambre</button>
-                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Mettre à jour la chambre</button>
+                <a href="index.php?page=rooms" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Annuler</a>
             </div>
         </form>
     </div>
@@ -103,6 +113,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Gestion des onglets
         const tabButtons = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
         
@@ -110,14 +121,17 @@
             button.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
                 
+                // Activer le bouton cliqué et désactiver les autres
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
                 
+                // Afficher le contenu de l'onglet correspondant
                 tabContents.forEach(content => {
                     content.style.display = 'none';
                 });
                 document.getElementById(tabId + '-tab').style.display = 'block';
                 
+                // Mettre à jour le champ required en fonction de l'onglet actif
                 const imageFileInput = document.getElementById('image_file');
                 const imageSelectInput = document.getElementById('featured_image_id');
                 
@@ -131,6 +145,7 @@
             });
         });
         
+        // Prévisualisation de l'image téléchargée
         const imageFileInput = document.getElementById('image_file');
         const uploadPreview = document.getElementById('upload-preview');
         const uploadPlaceholder = document.getElementById('upload-placeholder');
@@ -152,10 +167,12 @@
             }
         });
         
+        // Prévisualisation de l'image sélectionnée
         const imageSelect = document.getElementById('featured_image_id');
         const selectPreview = document.getElementById('select-preview');
         const selectPlaceholder = document.getElementById('select-placeholder');
         
+        // Mapping des IDs d'images aux URLs
         const imageMap = {
             {% for media in mediaList %}
                 {{ media.id }}: "{{ media.filePath }}",
@@ -176,4 +193,71 @@
         });
     });
 </script>
+
+<style>
+    .form-tabs {
+        margin-bottom: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .tab-navigation {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 1rem;
+        background: #f8f9fa;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .tab-btn.active {
+        background: #fff;
+        font-weight: 600;
+        border-bottom: 3px solid #5E75C9;
+    }
+    
+    .tab-content {
+        padding: 1.5rem;
+        background: #fff;
+    }
+    
+    .preview-container {
+        width: 100%;
+        height: 200px;
+        border: 1px dashed #ced4da;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.5rem;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .preview-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    
+    .form-header h1 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .form-header h1 i {
+        color: #5E75C9;
+    }
+    
+    .btn i {
+        margin-right: 5px;
+    }
+</style>
 {% endblock %}

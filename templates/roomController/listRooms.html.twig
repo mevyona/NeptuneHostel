@@ -5,6 +5,53 @@
 {% block css %} 
     {{ parent() }} 
     <link rel='stylesheet' href='css/room/room.css'> 
+    <style>
+        /* Styles pour les boutons d'administration sur les cartes */
+        .room-admin-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 5;
+        }
+        
+        .admin-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            backdrop-filter: blur(5px);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .edit-btn {
+            background-color: rgba(94, 117, 201, 0.9);
+        }
+        
+        .edit-btn:hover {
+            background-color: #4c61b8;
+        }
+        
+        .delete-btn {
+            background-color: rgba(220, 53, 69, 0.9);
+        }
+        
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -20,40 +67,58 @@
         </div>
     {% else %}
         {% for room in rooms %}
-            <a href="index.php?page=showRoom&id={{ room.id }}" class="room-link">
-                <div class="room">
-                    {% if room.featuredImage %}
-                        <img src="{{ room.featuredImage.filePath }}" alt="Chambre {{ room.name }}">
-                    {% else %}
-                        <img src="images/chambres/{{ room.name|lower }}.png" alt="Chambre {{ room.name }}">
-                    {% endif %}
-                    <div class="details">
-                        <div class="room-info">
-                            <p class="room-name">Chambre {{ room.name }} #{{ room.id }}</p>
-                            <p class="room-capacity">Capacité : {{ room.capacity }} personne{% if room.capacity > 1 %}s{% endif %}</p>
-                            <p class="room-price">{{ room.price }}€ / nuit</p>
-                        </div>
-                        <div class="room-amenities">
-                            <p><i class="bi bi-wifi"></i> WiFi Gratuit</p>
-                            {% if room.isAvailable %}
-                                <span class="badge available">Disponible</span>
-                            {% else %}
-                                <span class="badge unavailable">Indisponible</span>
-                            {% endif %}
-                        </div>
-                        <div class="room-action">
-                            <span class="view-details">Voir détails</span>
+            <div class="room-container" style="position: relative;">
+                {% if session.user_role is defined and (session.user_role == 'admin' or session.user_role == 'staff') %}
+                    <div class="room-admin-actions">
+                        <a href="index.php?page=updateRoom&id={{ room.id }}" class="admin-btn edit-btn" title="Modifier cette chambre">
+                            <i class="bi bi-pencil-fill"></i>
+                        </a>
+                        {% if session.user_role == 'admin' %}
+                            <a href="index.php?page=deleteRoom&id={{ room.id }}" 
+                               class="admin-btn delete-btn" 
+                               title="Supprimer cette chambre" 
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer la chambre {{ room.name }} #{{ room.id }} ?');">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                
+                <a href="index.php?page=showRoom&id={{ room.id }}" class="room-link">
+                    <div class="room">
+                        {% if room.featuredImage %}
+                            <img src="{{ room.featuredImage.filePath }}" alt="Chambre {{ room.name }}">
+                        {% else %}
+                            <img src="images/chambres/{{ room.name|lower }}.png" alt="Chambre {{ room.name }}">
+                        {% endif %}
+                        <div class="details">
+                            <div class="room-info">
+                                <p class="room-name">Chambre {{ room.name }} #{{ room.id }}</p>
+                                <p class="room-capacity">Capacité : {{ room.capacity }} personne{% if room.capacity > 1 %}s{% endif %}</p>
+                                <p class="room-price">{{ room.price }}€ / nuit</p>
+                            </div>
+                            <div class="room-amenities">
+                                <p><i class="bi bi-wifi"></i> WiFi Gratuit</p>
+                                {% if room.isAvailable %}
+                                    <span class="badge available">Disponible</span>
+                                {% else %}
+                                    <span class="badge unavailable">Indisponible</span>
+                                {% endif %}
+                            </div>
+                            <div class="room-action">
+                                <span class="view-details">Voir détails</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         {% endfor %}
     {% endif %}
 </section>
 
 {% if session.user_role is defined and session.user_role == 'admin' %}
     <div class="admin-actions">
-        <a href="index.php?page=addRoom" class="btn btn-primary">Ajouter une chambre</a>
+        <a href="index.php?page=addRoom" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Ajouter une chambre</a>
     </div>
 {% endif %}
 {% endblock %}

@@ -1,12 +1,365 @@
+/* ==========================================================================
+   STYLES DE PAGE D'ERREUR - HÔTEL NEPTUNE
+   Feuille de style pour les pages d'erreur et de notification,
+   avec design minimaliste et typographie spatiale
+   ========================================================================== */
+
+/* -----------------------------
+   IMPORTATION DES POLICES
+   ----------------------------- */
+
+/* Importation de la police Space Mono pour un style distinctif et technique */
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+/* -----------------------------
+   MASQUAGE DES ÉLÉMENTS DE NAVIGATION
+   ----------------------------- */
+
+/* Masque les éléments de navigation pour une interface d'erreur épurée */
 header, nav, footer {
-    display: none;
+    display: none; /* Supprime l'affichage des éléments de navigation */
 }
 
+/* -----------------------------
+   ÉLÉMENTS DE TITRE
+   ----------------------------- */
+
+/* Style du titre secondaire avec typographie spatiale */
 h2 {
-    text-align: center;
-    font-family: 'Space Mono', serif;
-    color: black;
-    font-size: 2rem;
+    text-align: center; /* Centrage horizontal du texte */
+    font-family: 'Space Mono', serif; /* Police à chasse fixe pour style technique */
+    color: black; /* Couleur noire pour contraste maximal */
+    font-size: 2rem; /* Taille importante pour hiérarchie visuelle */
+    margin-top: 0.5rem; /* Léger espacement supérieur */
+    margin-bottom: 1rem; /* Espacement inférieur modéré */
+}
+
+/* Style distinctif pour le code d'erreur principal */
+.error-code {
+    font-size: 8rem; /* Taille très large pour impact visuel maximal */
+    font-weight: 700; /* Police en gras pour mise en évidence */
+    color: #1e293b; /* Couleur bleu-gris foncé */
+    margin-bottom: 1rem; /* Espacement sous le code */
+    font-family: 'Space Mono', monospace; /* Police à chasse fixe pour effet technique */
+    letter-spacing: -0.05em; /* Espacement négatif entre les caractères pour style compact */
+    text-shadow: 2px 2px 0px rgba(30, 41, 59, 0.2); /* Ombre portée subtile pour effet de profondeur */
+    line-height: 1; /* Hauteur de ligne réduite pour un affichage compact */
+}
+
+/* Style du message explicatif de l'erreur */
+.error-message {
+    font-size: 1.5rem; /* Taille intermédiaire pour lisibilité */
+    color: #64748b; /* Couleur grise pour contraste modéré avec le code d'erreur */
+    margin-bottom: 2rem; /* Espacement généreux avant les actions */
+    max-width: 600px; /* Largeur maximale pour faciliter la lecture */
+    line-height: 1.4; /* Hauteur de ligne confortable */
+    font-family: 'Space Mono', sans-serif; /* Cohérence avec la typographie générale */
+    font-weight: 400; /* Graisse normale pour lecture facile */
+}
+
+/* -----------------------------
+   CONTENEUR PRINCIPAL
+   ----------------------------- */
+
+/* Structure globale de la page d'erreur avec centrage et fond subtil */
+.error-container {
+    display: flex; /* Disposition en flexbox */
+    flex-direction: column; /* Organisation verticale des éléments */
+    align-items: center; /* Centrage horizontal */
+    justify-content: center; /* Centrage vertical */
+    min-height: 100vh; /* Hauteur minimale couvrant tout l'écran */
+    padding: 2rem; /* Espacement intérieur généreux */
+    box-sizing: border-box; /* Inclut le padding dans les dimensions */
+    text-align: center; /* Alignement central des textes */
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); /* Dégradé subtil pour profondeur */
+}
+
+/* -----------------------------
+   ILLUSTRATIONS ET ANIMATIONS
+   ----------------------------- */
+
+/* Configuration de base des illustrations d'erreur */
+.error-illustration {
+    max-width: 100%; /* Adaptation responsive à la largeur disponible */
+    height: auto; /* Hauteur proportionnelle préservée */
+    margin-bottom: 2rem; /* Espacement sous l'illustration */
+    max-height: 300px; /* Hauteur maximale pour équilibre visuel */
+}
+
+/* Animation de flottement pour effet spatial */
+.floating {
+    animation: floating 3s ease-in-out infinite; /* Animation perpétuelle de flottement */
+}
+
+/* Définition de l'animation de flottement vertical */
+@keyframes floating {
+    0% { transform: translateY(0px); } /* Position initiale */
+    50% { transform: translateY(-15px); } /* Déplacement vers le haut */
+    100% { transform: translateY(0px); } /* Retour à la position initiale */
+}
+
+/* Animation pulsante pour attirer l'attention */
+.pulse-animation {
+    animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; /* Animation avec courbe d'accélération personnalisée */
+    position: relative; /* Positionnement relatif pour enfants absolus */
+    margin-bottom: 1rem; /* Espacement inférieur */
+}
+
+/* Définition de l'animation d'impulsion */
+@keyframes pulse-ring {
+    0% { transform: scale(0.95); } /* Légère réduction initiale */
+    50% { transform: scale(1); } /* Taille normale à mi-parcours */
+    100% { transform: scale(0.95); } /* Retour à la réduction */
+}
+
+/* Fond animé pour les icônes et illustrations */
+.animated-bg {
+    background-color: rgba(59, 130, 246, 0.1); /* Fond bleu très transparent */
+    border-radius: 50%; /* Forme circulaire */
+    padding: 2rem; /* Espacement intérieur généreux */
+    margin-bottom: 2rem; /* Espace sous l'élément */
+    animation: pulse 2s infinite ease-in-out; /* Animation de pulsation perpétuelle */
+}
+
+/* Définition de l'animation de pulsation pour le fond */
+@keyframes pulse {
+    0% { transform: scale(1); } /* Taille normale au départ */
+    50% { transform: scale(1.05); } /* Légère expansion */
+    100% { transform: scale(1); } /* Retour à la taille normale */
+}
+
+/* -----------------------------
+   BOUTONS D'ACTION
+   ----------------------------- */
+
+/* Conteneur des boutons d'action avec espacement flexible */
+.error-actions {
+    display: flex; /* Disposition en flexbox */
+    flex-wrap: wrap; /* Permettre le retour à la ligne sur petits écrans */
+    justify-content: center; /* Centrage horizontal */
+    gap: 1rem; /* Espacement entre les boutons */
+    margin-top: 1rem; /* Marge supérieure modérée */
+}
+
+/* Style de base pour les boutons d'action */
+.error-button {
+    background-color: #3b82f6; /* Fond bleu vif */
+    color: white; /* Texte blanc pour contraste optimal */
+    padding: 1rem 2rem; /* Espacement interne généreux */
+    border-radius: 8px; /* Coins légèrement arrondis */
+    font-family: 'Space Mono', monospace; /* Cohérence typographique */
+    font-weight: 700; /* Police en gras pour mise en évidence */
+    text-decoration: none; /* Suppression du soulignement des liens */
+    display: inline-flex; /* Disposition en ligne avec propriétés flex */
+    align-items: center; /* Centrage vertical des éléments internes */
+    transition: all 0.3s ease; /* Animation douce pour tous les changements d'état */
+    border: none; /* Suppression des bordures par défaut */
+    cursor: pointer; /* Curseur main au survol */
+    font-size: 1rem; /* Taille de texte standard */
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2); /* Ombre légère pour effet de profondeur */
+}
+
+/* Animation au survol des boutons pour feedback visuel */
+.error-button:hover {
+    background-color: #2563eb; /* Bleu légèrement plus foncé */
+    transform: translateY(-2px); /* Léger effet de flottement */
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3); /* Ombre plus prononcée */
+}
+
+/* Espacement entre l'icône et le texte du bouton */
+.error-button svg {
+    margin-right: 8px; /* Marge à droite de l'icône */
+}
+
+/* -----------------------------
+   VARIANTES COULEUR PAR CODE D'ERREUR
+   ----------------------------- */
+
+/* 403 - Rouge pour accès interdit */
+.error-403 .error-code {
+    color: #e63946; /* Rouge vif pour signaler interdiction */
+    text-shadow: 2px 2px 0px rgba(230, 57, 70, 0.2); /* Ombre adaptée à la couleur */
+}
+
+/* Bouton principal en rouge pour page 403 */
+.error-403 .error-button {
+    background-color: #e63946; /* Rouge assorti au code d'erreur */
+}
+
+/* Animation au survol du bouton rouge */
+.error-403 .error-button:hover {
+    background-color: #d32f2f; /* Rouge légèrement plus foncé */
+    box-shadow: 0 6px 12px rgba(230, 57, 70, 0.3); /* Ombre adaptée */
+}
+
+/* Fond d'animation pour page 403 */
+.error-403 .animated-bg {
+    background-color: rgba(230, 57, 70, 0.1); /* Rouge très transparent */
+}
+
+/* Couleur des tracés SVG pour page 403 */
+.error-403 svg path {
+    stroke: #e63946; /* Contours en rouge */
+}
+
+/* 404 - Bleu pour page non trouvée */
+.error-404 .error-code {
+    color: #3b82f6; /* Bleu standard */
+    text-shadow: 2px 2px 0px rgba(59, 130, 246, 0.2); /* Ombre adaptée */
+}
+
+/* Couleur des tracés SVG pour page 404 */
+.error-404 svg path {
+    stroke: #3b82f6; /* Contours en bleu */
+}
+
+/* 500 - Violet pour erreur serveur */
+.error-500 .error-code {
+    color: #6d28d9; /* Violet pour erreur technique */
+    text-shadow: 2px 2px 0px rgba(109, 40, 217, 0.2); /* Ombre adaptée */
+}
+
+/* Bouton principal en violet pour page 500 */
+.error-500 .error-button {
+    background-color: #6d28d9; /* Violet assorti au code d'erreur */
+}
+
+/* Animation au survol du bouton violet */
+.error-500 .error-button:hover {
+    background-color: #5b21b6; /* Violet légèrement plus foncé */
+    box-shadow: 0 6px 12px rgba(109, 40, 217, 0.3); /* Ombre adaptée */
+}
+
+/* Couleur des tracés SVG pour page 500 */
+.error-500 svg path {
+    stroke: #6d28d9; /* Contours en violet */
+}
+
+/* Fond d'animation pour page 500 */
+.error-500 .animated-bg {
+    background-color: rgba(109, 40, 217, 0.1); /* Violet très transparent */
+}
+
+/* -----------------------------
+   ÉLÉMENTS SPÉCIFIQUES
+   ----------------------------- */
+
+/* Style pour bouton avec bordure et fond transparent */
+.outline-button {
+    background-color: transparent; /* Suppression du fond coloré */
+    box-shadow: none; /* Suppression de l'ombre portée */
+    border: 1px solid currentColor; /* Bordure adaptative à la couleur du texte */
+}
+
+/* Adaptation du bouton contour pour page 404 */
+.error-404 .outline-button {
+    color: #3b82f6; /* Texte bleu */
+    border-color: #3b82f6; /* Bordure bleue */
+}
+
+/* Adaptation du bouton contour pour page 500 */
+.error-500 .outline-button {
+    color: #6d28d9; /* Texte violet */
+    border-color: #6d28d9; /* Bordure violette */
+}
+
+/* Style pour bouton secondaire en gris */
+.secondary-button {
+    background-color: #64748b; /* Fond gris bleuté */
+}
+
+/* Animation au survol du bouton secondaire */
+.secondary-button:hover {
+    background-color: #475569; /* Gris légèrement plus foncé */
+    box-shadow: 0 6px 12px rgba(100, 116, 139, 0.3); /* Ombre adaptée */
+}
+
+/* Bloc d'information technique pour erreurs serveur */
+.technician {
+    display: flex; /* Disposition en flexbox */
+    align-items: center; /* Centrage vertical */
+    justify-content: center; /* Centrage horizontal */
+    margin-top: 1.5rem; /* Espacement supérieur */
+    padding: 1rem; /* Espacement interne */
+    border-radius: 8px; /* Coins arrondis */
+    font-family: 'Space Mono', monospace; /* Police technique */
+    font-size: 0.9rem; /* Taille réduite */
+}
+
+/* Style spécifique pour le bloc technique sur page 500 */
+.error-500 .technician {
+    background-color: rgba(109, 40, 217, 0.05); /* Fond violet très léger */
+    color: #6d28d9; /* Texte violet */
+}
+
+/* Affichage des coordonnées métaphoriques pour page 404 */
+.coordinates {
+    margin-top: 2rem; /* Espacement supérieur important */
+    opacity: 0.6; /* Semi-transparent pour effet secondaire */
+    font-size: 0.9rem; /* Taille réduite */
+    font-family: 'Space Mono', monospace; /* Police technique */
+    display: inline-flex; /* Disposition en ligne avec propriétés flex */
+    align-items: center; /* Centrage vertical */
+}
+
+/* Icône dans le bloc de coordonnées */
+.coordinates svg {
+    margin-right: 5px; /* Espacement avant le texte */
+}
+
+/* -----------------------------
+   ADAPTATIONS RESPONSIVES
+   ----------------------------- */
+
+/* Tablettes et petits écrans */
+@media (max-width: 768px) {
+    /* Réorganisation verticale des boutons */
+    .error-actions {
+        flex-direction: column; /* Empile les boutons verticalement */
+        width: 100%; /* Occupe toute la largeur disponible */
+        max-width: 300px; /* Largeur maximale pour lisibilité */
+        gap: 0.75rem; /* Espacement réduit entre les boutons */
+    }
+    
+    /* Adaptation des boutons en largeur pleine */
+    .error-button {
+        width: 100%; /* Largeur complète */
+        justify-content: center; /* Centrage du contenu */
+        margin-left: 0 !important; /* Suppression des marges gauches */
+    }
+}
+
+/* Smartphones et très petits écrans */
+@media (max-width: 640px) {
+    /* Réduction de la taille du code d'erreur */
+    .error-code {
+        font-size: 4rem; /* Taille réduite pour petits écrans */
+    }
+    
+    /* Adaptation du message d'erreur */
+    .error-message {
+        font-size: 1.2rem; /* Taille réduite */
+        margin-bottom: 1.5rem; /* Espacement inférieur réduit */
+    }
+    
+    /* Réduction des marges du conteneur principal */
+    .error-container {
+        padding: 1rem; /* Espacement interne réduit */
+    }
+    
+    /* Réduction de la taille du titre */
+    h2 {
+        font-size: 1.5rem; /* Taille réduite */
+    }
+    
+    /* Adaptation du fond animé */
+    .animated-bg {
+        padding: 1.5rem; /* Espacement interne réduit */
+    }
+    
+    /* Adaptation des boutons pour petits écrans */
+    .error-button {
+        padding: 0.75rem 1.5rem; /* Espacement interne réduit */
+        font-size: 0.9rem; /* Taille de texte réduite */
+    }
 }

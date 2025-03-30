@@ -1,4 +1,4 @@
 .env.local
 vendor
 composer.lock
-public/uploads/rooms/*
+rooms/*
