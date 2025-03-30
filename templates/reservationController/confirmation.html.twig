@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "blank.html.twig" %}
 
 {% block title %} {{ parent() }} Confirmation de réservation {% endblock %}
 
@@ -8,6 +8,14 @@
 {% endblock %}
 
 {% block content %}
+<!-- Éléments spatiaux décoratifs -->
+<div class="float-element"></div>
+<div class="float-element"></div>
+<div class="float-element"></div>
+<div class="planet"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
+
 <div class="confirmation-container">
     <div class="confirmation-header">
         <div class="success-icon">
@@ -55,7 +63,8 @@
         <!-- Bouton de téléchargement de facture -->
         <div class="invoice-download">
             <a href="index.php?page=downloadInvoice&id={{ reservation.id }}" class="btn-invoice" target="_blank">
-                <i class="bi bi-file-earmark-pdf"></i> Télécharger votre facture
+                <i class="bi bi-file-earmark-pdf"></i> 
+                <span>Télécharger votre facture</span>
             </a>
         </div>
     </div>

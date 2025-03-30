@@ -1,235 +1,546 @@
 /* ==========================================================================
    STYLES D'AUTHENTIFICATION - HÔTEL NEPTUNE
-   Feuille de style pour les pages de connexion, d'inscription et de gestion
-   de compte utilisateur
+   Design ultra-moderne avec thème spatial assorti aux pages d'erreur
    ========================================================================== */
 
 /* -----------------------------
-   ÉLÉMENTS DE TITRE
+   IMPORTATION DES POLICES MODERNES
    ----------------------------- */
-
-/* Style pour le titre principal des formulaires d'authentification */
-.textelogin {
-    font-size: clamp(22px, 4vw, 28px); /* Taille de police responsive */
-    font-weight: 700; /* Police en gras */
-    margin-bottom: 24px; /* Espacement sous le titre */
-    color: #1e293b; /* Couleur sombre, proche du noir mais plus douce */
-    display: flex; /* Disposition en flexbox pour aligner avec l'icône */
-    align-items: center; /* Centrage vertical */
-    gap: 12px; /* Espacement entre le texte et l'icône */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
+   
+/* -----------------------------
+   VARIABLES GLOBALES - THÈME SPATIAL
+   ----------------------------- */
+:root {
+    --space-blue: #0c1d4a;
+    --space-blue-light: #1e3a8a;
+    --neptune-teal: #2dd4bf;
+    --neptune-teal-dark: #0d9488;
+    --cosmos-purple: #8b5cf6;
+    --cosmos-purple-light: #a78bfa;
+    --star-yellow: #eab308;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --background: #ffffff;
+    --card-bg: #f8fafc;
+    --border-light: #e2e8f0;
 }
 
-/* Style pour l'icône accompagnant le titre */
-.textelogin img {
-    width: clamp(24px, 4vw, 32px); /* Largeur responsive de l'icône */
-    height: clamp(24px, 4vw, 32px); /* Hauteur responsive de l'icône */
+/* -----------------------------
+   STYLE GLOBAL
+   ----------------------------- */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow-x: hidden;
+    background-image: radial-gradient(var(--border-light) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+/* -----------------------------
+   ANIMATIONS MODERNES
+   ----------------------------- */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatAnimation {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -100px;
+    }
+    100% {
+        background-position: 300px;
+    }
+}
+
+@keyframes shootingStar {
+    0% {
+        transform: translateX(0) translateY(0) rotate(-45deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    30% {
+        transform: translateX(-100px) translateY(100px) rotate(-45deg);
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 /* -----------------------------
    CONTENEUR PRINCIPAL
    ----------------------------- */
-
-/* Configuration du conteneur de page qui centralise le formulaire */
 .page-container {
-    position: relative; /* Pour le positionnement des éléments enfants */
-    font-family: 'Poppins', sans-serif; /* Police moderne et lisible */
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Empile les éléments verticalement */
-    align-items: center; /* Centre horizontalement */
-    justify-content: center; /* Centre verticalement */
-    min-height: 90vh; /* Presque toute la hauteur de l'écran */
-    background-color: #f8fafc; /* Fond très léger, presque blanc */
-    margin: 0; /* Suppression des marges par défaut */
-    padding: 20px; /* Espacement intérieur */
-    width: 100%; /* Pleine largeur */
-    box-sizing: border-box; /* Inclut padding dans la largeur */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
 }
+
+/* Éléments décoratifs spatiaux flottants */
+.float-element {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--star-yellow);
+    box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.2);
+    z-index: 2;
+    animation: floatAnimation 5s infinite ease-in-out;
+}
+
+.float-element:nth-child(1) {
+    top: 20%;
+    right: 15%;
+    width: 8px;
+    height: 8px;
+    animation-delay: 0s;
+}
+
+.float-element:nth-child(2) {
+    top: 70%;
+    left: 10%;
+    width: 6px;
+    height: 6px;
+    animation-delay: 1s;
+}
+
+.float-element:nth-child(3) {
+    bottom: 15%;
+    right: 20%;
+    width: 7px;
+    height: 7px;
+    animation-delay: 2s;
+}
+
+/* Planète en orbite */
+.planet {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal), var(--neptune-teal-dark));
+    box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
+    z-index: 2;
+    animation: orbit 20s infinite linear;
+}
+
+/* Étoiles filantes */
+.shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--cosmos-purple-light), transparent);
+    opacity: 0;
+    z-index: 1;
+    transform: rotate(-45deg);
+    animation: shootingStar 5s infinite ease-out;
+}
+
+.shooting-star:nth-child(1) {
+    top: 20%;
+    right: 10%;
+    animation-delay: 0s;
+}
+
+.shooting-star:nth-child(2) {
+    top: 40%;
+    left: 20%;
+    width: 60px;
+    animation-delay: 2s;
+}
+
+/* Constellation */
+.constellation {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    top: 20px;
+    right: 20px;
+    z-index: 0;
+    opacity: 0.5;
+}
+
+.constellation-dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--cosmos-purple-light);
+    border-radius: 50%;
+}
+
+.constellation-dot:nth-child(1) { top: 30%; left: 20%; }
+.constellation-dot:nth-child(2) { top: 50%; left: 40%; }
+.constellation-dot:nth-child(3) { top: 70%; left: 30%; }
+.constellation-dot:nth-child(4) { top: 30%; left: 60%; }
+.constellation-dot:nth-child(5) { top: 60%; left: 70%; }
 
 /* -----------------------------
    FORMULAIRE D'AUTHENTIFICATION
    ----------------------------- */
-
-/* Style du conteneur du formulaire avec effet d'élévation */
 .login-form {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Empile les éléments verticalement */
-    width: 100%; /* Pleine largeur du conteneur parent */
-    max-width: 450px; /* Largeur maximale pour lisibilité */
-    padding: clamp(20px, 5vw, 40px); /* Rembourrage responsive */
-    background-color: white; /* Fond blanc pour contraste */
-    border-radius: 16px; /* Coins arrondis */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); /* Ombre portée subtile */
-    transition: transform 0.3s ease; /* Animation douce pour l'effet hover */
-    box-sizing: border-box; /* Inclut padding dans la largeur */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+    padding: clamp(20px, 5vw, 40px);
+    background: var(--background);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out;
+    z-index: 10;
 }
 
-/* Animation subtile au survol du formulaire pour feedback visuel */
-.login-form:hover {
-    transform: translateY(-5px); /* Légère élévation au survol */
+/* Élément décoratif: Neptune */
+.login-form::before {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+    opacity: 0.04;
+    top: -200px;
+    right: -200px;
+    z-index: 0;
+}
+
+/* Élément décoratif: Orbite */
+.login-form::after {
+    content: "";
+    position: absolute;
+    border: 1px dashed var(--border-light);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    bottom: -150px;
+    left: -150px;
+    z-index: 0;
+}
+
+/* -----------------------------
+   ÉLÉMENTS DE TITRE
+   ----------------------------- */
+.textelogin {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.03em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.textelogin img {
+    width: clamp(24px, 4vw, 32px);
+    height: clamp(24px, 4vw, 32px);
+    filter: drop-shadow(0 4px 6px rgba(12, 29, 74, 0.1));
 }
 
 /* -----------------------------
    ÉLÉMENTS DE FORMULAIRE
    ----------------------------- */
-
-/* Style des étiquettes de champ */
 .form-label {
-    display: block; /* Occupe toute la largeur disponible */
-    font-size: clamp(14px, 2vw, 15px); /* Taille responsive */
-    font-weight: 600; /* Semi-gras pour meilleure visibilité */
-    margin-bottom: 8px; /* Espacement avant le champ de saisie */
-    color: #475569; /* Gris foncé pour contraste modéré */
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    text-align: left;
+    font-family: 'Space Grotesk', sans-serif;
+    position: relative;
+    z-index: 1;
 }
 
-/* Style des champs de saisie */
 .form-input {
-    display: block; /* Occupe toute la largeur disponible */
-    width: 100%; /* Pleine largeur */
-    margin-bottom: 20px; /* Espacement entre les champs */
-    padding: clamp(10px, 3vw, 14px) clamp(12px, 3vw, 16px); /* Padding responsive */
-    border-radius: 10px; /* Coins arrondis */
-    border: 1px solid #e2e8f0; /* Bordure légère */
-    outline: none; /* Supprime le contour natif au focus */
-    transition: all 0.3s ease; /* Animation douce pour les états */
-    font-size: clamp(14px, 2vw, 16px); /* Taille de texte responsive */
-    box-sizing: border-box; /* Inclut padding dans la largeur */
-    background-color: #f8fafc; /* Fond légèrement grisé */
+    display: block;
+    width: 100%;
+    margin-bottom: 1.25rem;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: var(--card-bg);
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    z-index: 1;
 }
 
-/* État de focus des champs de saisie avec mise en évidence */
 .form-input:focus {
-    border-color: #3b82f6; /* Bordure bleue */
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Halo de focus */
-    background-color: #fff; /* Fond blanc pour meilleure visibilité */
+    border-color: var(--space-blue);
+    box-shadow: 0 0 0 3px rgba(12, 29, 74, 0.1);
+    background-color: var(--background);
 }
 
 /* -----------------------------
    BOUTON DE SOUMISSION
    ----------------------------- */
-
-/* Style du bouton principal */
 .submit-button {
-    margin-top: 10px; /* Espacement après le dernier champ */
-    background-color: #3b82f6; /* Bleu vif */
-    color: white; /* Texte blanc pour contraste */
-    padding: clamp(12px, 3vw, 16px); /* Rembourrage responsive */
-    border: none; /* Pas de bordure */
-    border-radius: 10px; /* Coins arrondis */
-    cursor: pointer; /* Curseur main au survol */
-    font-weight: 600; /* Police semi-grasse */
-    font-size: clamp(14px, 2vw, 16px); /* Taille de texte responsive */
-    transition: all 0.3s ease; /* Animation douce */
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); /* Ombre portée légère */
-    display: block; /* Élément bloc */
-    margin-left: auto; /* Centrage horizontal */
-    margin-right: auto; /* Centrage horizontal */
-    width: clamp(120px, 50%, 200px); /* Largeur responsive */
+    position: relative;
+    padding: 0.9rem 1.8rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.01em;
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    box-shadow: 
+        0 4px 6px rgba(30, 58, 138, 0.1),
+        0 10px 15px -3px rgba(30, 58, 138, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    z-index: 1;
 }
 
-/* Animation au survol du bouton pour feedback visuel */
+.submit-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    transition: left 0.7s ease;
+}
+
 .submit-button:hover {
-    background-color: #2563eb; /* Bleu plus foncé */
-    transform: translateY(-2px); /* Légère élévation */
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3); /* Ombre plus prononcée */
+    transform: translateY(-3px);
+    box-shadow: 
+        0 10px 20px -3px rgba(30, 58, 138, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.submit-button:hover::before {
+    left: 100%;
 }
 
 /* -----------------------------
    LIENS SECONDAIRES
    ----------------------------- */
-
-/* Conteneur pour les liens sous le formulaire */
 .form-links {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Empile verticalement */
-    align-items: center; /* Centre horizontalement */
-    margin-top: 20px; /* Espacement après le bouton */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
-/* Style des liens textuels (mot de passe oublié, inscription, etc.) */
 .form-link {
-    color: #3b82f6; /* Couleur bleue pour indiquer cliquable */
-    text-decoration: none; /* Supprime soulignement par défaut */
-    margin-top: 10px; /* Espacement entre les liens */
-    text-align: center; /* Centrage du texte */
-    font-size: clamp(12px, 2vw, 14px); /* Taille responsive */
-    transition: color 0.3s; /* Animation au survol */
-    font-weight: 500; /* Légèrement en gras */
+    color: var(--cosmos-purple);
+    text-decoration: none;
+    margin-top: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-/* État au survol des liens */
+.form-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
 .form-link:hover {
-    color: #2563eb; /* Bleu plus foncé */
-    text-decoration: underline; /* Ajoute soulignement */
+    color: var(--space-blue);
+}
+
+.form-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
 /* -----------------------------
    LIEN DE RETOUR ACCUEIL
    ----------------------------- */
-
-/* Bouton de retour à l'accueil */
 .home-link {
-    font-family: 'Montserrat', sans-serif; /* Police différente pour distinction */
-    position: fixed; /* Position fixe à l'écran */
-    top: 20px; /* Depuis le haut */
-    right: 20px; /* Depuis la droite */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centre verticalement */
-    justify-content: center; /* Centre horizontalement */
-    color: white; /* Texte blanc */
-    text-decoration: none; /* Supprime soulignement */
-    font-size: clamp(13px, 2vw, 15px); /* Taille responsive */
-    font-weight: 600; /* Semi-gras */
-    padding: clamp(8px, 2vw, 12px) clamp(14px, 3vw, 20px); /* Rembourrage responsive */
-    background-color: #3b82f6; /* Bleu assorti au bouton principal */
-    border-radius: 10px; /* Coins arrondis */
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); /* Ombre portée */
-    transition: all 0.3s ease; /* Animation douce */
-    z-index: 100; /* Assure que le lien reste au-dessus des autres éléments */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(12, 29, 74, 0.2);
+    transition: all 0.3s ease;
+    z-index: 100;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
 }
 
-/* Animation au survol du lien d'accueil */
+.home-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    transition: left 0.7s ease;
+}
+
 .home-link:hover {
-    background-color: #2563eb; /* Bleu plus foncé */
-    transform: translateY(-3px); /* Élévation */
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4); /* Ombre plus prononcée */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -3px rgba(12, 29, 74, 0.3);
 }
 
-/* Style de l'icône dans le lien d'accueil */
+.home-link:hover::before {
+    left: 100%;
+}
+
 .home-link svg {
-    width: clamp(14px, 2vw, 18px); /* Largeur responsive */
-    height: clamp(14px, 2vw, 18px); /* Hauteur responsive */
-    margin-right: 8px; /* Espacement avant le texte */
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
 }
 
 /* -----------------------------
    MASQUAGE DES ÉLÉMENTS DE NAVIGATION
    ----------------------------- */
-
-/* Cache la navigation et le pied de page sur les pages d'authentification */
 body:has(.login-form) nav,
 body:has(.login-form) footer {
-    display: none; /* Masque les éléments */
+    display: none;
 }
 
 /* -----------------------------
    ADAPTATIONS MOBILES
    ----------------------------- */
-
-/* Styles spécifiques pour les petits écrans */
-@media (max-width: 480px) {
-    /* Ajustement du lien d'accueil */
-    .home-link {
-        top: 10px; /* Position plus proche du bord */
-        right: 10px; /* Position plus proche du bord */
-    }
-    
-    /* Réduction du padding du formulaire */
+@media (max-width: 768px) {
     .login-form {
-        padding: 30px 20px; /* Espacement intérieur réduit */
+        padding: 2rem;
     }
     
-    /* Élargissement du bouton */
+    .textelogin {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-link {
+        top: 10px;
+        right: 10px;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+    }
+    
+    .login-form {
+        padding: 1.5rem;
+    }
+    
+    .textelogin {
+        font-size: 1.5rem;
+    }
+    
     .submit-button {
-        width: 100%; /* Pleine largeur sur mobile */
+        width: 100%;
+    }
+}
+
+/* Animation de l'orbite */
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg) translateX(60px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(60px) rotate(-360deg);
     }
 }

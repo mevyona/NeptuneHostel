@@ -1,858 +1,731 @@
 /* ==========================================================================
    STYLES PRINCIPAUX - HÔTEL NEPTUNE
-   Feuille de style principale définissant la mise en page, les composants
-   de base et la typographie pour l'ensemble du site
+   Thème spatial unifié avec les pages d'erreur
    ========================================================================== */
 
 /* -----------------------------
    IMPORTATION DES POLICES
    ----------------------------- */
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Italianno&display=swap');
-
-/* -----------------------------
-   RESET CSS
-   ----------------------------- */
-
-/* Réinitialisation complète de tous les éléments HTML pour une base cohérente */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0; /* Suppression des marges par défaut */
-    padding: 0; /* Suppression des espacements internes par défaut */
-    border: 0; /* Suppression des bordures par défaut */
-    font-size: 100%; /* Taille de police de base */
-    font: inherit; /* Hérite des propriétés de police du parent */
-    vertical-align: baseline; /* Alignement vertical standardisé */
-}
-
-/* Définition correcte de l'affichage pour les éléments HTML5 */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-    display: block; /* Affichage en bloc pour compatibilité */
-}
-
-/* Configuration de base du corps du document */
-body {
-    line-height: 1.5; /* Hauteur de ligne confortable pour la lecture */
-    display: flex; /* Disposition en flexbox pour structure de page */
-    flex-direction: column; /* Organisation verticale des éléments */
-    min-height: 100vh; /* Hauteur minimale égale à la hauteur de la fenêtre */
-    color: #333; /* Couleur de texte standard, gris foncé */
-    background-color: #f8f9fa; /* Fond légèrement grisé pour meilleur contraste */
-}
-
-/* Contenu principal qui s'étendra pour occuper l'espace disponible */
-main {
-    flex: 1; /* Croissance pour remplir l'espace restant */
-}
-
-/* Suppression des puces et numéros de listes */
-ol, ul {
-    list-style: none; /* Désactivation des styles de liste par défaut */
-}
-
-/* Gestion des citations */
-blockquote, q {
-    quotes: none; /* Suppression des guillemets par défaut */
-}
-
-/* Suppression du contenu généré avant et après les citations */
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: ''; /* Suppression du contenu */
-    content: none; /* Alternative pour certains navigateurs */
-}
-
-/* Réinitialisation des tableaux */
-table {
-    border-collapse: collapse; /* Fusion des bordures de cellules */
-    border-spacing: 0; /* Suppression de l'espacement entre cellules */
-}
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 /* -----------------------------
    VARIABLES CSS (CUSTOM PROPERTIES)
    ----------------------------- */
 
-/* Définition des variables globales pour cohérence visuelle */
+/* Définition des variables globales pour cohérence visuelle - Uniformisées avec pages d'erreur */
 :root {
-    /* Palette de couleurs primaires */
-    --primary-color: #5E75C9; /* Bleu principal du thème */
-    --primary-light: #8b9cdb; /* Version plus claire du bleu principal */
-    --primary-gradient: linear-gradient(135deg, #5E75C9 0%, #3a4d8f 100%); /* Dégradé bleu pour éléments accentués */
+    /* Palette de couleurs spatiales */
+    --space-blue: #0c1d4a;
+    --space-blue-light: #1e3a8a;
+    --neptune-teal: #2dd4bf;
+    --neptune-teal-dark: #0d9488;
+    --cosmos-purple: #8b5cf6;
+    --cosmos-purple-light: #a78bfa;
+    --star-yellow: #eab308;
     
-    /* Palette de couleurs utilitaires */
-    --secondary-color: #6c757d; /* Gris pour éléments secondaires */
-    --success-color: #28a745; /* Vert pour messages positifs */
-    --warning-color: #ffc107; /* Jaune pour avertissements */
-    --danger-color: #dc3545; /* Rouge pour erreurs et alertes */
-    --info-color: #17a2b8; /* Bleu-vert pour informations */
+    /* Couleurs de texte et de fond */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --background: #ffffff;
+    --card-bg: #f8fafc;
+    --border-light: #e2e8f0;
     
-    /* Palette de couleurs neutres */
-    --dark-color: #333; /* Gris très foncé pour texte principal */
-    --light-color: #fff; /* Blanc pour arrière-plans clairs */
-    --gray-color: #f8f9fa; /* Gris très clair pour arrière-plans secondaires */
-    --gray-medium: #dee2e6; /* Gris moyen pour bordures et séparateurs */
-    --gray-dark: #495057; /* Gris foncé pour textes secondaires */
-    --text-gray: #6c757d; /* Gris pour texte moins important */
+    /* Remplacements des anciennes variables */
+    --primary-color: var(--space-blue);
+    --primary-light: var(--space-blue-light);
+    --primary-gradient: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    --dark-color: var(--text-primary);
+    --light-color: var(--background);
+    --gray-color: var(--card-bg);
+    --gray-medium: var(--border-light);
+    --gray-dark: var(--text-secondary);
     
     /* Ombres standardisées */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
-    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre moyenne */
-    --shadow-lg: 0 6px 25px rgba(0, 0, 0, 0.1); /* Ombre prononcée */
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
     
     /* Rayons de bordure */
-    --radius-sm: 6px; /* Coins légèrement arrondis */
-    --radius-md: 8px; /* Arrondi moyen */
-    --radius-lg: 12px; /* Arrondi important */
-    --radius-pill: 50px; /* Style pilule pour boutons et badges */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 50px;
     
     /* Transitions et animations */
-    --transition-fast: 0.2s ease; /* Transition rapide */
-    --transition-normal: 0.3s ease; /* Transition standard */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
     
     /* Familles de polices */
-    --font-base: 'Inter', sans-serif; /* Police principale sans-serif */
-    --font-mono: 'Space Mono', monospace; /* Police monospace pour éléments techniques */
-    --font-fancy: 'Italianno', cursive; /* Police décorative pour accents élégants */
+    --font-base: 'Space Grotesk', sans-serif;
+    --font-title: 'Playfair Display', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-ui: 'Inter', sans-serif;
 }
 
 /* -----------------------------
-   STYLES DE BASE
+   STYLE GLOBAL
    ----------------------------- */
-
-/* Configuration générale de la taille de police et du défilement */
-html {
-    font-size: 16px; /* Taille de base pour calculs rem */
-    scroll-behavior: smooth; /* Défilement fluide pour navigation interne */
+body {
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    color: var(--text-primary);
+    background-color: var(--background);
+    background-image: radial-gradient(var(--border-light) 1px, transparent 1px);
+    background-size: 30px 30px;
+    font-family: var(--font-base);
 }
 
-/* Application de la police principale au corps du document */
-body {
-    font-family: var(--font-base); /* Utilisation de la police Inter définie dans les variables */
+main {
+    flex: 1;
 }
 
 /* Styles de base pour les titres */
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 700; /* Police en gras pour les titres */
-    margin-bottom: 1rem; /* Espacement inférieur standardisé */
-    line-height: 1.2; /* Hauteur de ligne réduite pour les titres */
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    font-family: var(--font-title);
 }
 
 /* Taille pour les grands titres */
 h1 {
-    font-size: 2.2rem; /* Taille importante pour titre principal */
+    font-size: 2.2rem;
 }
 
 /* Taille pour les titres de section */
 h2 {
-    font-size: 1.8rem; /* Taille moyenne pour titres de section */
+    font-size: 1.8rem;
 }
 
 /* Taille pour les sous-titres */
 h3 {
-    font-size: 1.5rem; /* Taille plus petite pour sous-titres */
+    font-size: 1.5rem;
 }
 
 /* Style de base pour les liens */
 a {
-    text-decoration: none; /* Suppression du soulignement par défaut */
-    color: var(--primary-color); /* Couleur bleue pour les liens */
-    transition: color var(--transition-normal); /* Transition douce au survol */
+    text-decoration: none;
+    color: var(--space-blue);
+    transition: color var(--transition-normal);
 }
 
 /* -----------------------------
-   NAVIGATION
+   NAVIGATION - THEME SPATIAL
    ----------------------------- */
-
-/* Barre de navigation principale */
 .navbar {
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Alignement vertical centré */
-    justify-content: space-between; /* Espacement équilibré des éléments */
-    background-color: white; /* Fond blanc pour contraste */
-    padding: 0.8rem 4rem; /* Espacement interne généreux */
-    box-shadow: var(--shadow-sm); /* Ombre légère pour effet d'élévation */
-    position: sticky; /* Reste visible lors du défilement */
-    top: 0; /* Collé au haut de l'écran */
-    z-index: 100; /* Toujours au-dessus des autres éléments */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--background);
+    padding: 1rem 4rem;
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Éléments décoratifs spatiaux dans la navbar */
+.navbar::before {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+    opacity: 0.03;
+    top: -100px;
+    right: -100px;
+    z-index: 0;
 }
 
 /* Logo dans la barre de navigation */
 .logo img {
-    width: 6rem; /* Largeur fixe du logo */
-    height: auto; /* Hauteur proportionnelle */
-    transition: transform var(--transition-normal); /* Animation de rotation au survol */
+    width: 6rem;
+    height: auto;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 1;
 }
 
 /* Animation du logo au survol */
 .logo img:hover {
-    transform: rotate(15deg) scale(1.1); /* Rotation et léger agrandissement */
+    transform: rotate(15deg) scale(1.1);
 }
 
 /* Conteneur des liens de navigation */
 .nav-links {
-    display: flex; /* Disposition horizontale */
-    align-items: center; /* Alignement vertical */
-    gap: 2rem; /* Espacement entre les liens */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Icônes dans la navigation */
 .icon img {
-    width: 1.9rem; /* Largeur fixe des icônes */
-    height: auto; /* Hauteur proportionnelle */
-    transition: transform var(--transition-fast); /* Animation rapide au survol */
+    width: 1.9rem;
+    height: auto;
+    transition: transform var(--transition-fast);
 }
 
 /* Animation des icônes au survol */
 .icon img:hover {
-    transform: scale(1.1); /* Léger agrandissement */
+    transform: scale(1.1);
 } 
 
 /* Lien spécial pour la réservation */
 .link-reserver {
-    font-family: var(--font-base); /* Police Inter */
-    position: relative; /* Pour positionnement de la ligne décorative */
-    text-decoration: none; /* Pas de soulignement */
-    color: var(--dark-color); /* Texte gris foncé */
-    font-size: 1rem; /* Taille standard */
-    font-weight: 500; /* Légèrement en gras */
-    padding: 0.5rem 0; /* Espacement vertical uniquement */
-    transition: color var(--transition-normal); /* Transition de couleur */
+    font-family: var(--font-ui);
+    position: relative;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: color var(--transition-normal);
 }
 
 /* Ligne décorative apparaissant sous le lien de réservation */
 .link-reserver::after {
-    content: ''; /* Création d'un pseudo-élément */
-    position: absolute; /* Positionnement absolu */
-    left: 0; /* Aligné à gauche */
-    bottom: -0.3rem; /* Légèrement sous le texte */
-    width: 100%; /* Largeur complète */
-    height: 2px; /* Ligne fine */
-    background-color: var(--primary-color); /* Couleur bleue */
-    transform: scaleX(0); /* Initialement invisible (largeur 0) */
-    transform-origin: right; /* Animation partant de la droite */
-    transition: transform var(--transition-normal); /* Animation d'apparition */
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.3rem;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-normal);
 }
 
 /* Changement de couleur du lien au survol */
 .link-reserver:hover {
-    color: var(--primary-color); /* Devient bleu au survol */
+    color: var(--space-blue);
 }
 
 /* Apparition de la ligne sous le lien au survol */
 .link-reserver:hover::after {
-    transform: scaleX(1); /* Devient visible (pleine largeur) */
-    transform-origin: left; /* Animation allant vers la droite */
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
 /* -----------------------------
-   BOUTONS
+   BOUTONS - HARMONISATION SPATIALE
    ----------------------------- */
-
-/* Style de base commun à tous les boutons */
 .btn {
-    display: inline-flex; /* Permet l'alignement avec icônes */
-    align-items: center; /* Centrage vertical des contenus */
-    justify-content: center; /* Centrage horizontal des contenus */
-    gap: 0.5rem; /* Espacement entre texte et icône */
-    padding: 0.625rem 1.25rem; /* Espacement interne confortable */
-    font-family: var(--font-base); /* Police Inter cohérente */
-    font-size: 1rem; /* Taille standard */
-    font-weight: 500; /* Semi-gras pour lisibilité */
-    text-align: center; /* Texte centré */
-    text-decoration: none; /* Suppression du soulignement pour liens */
-    border: none; /* Pas de bordure par défaut */
-    border-radius: var(--radius-md); /* Coins modérément arrondis */
-    cursor: pointer; /* Curseur main pour indiquer cliquable */
-    transition: all var(--transition-fast); /* Animation rapide */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.8rem;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    z-index: 1;
+    letter-spacing: 0.01em;
 }
 
-/* Bouton d'action principale en bleu */
+/* Bouton d'action principale en dégradé bleu spatial */
 .btn-primary {
-    background-color: var(--primary-color); /* Fond bleu */
-    color: white; /* Texte blanc pour contraste */
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    color: white;
+    box-shadow: 
+        0 4px 6px rgba(30, 58, 138, 0.1),
+        0 10px 15px -3px rgba(30, 58, 138, 0.1);
 }
 
 /* Animation du bouton principal au survol */
 .btn-primary:hover {
-    background-color: #3a4d8f; /* Bleu plus foncé */
-    box-shadow: 0 4px 8px rgba(58, 77, 143, 0.4); /* Ombre pour effet 3D */
-    transform: translateY(-2px); /* Léger déplacement vers le haut */
+    transform: translateY(-3px);
+    box-shadow: 
+        0 10px 20px -3px rgba(30, 58, 138, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* Bouton d'action secondaire en gris */
-.btn-secondary {
-    background-color: var(--secondary-color); /* Fond gris */
-    color: white; /* Texte blanc pour contraste */
+/* Effet de brillance au survol */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    transition: left 0.7s ease;
+    z-index: -1;
 }
 
-/* Animation du bouton secondaire au survol */
-.btn-secondary:hover {
-    background-color: #495057; /* Gris plus foncé */
-    box-shadow: 0 4px 8px rgba(73, 80, 87, 0.3); /* Ombre pour effet 3D */
-    transform: translateY(-2px); /* Léger déplacement vers le haut */
+.btn-primary:hover::before {
+    left: 100%;
 }
 
 /* Bouton avec contour et fond transparent */
 .btn-outline {
-    background-color: transparent; /* Fond transparent */
-    color: var(--primary-color); /* Texte bleu */
-    border: 1px solid var(--primary-color); /* Bordure bleue */
+    background-color: transparent;
+    color: var(--space-blue);
+    border: 2px solid var(--space-blue);
+    position: relative;
+    overflow: hidden;
 }
 
 /* Animation du bouton contour au survol */
+.btn-outline::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--space-blue);
+    z-index: -1;
+    transition: width 0.3s ease;
+}
+
 .btn-outline:hover {
-    background-color: var(--primary-light); /* Fond bleu clair */
-    color: white; /* Texte blanc */
-    box-shadow: 0 4px 8px rgba(139, 156, 219, 0.3); /* Ombre subtile */
-    transform: translateY(-2px); /* Léger déplacement vers le haut */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline:hover::after {
+    width: 100%;
 }
 
 /* -----------------------------
-   CARTES ET CONTENEURS
+   PIED DE PAGE STANDARD - THÈME SPATIAL
    ----------------------------- */
-
-/* Composant carte pour présentation d'informations */
-.card {
-    background-color: white; /* Fond blanc */
-    border-radius: var(--radius-lg); /* Coins bien arrondis */
-    overflow: hidden; /* Masque les débordements */
-    box-shadow: var(--shadow-md); /* Ombre moyenne */
-    transition: transform var(--transition-normal), box-shadow var(--transition-normal); /* Animation douce */
-}
-
-/* Animation de la carte au survol */
-.card:hover {
-    transform: translateY(-5px); /* Élévation */
-    box-shadow: var(--shadow-lg); /* Ombre plus prononcée */
-}
-
-/* En-tête de carte */
-.card-header {
-    padding: 1.25rem; /* Espacement interne */
-    border-bottom: 1px solid var(--gray-medium); /* Séparateur fin */
-    background-color: var(--gray-color); /* Fond légèrement grisé */
-}
-
-/* Corps principal de la carte */
-.card-body {
-    padding: 1.5rem; /* Espacement interne généreux */
-}
-
-/* Pied de carte */
-.card-footer {
-    padding: 1.25rem; /* Espacement interne */
-    border-top: 1px solid var(--gray-medium); /* Séparateur fin */
-    background-color: var(--gray-color); /* Fond légèrement grisé */
-}
-
-/* -----------------------------
-   CLASSES UTILITAIRES DE TEXTE
-   ----------------------------- */
-
-/* Centrage horizontal du texte */
-.text-center {
-    text-align: center; /* Texte centré */
-}
-
-/* Alignement du texte à droite */
-.text-right {
-    text-align: right; /* Texte aligné à droite */
-}
-
-/* Texte de moindre importance en gris */
-.text-muted {
-    color: var(--text-gray); /* Texte gris */
-}
-
-/* -----------------------------
-   CLASSES UTILITAIRES DE MISE EN PAGE
-   ----------------------------- */
-
-/* Disposition en flexbox */
-.d-flex {
-    display: flex; /* Active flexbox */
-}
-
-/* Répartition de l'espace entre éléments */
-.justify-between {
-    justify-content: space-between; /* Espace maximal entre éléments */
-}
-
-/* Centrage vertical des éléments */
-.align-center {
-    align-items: center; /* Éléments centrés verticalement */
-}
-
-/* Autorisation du passage à la ligne */
-.flex-wrap {
-    flex-wrap: wrap; /* Passage à la ligne si nécessaire */
-}
-
-/* Différents niveaux d'espacement entre éléments */
-.gap-1 { gap: 0.5rem; } /* Petit espacement */
-.gap-2 { gap: 1rem; } /* Espacement moyen */
-.gap-3 { gap: 1.5rem; } /* Grand espacement */
-
-/* -----------------------------
-   CLASSES UTILITAIRES DE MARGE
-   ----------------------------- */
-
-/* Marges supérieures de différentes tailles */
-.mt-1 { margin-top: 0.5rem; } /* Petite marge */
-.mt-2 { margin-top: 1rem; } /* Marge moyenne */
-.mt-3 { margin-top: 1.5rem; } /* Marge importante */
-.mt-4 { margin-top: 2rem; } /* Grande marge */
-.mt-5 { margin-top: 3rem; } /* Très grande marge */
-
-/* Marges inférieures de différentes tailles */
-.mb-1 { margin-bottom: 0.5rem; } /* Petite marge */
-.mb-2 { margin-bottom: 1rem; } /* Marge moyenne */
-.mb-3 { margin-bottom: 1.5rem; } /* Marge importante */
-.mb-4 { margin-bottom: 2rem; } /* Grande marge */
-.mb-5 { margin-bottom: 3rem; } /* Très grande marge */
-
-/* Centrage horizontal automatique */
-.mx-auto {
-    margin-left: auto; /* Marge gauche automatique */
-    margin-right: auto; /* Marge droite automatique */
-}
-
-/* -----------------------------
-   SYSTÈME D'ALERTES
-   ----------------------------- */
-
-/* Style de base pour les alertes contextuelles */
-.alert {
-    position: fixed; /* Position fixe dans la fenêtre */
-    top: -100px; /* Initialement hors écran */
-    left: 50%; /* Centré horizontalement */
-    transform: translateX(-50%); /* Ajustement pour centrage parfait */
-    padding: 1rem 1.5rem; /* Espacement interne généreux */
-    border-radius: var(--radius-md); /* Coins arrondis */
-    box-shadow: var(--shadow-lg); /* Ombre prononcée */
-    font-family: var(--font-base); /* Police Inter */
-    font-size: 0.95rem; /* Taille légèrement réduite */
-    font-weight: 500; /* Semi-gras pour lisibilité */
-    z-index: 1000; /* Au-dessus de tous les autres éléments */
-    min-width: 300px; /* Largeur minimale */
-    max-width: 90%; /* Largeur maximale */
-    text-align: center; /* Texte centré */
-    animation: slideDown 0.5s ease forwards, fadeOut 0.5s ease 5s forwards; /* Animations d'entrée et sortie */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    justify-content: center; /* Centrage horizontal */
-    gap: 0.75rem; /* Espacement entre icône et texte */
-}
-
-/* Alerte de succès en vert */
-.alert.alert-success, .alert-info.success {
-    background-color: var(--success-color); /* Fond vert */
-    color: white; /* Texte blanc */
-}
-
-/* Alerte d'erreur en rouge */
-.alert.alert-danger, .alert-info.error {
-    background-color: var(--danger-color); /* Fond rouge */
-    color: white; /* Texte blanc */
-}
-
-/* Animation d'apparition par le haut */
-@keyframes slideDown {
-    0% {
-        top: -100px; /* Position initiale hors écran */
-        opacity: 0; /* Invisible */
-    }
-    100% {
-        top: 30px; /* Position finale visible */
-        opacity: 1; /* Complètement visible */
-    }
-}
-
-/* Animation de disparition progressive */
-@keyframes fadeOut {
-    0% {
-        opacity: 1; /* Complètement visible */
-    }
-    100% {
-        opacity: 0; /* Invisible */
-        visibility: hidden; /* Complètement masqué */
-    }
-}
-
-/* -----------------------------
-   ÉLÉMENTS DE FORMULAIRE
-   ----------------------------- */
-
-/* Groupe d'éléments de formulaire */
-.form-group {
-    margin-bottom: 1.25rem; /* Espacement entre groupes */
-}
-
-/* Étiquette des champs de formulaire */
-.form-label {
-    display: block; /* Affichage en bloc */
-    margin-bottom: 0.5rem; /* Espacement avant le champ */
-    font-weight: 500; /* Semi-gras pour lisibilité */
-    color: var(--gray-dark); /* Texte gris foncé */
-}
-
-/* Champ de saisie standardisé */
-.form-control {
-    display: block; /* Affichage en bloc */
-    width: 100%; /* Largeur complète */
-    padding: 0.75rem 1rem; /* Espacement interne généreux */
-    font-size: 1rem; /* Taille standard */
-    font-family: var(--font-base); /* Police Inter */
-    color: var(--dark-color); /* Texte gris très foncé */
-    background-color: var(--light-color); /* Fond blanc */
-    border: 1px solid var(--gray-medium); /* Bordure grise fine */
-    border-radius: var(--radius-md); /* Coins arrondis */
-    transition: border-color var(--transition-normal), box-shadow var(--transition-normal); /* Transitions douces */
-}
-
-/* Effet de focus sur les champs de saisie */
-.form-control:focus {
-    border-color: var(--primary-color); /* Bordure bleue */
-    outline: none; /* Suppression du contour natif */
-    box-shadow: 0 0 0 3px rgba(94, 117, 201, 0.25); /* Halo bleu subtil */
-}
-
-/* Texte d'aide associé à un champ */
-.form-text {
-    margin-top: 0.25rem; /* Espacement après le champ */
-    font-size: 0.85rem; /* Taille réduite */
-    color: var(--text-gray); /* Texte gris */
-}
-
-/* -----------------------------
-   PIED DE PAGE STANDARD
-   ----------------------------- */
-
-/* Pied de page pour écrans moyens et grands */
 footer.normal {
-    display: flex; /* Disposition en flexbox */
-    padding: 3rem; /* Espacement interne généreux */
-    background-color: var(--light-color); /* Fond blanc */
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Ombre légère */
-    position: relative; /* Pour positionnement des enfants */
-    z-index: 10; /* Au-dessus d'autres éléments */
+    display: flex;
+    padding: 3rem;
+    background-color: var(--background);
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid var(--border-light);
+    overflow: hidden;
+}
+
+/* Éléments décoratifs spatiaux */
+footer.normal::before {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+    opacity: 0.03;
+    bottom: -250px;
+    right: -200px;
+    z-index: 0;
+}
+
+footer.normal::after {
+    content: "";
+    position: absolute;
+    border: 1px dashed var(--border-light);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    top: -150px;
+    left: -150px;
+    z-index: 0;
 }
 
 /* Séparateur vertical dans le pied de page */
 hr.solid-normal {
-    border-left: 4px solid var(--gray-medium); /* Ligne verticale grise */
-    height: 95%; /* Presque toute la hauteur */
-    width: 0; /* Sans largeur */
-    margin: 0 2rem; /* Espacement horizontal */
+    border-left: 2px solid var(--border-light);
+    height: 95%;
+    width: 0;
+    margin: 0 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Bloc d'informations de l'hôtel */
 .args {
-    margin: 0 auto; /* Centrage horizontal */
-    align-self: center; /* Centrage vertical */
+    margin: 0 auto;
+    align-self: center;
+    position: relative;
+    z-index: 1;
 }
 
 /* Style commun pour texte et liens du pied de page */
 .args, footer.normal .footer-links a {
-    font-family: var(--font-mono); /* Police monospace */
-    text-decoration: none; /* Pas de soulignement */
-    color: var(--dark-color); /* Texte gris foncé */
+    font-family: var(--font-base);
+    text-decoration: none;
+    color: var(--text-primary);
 }
 
 /* Liens dans le pied de page standard */
 footer.normal .footer-links a {
-    font-size: 0.85rem; /* Taille réduite */
-    transition: color var(--transition-normal); /* Transition douce */
+    font-size: 0.85rem;
+    transition: color var(--transition-normal);
+    position: relative;
 }
 
 /* Effet au survol des liens du pied de page */
 footer.normal .footer-links a:hover {
-    color: var(--primary-color); /* Texte bleu */
+    color: var(--space-blue);
+}
+
+/* Ligne sous les liens au survol */
+footer.normal .footer-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-normal);
+}
+
+footer.normal .footer-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
 /* Bloc d'informations de contact */
 .contact-info {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Orientation verticale */
-    gap: 1rem; /* Espacement entre éléments */
-    margin-bottom: 2rem; /* Marge inférieure */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Titre des informations de contact */
 .contact-info h3 {
-    margin-bottom: 0.75rem; /* Espacement après le titre */
-    font-weight: 700; /* Police en gras */
-    font-size: 1.5rem; /* Taille importante */
-    color: var(--dark-color); /* Texte gris foncé */
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    font-family: var(--font-title);
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 /* Texte des informations de contact */
 .contact-info p {
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    gap: 0.75rem; /* Espacement pour les icônes */
-    color: var(--text-gray); /* Texte gris */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
 }
 
 /* Icônes dans les informations de contact */
 .contact-info img {
-    width: 20px; /* Largeur fixe */
-    height: 20px; /* Hauteur fixe */
-    filter: invert(48%) sepia(29%) saturate(1209%) hue-rotate(194deg) brightness(90%) contrast(87%); /* Teinte bleue */
+    width: 20px;
+    height: 20px;
+    filter: invert(27%) sepia(33%) saturate(1982%) hue-rotate(210deg) brightness(97%) contrast(88%);
 }
 
 /* Conteneur d'information avec icône */
 .contact-info div {
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    gap: 0.75rem; /* Espacement entre icône et texte */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 /* Formulaire dans le pied de page standard */
 footer.normal form {
-    display: flex; /* Disposition en flexbox */
-    flex-wrap: wrap; /* Passage à la ligne si nécessaire */
-    gap: 1.25rem; /* Espacement entre éléments */
-    width: 100%; /* Largeur complète */
-    max-width: 600px; /* Largeur maximale */
-    margin-right: 2rem; /* Marge droite */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 600px;
+    margin-right: 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Groupe de champs dans le formulaire */
 footer.normal .input-group {
-    display: flex; /* Disposition en flexbox */
-    gap: 1rem; /* Espacement entre champs */
-    width: 100%; /* Largeur complète */
+    display: flex;
+    gap: 1rem;
+    width: 100%;
 }
 
 /* Champs de saisie du formulaire */
 footer.normal input, footer.normal textarea {
-    font-family: var(--font-base); /* Police Inter */
-    font-size: 1rem; /* Taille standard */
-    width: 100%; /* Largeur complète */
-    padding: 0.75rem 1rem; /* Espacement interne généreux */
-    border: none; /* Pas de bordure */
-    border-bottom: 2px solid var(--gray-medium); /* Soulignement gris */
-    outline: none; /* Suppression du contour natif */
-    background-color: var(--gray-color); /* Fond gris très clair */
-    border-radius: var(--radius-sm); /* Coins légèrement arrondis */
-    transition: all var(--transition-normal); /* Transition douce */
+    font-family: var(--font-base);
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-bottom: 2px solid var(--border-light);
+    outline: none;
+    background-color: var(--card-bg);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-normal);
 }
 
 /* Style des placeholders dans les champs */
 footer.normal input::placeholder, footer.normal textarea::placeholder {
-    font-family: var(--font-mono); /* Police monospace */
-    color: var(--text-gray); /* Texte gris */
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
 }
 
 /* Effet de focus sur les champs */
 footer.normal input:focus, footer.normal textarea:focus {
-    border-bottom: 2px solid var(--primary-color); /* Soulignement bleu */
-    box-shadow: 0 4px 6px rgba(94, 117, 201, 0.1); /* Ombre légère */
-    background-color: var(--light-color); /* Fond blanc */
+    border-bottom: 2px solid var(--space-blue);
+    box-shadow: 0 4px 6px rgba(12, 29, 74, 0.1);
+    background-color: var(--background);
 }
 
 /* Zone de texte multi-ligne du formulaire */
 footer.normal textarea {
-    resize: none; /* Désactivation du redimensionnement */
-    height: 120px; /* Hauteur fixe */
-    width: 100%; /* Largeur complète */
+    resize: none;
+    height: 120px;
+    width: 100%;
 }
 
 /* Bouton d'envoi du formulaire */
 footer.normal button {
-    font-family: var(--font-base); /* Police Inter */
-    font-size: 1rem; /* Taille standard */
-    font-weight: 600; /* Semi-gras */
-    padding: 0.75rem 1.5rem; /* Espacement interne généreux */
-    border: none; /* Pas de bordure */
-    background-color: var(--dark-color); /* Fond gris foncé */
-    color: var(--light-color); /* Texte blanc */
-    border-radius: var(--radius-md); /* Coins arrondis */
-    cursor: pointer; /* Curseur main */
-    transition: all var(--transition-normal); /* Transition douce */
-    width: 100%; /* Largeur complète */
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    color: var(--background);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Animation du bouton au survol */
 footer.normal button:hover {
-    background-color: var(--primary-color); /* Fond bleu */
-    transform: translateY(-3px); /* Élévation */
-    box-shadow: 0 4px 8px rgba(94, 117, 201, 0.3); /* Ombre portée */
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -3px rgba(12, 29, 74, 0.15);
+}
+
+/* Effet de brillance au survol */
+footer.normal button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    transition: left 0.7s ease;
+}
+
+footer.normal button:hover::before {
+    left: 100%;
 }
 
 /* -----------------------------
-   PIED DE PAGE MOBILE
+   PIED DE PAGE MOBILE - THÈME SPATIAL
    ----------------------------- */
-
-/* Pied de page pour petits écrans */
 footer.mobile {
-    display: none; /* Masqué par défaut */
-    flex-direction: column; /* Orientation verticale */
-    align-items: center; /* Centrage horizontal */
-    text-align: center; /* Texte centré */
-    padding: 2.5rem 1.5rem; /* Espacement interne adapté */
-    background-color: var(--light-color); /* Fond blanc */
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Ombre légère */
-    height: auto; /* Hauteur adaptée au contenu */
-    gap: 2rem; /* Espacement entre sections */
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background-color: var(--background);
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
+    height: auto;
+    gap: 2rem;
+    border-top: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Élément décoratif spatial pour le mobile */
+footer.mobile::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+    opacity: 0.03;
+    bottom: -150px;
+    right: -150px;
+    z-index: 0;
 }
 
 /* Bloc d'informations dans le pied de page mobile */
 footer.mobile .args {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Orientation verticale */
-    align-items: center; /* Centrage horizontal */
-    margin-top: 1rem; /* Marge supérieure */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Bloc de contact dans le pied de page mobile */
 footer.mobile .contact-info {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Orientation verticale */
-    align-items: center; /* Centrage horizontal */
-    gap: 1rem; /* Espacement entre éléments */
-    margin-bottom: 1.5rem; /* Marge inférieure */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 /* Bloc d'information individuel pour mobile */
 footer.mobile .info {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Orientation verticale */
-    align-items: center; /* Centrage horizontal */
-    gap: 0.75rem; /* Espacement entre éléments */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 /* Titre de contact pour mobile */
 footer.mobile .contact-info h3 {
-    font-size: 1.5rem; /* Taille importante */
-    margin-bottom: 1.25rem; /* Marge inférieure */
-    color: var(--dark-color); /* Texte gris foncé */
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: var(--font-title);
 }
 
 /* Conteneur d'information avec icône pour mobile */
 footer.mobile .contact-info div {
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    gap: 0.75rem; /* Espacement entre icône et texte */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Texte pour information de contact mobile */
+footer.mobile .contact-info p {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
 }
 
 /* Icônes pour mobile */
 footer.mobile .contact-info img {
-    width: 20px; /* Largeur fixe */
-    height: 20px; /* Hauteur fixe */
-    filter: invert(48%) sepia(29%) saturate(1209%) hue-rotate(194deg) brightness(90%) contrast(87%); /* Teinte bleue */
+    width: 20px;
+    height: 20px;
+    filter: invert(27%) sepia(33%) saturate(1982%) hue-rotate(210deg) brightness(97%) contrast(88%);
 }
 
 /* Séparateur horizontal pour mobile */
 hr.solid-mobile {
-    border: none; /* Suppression de la bordure standard */
-    height: 2px; /* Hauteur fine */
-    width: 50%; /* Largeur limitée */
-    background-color: var(--gray-medium); /* Couleur grise */
-    margin: 1rem 0; /* Marges verticales */
+    border: none;
+    height: 2px;
+    width: 50%;
+    background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+    margin: 1rem 0;
 }
 
 /* Conteneur des liens dans le pied de page mobile */
 footer.mobile .footer-links {
-    display: flex; /* Disposition en flexbox */
-    gap: 1.5rem; /* Espacement entre liens */
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* Liens pour mobile */
 footer.mobile .footer-links a {
-    font-family: var(--font-mono); /* Police monospace */
-    font-size: 0.85rem; /* Taille réduite */
-    text-decoration: none; /* Pas de soulignement */
-    color: var(--dark-color); /* Texte gris foncé */
-    transition: color var(--transition-normal); /* Transition douce */
+    font-family: var(--font-base);
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: color var(--transition-normal);
+    position: relative;
 }
 
 /* Effet au survol des liens du pied de page mobile */
 footer.mobile .footer-links a:hover {
-    color: var(--primary-color); /* Texte bleu */
+    color: var(--space-blue);
 }
 
-/* -----------------------------
-   RESPONSIVE DESIGN
-   ----------------------------- */
-
-/* Adaptation pour écrans de taille moyenne */
-@media (max-width: 992px) {
-    /* Ajustements de la barre de navigation */
-    .navbar {
-        padding: 0.8rem 2rem; /* Espacement réduit */
-    }
-    
-    /* Réduction de la taille des titres */
-    h1 { font-size: 2rem; } /* Titre principal plus petit */
-    h2 { font-size: 1.6rem; } /* Sous-titre plus petit */
-    h3 { font-size: 1.3rem; } /* Titre tertiaire plus petit */
+/* Ligne sous les liens au survol (mobile) */
+footer.mobile .footer-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-normal);
 }
 
-/* Adaptation pour écrans mobiles */
-@media (max-width: 768px) {
-    /* Bascule entre pieds de page normal et mobile */
-    footer.normal {
-        display: none; /* Masquer le pied de page standard */
-    }
-    
-    footer.mobile {
-        display: flex; /* Afficher le pied de page mobile */
-    }
-    
-    /* Ajustements de la barre de navigation mobile */
-    .navbar {
-        padding: 0.6rem 1rem; /* Espacement réduit */
-    }
-    
-    /* Ajustement du logo */
-    .logo img {
-        width: 5rem; /* Logo plus petit */
-    }
-    
-    /* Ajustement des espacements */
-    .gap-3 { gap: 1rem; } /* Espacement réduit */
-    
-    /* Réduction des marges pour les conteneurs */
-    .mb-5 { margin-bottom: 2rem; } /* Marge inférieure réduite */
-    .mt-5 { margin-top: 2rem; } /* Marge supérieure réduite */
-    
-    /* Ajustement des boutons */
-    .btn {
-        padding: 0.5rem 1rem; /* Espacement réduit */
-        font-size: 0.9rem; /* Texte plus petit */
-    }
+footer.mobile .footer-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
 }
 
-/* Adaptation pour très petits écrans */
-@media (max-width: 480px) {
-    /* Réduction supplémentaire des titres */
-    h1 { font-size: 1.8rem; } /* Titre principal encore plus petit */
-    h2 { font-size: 1.4rem; } /* Sous-titre encore plus petit */
-    h3 { font-size: 1.2rem; } /* Titre tertiaire encore plus petit */
-    
-    /* Simplification des ombres */
-    .card {
-        box-shadow: var(--shadow-sm); /* Ombre plus légère */
-    }
-    
-    /* Ajustement des espacements internes */
-    .card-body {
-        padding: 1.25rem; /* Espacement réduit */
-    }
+/* Formulaire mobile */
+footer.mobile form {
+    position: relative;
+    z-index: 1;
+    width: 100%;
 }
+
+footer.mobile button {
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    position: relative;
+    overflow: hidden;
+}
+
+footer.mobile button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    transition: left 0.7s ease;
+}
+
+footer.mobile button:hover::before {
+    left: 100%;
+}
+
+/* Les autres styles restent inchangés */

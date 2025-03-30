@@ -1,224 +1,430 @@
 /* ==========================================================================
-   STYLES DE FORMULAIRE DE CHAMBRE - HÔTEL NEPTUNE
-   Feuille de style pour les interfaces de création et modification de 
-   chambres, avec prévisualisation d'images et système d'onglets
-   ========================================================================== */
+    STYLES DE FORMULAIRE DE CHAMBRE - HÔTEL NEPTUNE
+    Design ultra-moderne avec thème spatial et fond blanc
+    ========================================================================== */
 
 /* -----------------------------
-   CONTENEUR PRINCIPAL
-   ----------------------------- */
+    IMPORTATION DES POLICES MODERNES
+    ----------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* Conteneur principal du formulaire avec largeur maximale et centrage */
+/* -----------------------------
+    VARIABLES GLOBALES - THÈME SPATIAL
+    ----------------------------- */
+:root {
+     --space-blue: #0c1d4a;
+     --space-blue-light: #1e3a8a;
+     --neptune-teal: #2dd4bf;
+     --neptune-teal-dark: #0d9488;
+     --cosmos-purple: #8b5cf6;
+     --cosmos-purple-light: #a78bfa;
+     --star-yellow: #eab308;
+     --text-primary: #1e293b;
+     --text-secondary: #64748b;
+     --background: #ffffff;
+     --card-bg: #f8fafc;
+     --border-light: #e2e8f0;
+}
+
+/* -----------------------------
+    ANIMATIONS MODERNES
+    ----------------------------- */
+@keyframes fadeIn {
+     0% {
+          opacity: 0;
+          transform: translateY(30px);
+     }
+     100% {
+          opacity: 1;
+          transform: translateY(0);
+     }
+}
+
+@keyframes floatAnimation {
+     0%, 100% {
+          transform: translateY(0);
+     }
+     50% {
+          transform: translateY(-15px);
+     }
+}
+
+@keyframes shimmer {
+     0% {
+          background-position: -100px;
+     }
+     100% {
+          background-position: 300px;
+     }
+}
+
+/* -----------------------------
+    CONTENEUR PRINCIPAL
+    ----------------------------- */
 .room-form-container {
-    max-width: 800px; /* Limite la largeur pour meilleure lisibilité */
-    margin: 2rem auto; /* Centrage horizontal avec espace vertical */
-    padding: 0 1rem; /* Espacement horizontal pour le responsive */
+     max-width: 800px;
+     margin: 3rem auto;
+     padding: 0 1.5rem;
+     animation: fadeIn 0.8s ease-out;
+     position: relative;
 }
 
-/* En-tête du formulaire avec disposition horizontale */
+/* Éléments flottants décoratifs */
+.room-form-container::before {
+     content: "";
+     position: absolute;
+     width: 8px;
+     height: 8px;
+     border-radius: 50%;
+     background: var(--star-yellow);
+     box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.2);
+     top: 20%;
+     right: 5%;
+     z-index: 0;
+     animation: floatAnimation 5s infinite ease-in-out;
+}
+
+.room-form-container::after {
+     content: "";
+     position: absolute;
+     width: 6px;
+     height: 6px;
+     border-radius: 50%;
+     background: var(--cosmos-purple-light);
+     box-shadow: 0 0 15px 5px rgba(139, 92, 246, 0.1);
+     bottom: 10%;
+     left: 5%;
+     z-index: 0;
+     animation: floatAnimation 7s infinite ease-in-out;
+}
+
+/* En-tête du formulaire */
 .form-header {
-    display: flex; /* Disposition en flexbox */
-    justify-content: space-between; /* Sépare le titre et les boutons d'action */
-    align-items: center; /* Alignement vertical centré */
-    margin-bottom: 2rem; /* Espace sous l'en-tête */
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 2.5rem;
+     position: relative;
+     z-index: 2;
 }
 
-/* Style du titre principal */
 .form-header h1 {
-    font-size: 2rem; /* Taille importante pour hiérarchie visuelle */
-    color: #333; /* Couleur sombre pour lisibilité */
+     font-size: 2.25rem;
+     font-weight: 700;
+     font-family: 'Syne', sans-serif;
+     color: var(--text-primary);
+     letter-spacing: -0.03em;
+     margin: 0;
 }
 
-/* Bloc principal du formulaire avec effet d'élévation */
+/* Bloc principal du formulaire */
 .room-form {
-    background-color: #f8f9fa; /* Fond légèrement grisé */
-    padding: 2rem; /* Espacement intérieur généreux */
-    border-radius: 8px; /* Coins arrondis */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère pour effet de profondeur */
+     background: var(--background);
+     padding: 3rem;
+     border-radius: 24px;
+     box-shadow: 
+          0 20px 50px rgba(0, 0, 0, 0.05),
+          0 0 0 1px rgba(0, 0, 0, 0.03);
+     position: relative;
+     overflow: hidden;
+     z-index: 1;
+}
+
+/* Élément décoratif: Neptune */
+.room-form::before {
+     content: "";
+     position: absolute;
+     width: 400px;
+     height: 400px;
+     border-radius: 50%;
+     background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+     opacity: 0.04;
+     top: -200px;
+     right: -200px;
+     z-index: 0;
+}
+
+/* Élément décoratif: Orbite */
+.room-form::after {
+     content: "";
+     position: absolute;
+     border: 1px dashed var(--border-light);
+     width: 300px;
+     height: 300px;
+     border-radius: 50%;
+     bottom: -150px;
+     left: -150px;
+     z-index: 0;
 }
 
 /* -----------------------------
-   ÉLÉMENTS DE FORMULAIRE
-   ----------------------------- */
-
-/* Groupe contenant un champ et son label */
+    ÉLÉMENTS DE FORMULAIRE
+    ----------------------------- */
 .form-group {
-    margin-bottom: 1.5rem; /* Espacement entre les groupes */
+     margin-bottom: 2rem;
+     position: relative;
+     z-index: 2;
 }
 
-/* Étiquettes des champs de formulaire */
 .form-group label {
-    display: block; /* Affichage en bloc sur sa propre ligne */
-    margin-bottom: 0.5rem; /* Espace entre l'étiquette et le champ */
-    font-weight: 500; /* Légèrement en gras pour distinction */
-    color: #333; /* Couleur foncée pour meilleure lisibilité */
+     display: block;
+     margin-bottom: 0.75rem;
+     font-weight: 600;
+     color: var(--text-primary);
+     font-family: 'Inter', sans-serif;
 }
 
-/* Style des champs de saisie */
 .form-control {
-    width: 100%; /* Occupe toute la largeur disponible */
-    padding: 0.75rem; /* Espacement interne confortable */
-    border: 1px solid #ced4da; /* Bordure légère */
-    border-radius: 4px; /* Coins légèrement arrondis */
-    font-size: 1rem; /* Taille standard */
-    transition: border-color 0.15s ease-in-out; /* Animation au focus */
+     width: 100%;
+     padding: 0.9rem 1rem;
+     border: 1px solid var(--border-light);
+     border-radius: 12px;
+     font-size: 1rem;
+     font-family: 'Space Grotesk', sans-serif;
+     background: var(--card-bg);
+     color: var(--text-primary);
+     transition: all 0.3s ease;
 }
 
-/* État de focus des champs avec mise en évidence */
 .form-control:focus {
-    border-color: #5E75C9; /* Bordure bleue au focus */
-    outline: 0; /* Suppression du contour natif */
-    box-shadow: 0 0 0 0.2rem rgba(94, 117, 201, 0.25); /* Halo de focus */
+     border-color: var(--neptune-teal);
+     outline: 0;
+     box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
 }
 
-/* Style des cases à cocher avec disposition horizontale */
 .checkbox {
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Alignement vertical */
-    gap: 0.5rem; /* Espace entre case et libellé */
+     display: flex;
+     align-items: center;
+     gap: 0.75rem;
 }
 
-/* Style des cases à cocher agrandies */
 .checkbox input[type="checkbox"] {
-    width: 18px; /* Largeur augmentée pour meilleure visibilité */
-    height: 18px; /* Hauteur augmentée pour meilleure visibilité */
+     width: 20px;
+     height: 20px;
+     accent-color: var(--neptune-teal);
 }
 
-/* Texte d'aide sous les champs */
 small {
-    display: block; /* Affichage en bloc */
-    margin-top: 0.25rem; /* Petit espace après le champ */
-    color: #6c757d; /* Gris pour texte secondaire */
-    font-size: 0.875rem; /* Taille réduite */
+     display: block;
+     margin-top: 0.5rem;
+     color: var(--text-secondary);
+     font-size: 0.875rem;
+     font-family: 'Inter', sans-serif;
 }
 
-/* Indicateur de champ obligatoire */
 .required {
-    color: #dc3545; /* Rouge pour attirer l'attention */
+     color: #ef4444;
+     margin-left: 0.25rem;
 }
 
 /* -----------------------------
-   PRÉVISUALISATION D'IMAGES
-   ----------------------------- */
+    SYSTÈME D'ONGLETS
+    ----------------------------- */
+.form-tabs {
+     position: relative;
+     z-index: 2;
+     margin-bottom: 2rem;
+}
 
-/* Section de prévisualisation d'image */
+.tab-navigation {
+     display: flex;
+     gap: 1rem;
+     margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+     padding: 0.75rem 1.5rem;
+     background: var(--card-bg);
+     border: 1px solid var(--border-light);
+     border-radius: 12px;
+     font-family: 'Inter', sans-serif;
+     font-weight: 600;
+     color: var(--text-secondary);
+     cursor: pointer;
+     transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+     background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+     color: white;
+     border-color: transparent;
+     box-shadow: 0 4px 10px rgba(12, 29, 74, 0.15);
+}
+
+/* -----------------------------
+    PRÉVISUALISATION D'IMAGES
+    ----------------------------- */
 .image-preview {
-    margin-top: 1.5rem; /* Espace après les champs */
+     margin-top: 1.5rem;
 }
 
-/* Conteneur de l'aperçu d'image */
-#image-preview-container {
-    width: 100%; /* Pleine largeur */
-    height: 200px; /* Hauteur fixe */
-    border: 1px dashed #ced4da; /* Bordure en pointillés */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    justify-content: center; /* Centrage horizontal */
-    margin-top: 0.5rem; /* Petit espace sous le label */
-    background-color: #f1f3f5; /* Fond légèrement grisé */
-    border-radius: 4px; /* Coins arrondis */
-    overflow: hidden; /* Masque les dépassements */
+.preview-container {
+     width: 100%;
+     height: 220px;
+     border: 1px dashed var(--border-light);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin-top: 0.5rem;
+     background-color: var(--card-bg);
+     border-radius: 12px;
+     overflow: hidden;
 }
 
-/* Image prévisualisée avec dimensions maximales */
-#preview-image {
-    max-width: 100%; /* Largeur maximale adaptée au conteneur */
-    max-height: 100%; /* Hauteur maximale adaptée au conteneur */
-    object-fit: contain; /* Conserve les proportions */
+.preview-container img {
+     max-width: 100%;
+     max-height: 100%;
+     object-fit: contain;
 }
 
-/* Message affiché quand aucune image n'est sélectionnée */
-#no-image-selected {
-    color: #6c757d; /* Gris pour texte secondaire */
-    font-style: italic; /* Style italique pour distinction */
+#upload-placeholder, #select-placeholder {
+     color: var(--text-secondary);
+     font-style: italic;
+     padding: 2rem;
+     text-align: center;
 }
 
 /* -----------------------------
-   BOUTONS D'ACTION
-   ----------------------------- */
-
-/* Conteneur des boutons d'action en bas du formulaire */
+    BOUTONS D'ACTION
+    ----------------------------- */
 .form-actions {
-    display: flex; /* Disposition en flexbox */
-    gap: 1rem; /* Espace entre les boutons */
-    margin-top: 2rem; /* Espace important après le dernier champ */
+     display: flex;
+     gap: 1rem;
+     margin-top: 3rem;
+     position: relative;
+     z-index: 3;
 }
 
-/* Style commun pour tous les boutons */
 .btn {
-    display: inline-block; /* Comportement en ligne avec largeur */
-    font-weight: 500; /* Légèrement en gras */
-    text-align: center; /* Centrage du texte */
-    white-space: nowrap; /* Évite le retour à la ligne */
-    vertical-align: middle; /* Alignement vertical */
-    user-select: none; /* Empêche la sélection du texte */
-    border: 1px solid transparent; /* Bordure invisible par défaut */
-    padding: 0.75rem 1.5rem; /* Espacement interne confortable */
-    font-size: 1rem; /* Taille standard */
-    line-height: 1.5; /* Hauteur de ligne pour lisibilité */
-    border-radius: 4px; /* Coins arrondis */
-    cursor: pointer; /* Curseur main au survol */
-    transition: all 0.15s ease-in-out; /* Animation au survol */
-    text-decoration: none; /* Supprime le soulignement pour les liens */
+     position: relative;
+     padding: 0.9rem 1.8rem;
+     border-radius: 12px;
+     font-size: 1rem;
+     font-weight: 600;
+     text-decoration: none;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.3s ease;
+     overflow: hidden;
+     font-family: 'Inter', sans-serif;
+     letter-spacing: 0.01em;
+     border: none;
+     cursor: pointer;
 }
 
-/* Bouton principal en bleu */
 .btn-primary {
-    color: #fff; /* Texte blanc */
-    background-color: #5E75C9; /* Fond bleu identitaire */
-    border-color: #5E75C9; /* Bordure assortie */
+     background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+     color: white;
+     box-shadow: 
+          0 4px 6px rgba(30, 58, 138, 0.1),
+          0 10px 15px -3px rgba(30, 58, 138, 0.1),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
-/* Animation au survol du bouton principal */
+.btn-primary::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: -100%;
+     width: 100%;
+     height: 100%;
+     background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.2) 50%,
+          transparent 100%
+     );
+     transition: left 0.7s ease;
+}
+
 .btn-primary:hover {
-    background-color: #4c61b8; /* Bleu légèrement plus foncé */
-    border-color: #4c61b8; /* Bordure assortie */
+     transform: translateY(-3px);
+     box-shadow: 
+          0 10px 20px -3px rgba(30, 58, 138, 0.15),
+          0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* État désactivé du bouton principal */
-.btn-primary:disabled {
-    background-color: #b1bdea; /* Bleu fortement désaturé */
-    border-color: #b1bdea; /* Bordure assortie */
-    cursor: not-allowed; /* Curseur indiquant non disponible */
+.btn-primary:hover::before {
+     left: 100%;
 }
 
-/* Bouton secondaire en gris clair */
 .btn-secondary {
-    color: #212529; /* Texte foncé */
-    background-color: #f8f9fa; /* Fond gris très clair */
-    border-color: #ced4da; /* Bordure légèrement plus foncée */
+     background: transparent;
+     color: var(--space-blue);
+     border: 2px solid var(--space-blue);
+     position: relative;
+     overflow: hidden;
+     z-index: 1;
 }
 
-/* Animation au survol du bouton secondaire */
+.btn-secondary::after {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 0;
+     height: 100%;
+     background-color: var(--space-blue);
+     z-index: -1;
+     transition: width 0.3s ease;
+}
+
 .btn-secondary:hover {
-    background-color: #e2e6ea; /* Gris légèrement plus foncé */
-    border-color: #ced4da; /* Bordure inchangée */
+     color: white;
+     transform: translateY(-3px);
+     box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:hover::after {
+     width: 100%;
+}
+
+/* Pour les alertes d'information */
+.alert {
+     padding: 1rem 1.5rem;
+     border-radius: 12px;
+     margin: 1.5rem 0;
+     font-family: 'Inter', sans-serif;
+}
+
+.alert-info {
+     background-color: rgba(139, 92, 246, 0.1);
+     border: 1px solid rgba(139, 92, 246, 0.2);
+     color: var(--cosmos-purple);
 }
 
 /* -----------------------------
-   ADAPTATIONS RESPONSIVES
-   ----------------------------- */
+    ADAPTATIONS RESPONSIVES
+    ----------------------------- */
+@media (max-width: 768px) {
+     .room-form {
+          padding: 2rem;
+     }
+     
+     .form-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1rem;
+     }
+     
+     .tab-navigation {
+          flex-direction: column;
+     }
+}
 
-/* Styles spécifiques pour les petits écrans */
-@media (max-width: 576px) {
-    /* Passage de l'en-tête en disposition verticale */
-    .form-header {
-        flex-direction: column; /* Empile verticalement */
-        align-items: flex-start; /* Aligne à gauche */
-    }
-    
-    /* Ajustement du bouton de retour dans l'en-tête */
-    .form-header a {
-        margin-top: 1rem; /* Espace après le titre */
-    }
-    
-    /* Passage des boutons d'action en disposition verticale */
-    .form-actions {
-        flex-direction: column; /* Empile verticalement */
-    }
-    
-    /* Élargissement des boutons pour meilleure accessibilité */
-    .btn {
-        width: 100%; /* Pleine largeur */
-    }
+@media (max-width: 480px) {
+     .form-actions {
+          flex-direction: column;
+     }
+     
+     .btn {
+          width: 100%;
+     }
+     
+     .form-header h1 {
+          font-size: 1.75rem;
+     }
 }

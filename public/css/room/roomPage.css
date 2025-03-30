@@ -1,810 +1,1042 @@
 /* ==========================================================================
    STYLES DE PAGE DE CHAMBRE - HÔTEL NEPTUNE
-   Feuille de style pour les pages de détail des chambres, avec galerie d'images,
-   système de réservation et présentation des équipements
+   Design ultra-moderne avec thème spatial assorti aux pages d'erreur
    ========================================================================== */
+
+/* -----------------------------
+   IMPORTATION DES POLICES MODERNES
+   ----------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
+   
+/* -----------------------------
+   VARIABLES GLOBALES - THÈME SPATIAL
+   ----------------------------- */
+:root {
+    --space-blue: #0c1d4a;
+    --space-blue-light: #1e3a8a;
+    --neptune-teal: #2dd4bf;
+    --neptune-teal-dark: #0d9488;
+    --cosmos-purple: #8b5cf6;
+    --cosmos-purple-light: #a78bfa;
+    --star-yellow: #eab308;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --background: #ffffff;
+    --card-bg: #f8fafc;
+    --border-light: #e2e8f0;
+    
+    /* Status colors - harmonized with theme */
+    --status-available: #0d9488;
+    --status-unavailable: #dc2626;
+}
+
+/* -----------------------------
+   ANIMATIONS MODERNES
+   ----------------------------- */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatAnimation {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.03);
+        opacity: 0.9;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -100px;
+    }
+    100% {
+        background-position: 300px;
+    }
+}
+
+@keyframes orbit {
+    0% {
+        transform: rotate(0deg) translateX(60px) rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg) translateX(60px) rotate(-360deg);
+    }
+}
 
 /* -----------------------------
    CONTENEUR PRINCIPAL
    ----------------------------- */
-
-/* Conteneur global avec largeur maximale et animation d'entrée */
 .room-detail-container {
-    max-width: 1200px; /* Limite la largeur pour meilleure lisibilité */
-    margin: 2rem auto; /* Centrage horizontal avec espacement vertical */
-    padding: 0 2rem; /* Espacement horizontal */
-    animation: fadeIn 0.5s ease-out; /* Animation d'apparition progressive */
+    max-width: 1200px;
+    margin: 2rem auto 4rem;
+    padding: 0 2rem;
+    position: relative;
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Éléments spatiaux décoratifs */
+.room-detail-container::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+    opacity: 0.03;
+    top: -200px;
+    right: -200px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.room-detail-container::after {
+    content: "";
+    position: absolute;
+    border: 1px dashed var(--border-light);
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    bottom: -200px;
+    left: -200px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Élément flottant */
+.float-element {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--star-yellow);
+    box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.2);
+    z-index: 0;
+    animation: floatAnimation 5s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.float-element:nth-child(1) {
+    top: 15%;
+    right: 10%;
+    width: 6px;
+    height: 6px;
+    animation-delay: 0s;
+}
+
+.float-element:nth-child(2) {
+    top: 60%;
+    left: 5%;
+    width: 4px;
+    height: 4px;
+    animation-delay: 1s;
+}
+
+.float-element:nth-child(3) {
+    bottom: 10%;
+    right: 15%;
+    width: 5px;
+    height: 5px;
+    animation-delay: 2s;
 }
 
 /* -----------------------------
    EN-TÊTE DE LA PAGE
    ----------------------------- */
-
-/* Barre supérieure avec titre et actions */
 .room-header {
-    display: flex; /* Disposition en flexbox */
-    justify-content: space-between; /* Sépare le titre et les boutons d'action */
-    align-items: center; /* Alignement vertical centré */
-    margin-bottom: 2rem; /* Espace sous l'en-tête */
-    border-bottom: 1px solid #eaeaea; /* Séparateur discret */
-    padding-bottom: 1rem; /* Espacement interne bas */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
 }
 
-/* Style du titre principal de la chambre */
 .room-title h1 {
-    font-size: 2.5rem; /* Taille importante pour hiérarchie visuelle */
-    margin-bottom: 0.5rem; /* Petit espace sous le titre */
-    font-family: 'Inter', sans-serif; /* Police moderne sans-serif */
-    font-weight: 700; /* Police en gras */
-    color: #333; /* Couleur sombre pour lisibilité */
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--text-primary);
+    position: relative;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Conteneur des étiquettes descriptives */
 .room-tags {
-    display: flex; /* Disposition en flexbox */
-    gap: 1rem; /* Espace entre les étiquettes */
-    margin-top: 0.5rem; /* Espace au-dessus des étiquettes */
-    flex-wrap: wrap; /* Permet le retour à la ligne sur petits écrans */
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
 }
 
-/* Style des étiquettes individuelles */
 .room-tag {
-    background-color: #f8f9fa; /* Fond gris très clair */
-    padding: 0.25rem 0.75rem; /* Espacement interne */
-    border-radius: 4px; /* Coins arrondis */
-    font-size: 0.9rem; /* Taille de texte réduite */
-    color: #333; /* Texte foncé pour contraste */
-    display: inline-flex; /* Disposition en ligne avec flexbox */
-    align-items: center; /* Centrage vertical */
-    transition: all 0.3s ease; /* Animation douce */
+    background-color: var(--card-bg);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
 }
 
-/* Variante pour chambre disponible */
 .room-tag.available {
-    background-color: #28a745; /* Fond vert */
-    color: white; /* Texte blanc pour contraste */
+    background-color: rgba(45, 212, 191, 0.15);
+    color: var(--status-available);
+    border: 1px solid rgba(45, 212, 191, 0.3);
 }
 
-/* Variante pour chambre non disponible */
 .room-tag.unavailable {
-    background-color: #dc3545; /* Fond rouge */
-    color: white; /* Texte blanc pour contraste */
+    background-color: rgba(220, 38, 38, 0.1);
+    color: var(--status-unavailable);
+    border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-/* Conteneur des boutons d'action */
 .room-actions {
-    display: flex; /* Disposition en flexbox */
-    gap: 10px; /* Espace entre les boutons */
-    align-items: center; /* Alignement vertical */
-    justify-content: flex-end; /* Aligné à droite */
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 /* -----------------------------
    BOUTONS D'ACTION
    ----------------------------- */
-
-/* Style commun pour tous les boutons */
 .btn {
-    display: inline-flex; /* Disposition en ligne avec flexbox */
-    align-items: center; /* Centrage vertical */
-    gap: 8px; /* Espace entre icône et texte */
-    padding: 10px 16px; /* Espacement interne */
-    border-radius: 8px; /* Coins arrondis */
-    font-weight: 500; /* Légèrement en gras */
-    transition: all 0.2s ease; /* Animation douce */
-    text-decoration: none; /* Suppression du soulignement pour liens */
-    cursor: pointer; /* Curseur main au survol */
+    position: relative;
+    padding: 0.9rem 1.8rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.01em;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
 }
 
-/* Bouton principal bleu */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+    );
+    transition: left 0.7s ease;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
 .btn-primary {
-    background-color: #5E75C9; /* Fond bleu identitaire */
-    color: white; /* Texte blanc */
-    border: none; /* Sans bordure */
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+    color: white;
+    box-shadow: 
+        0 4px 6px rgba(30, 58, 138, 0.1),
+        0 10px 15px -3px rgba(30, 58, 138, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
-/* Animation au survol du bouton principal */
 .btn-primary:hover {
-    background-color: #4c61b8; /* Bleu légèrement plus foncé */
-    box-shadow: 0 4px 8px rgba(94, 117, 201, 0.3); /* Ombre portée */
+    transform: translateY(-3px);
+    box-shadow: 
+        0 10px 20px -3px rgba(30, 58, 138, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* État au clic du bouton principal */
-.btn-primary:active {
-    transform: scale(0.98); /* Léger effet d'enfoncement */
-}
-
-/* Bouton secondaire gris */
 .btn-secondary {
-    background-color: #6c757d; /* Fond gris */
-    color: white; /* Texte blanc */
+    background: linear-gradient(135deg, var(--text-secondary), #475569);
+    color: white;
+    box-shadow: 
+        0 4px 6px rgba(100, 116, 139, 0.1),
+        0 10px 15px -3px rgba(100, 116, 139, 0.1);
 }
 
-/* Animation au survol du bouton secondaire */
 .btn-secondary:hover {
-    background-color: #5a6268; /* Gris légèrement plus foncé */
-    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3); /* Ombre portée */
+    transform: translateY(-3px);
+    box-shadow: 
+        0 10px 20px -3px rgba(100, 116, 139, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* État au clic du bouton secondaire */
-.btn-secondary:active {
-    transform: scale(0.98); /* Léger effet d'enfoncement */
-}
-
-/* Bouton danger rouge */
 .btn-danger {
-    background-color: #dc3545; /* Fond rouge */
-    color: white; /* Texte blanc */
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: white;
+    box-shadow: 
+        0 4px 6px rgba(220, 38, 38, 0.1),
+        0 10px 15px -3px rgba(220, 38, 38, 0.1);
 }
 
-/* Animation au survol du bouton danger */
 .btn-danger:hover {
-    background-color: #c82333; /* Rouge légèrement plus foncé */
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); /* Ombre portée */
+    transform: translateY(-3px);
+    box-shadow: 
+        0 10px 20px -3px rgba(220, 38, 38, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* État au clic du bouton danger */
-.btn-danger:active {
-    transform: scale(0.98); /* Léger effet d'enfoncement */
-}
-
-/* Bouton contour transparent */
 .btn-outline {
-    background-color: transparent; /* Fond transparent */
-    color: #5E75C9; /* Texte bleu */
-    border: 1px solid #5E75C9; /* Bordure bleue */
+    background: transparent;
+    color: var(--space-blue);
+    border: 2px solid var(--space-blue);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-/* Animation au survol du bouton contour */
+.btn-outline::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--space-blue);
+    z-index: -1;
+    transition: width 0.3s ease;
+}
+
 .btn-outline:hover {
-    background-color: #5E75C9; /* Fond devient bleu */
-    color: white; /* Texte devient blanc */
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
 }
 
-/* État au clic du bouton contour */
-.btn-outline:active {
-    transform: scale(0.98); /* Léger effet d'enfoncement */
+.btn-outline:hover::after {
+    width: 100%;
 }
 
 /* -----------------------------
    CONTENU PRINCIPAL
    ----------------------------- */
-
-/* Grille pour la disposition du contenu */
 .room-content {
-    display: grid; /* Disposition en grille */
-    grid-template-columns: 3fr 2fr; /* Ratio de largeur 60/40 */
-    gap: 2rem; /* Espace entre les colonnes */
-    margin-bottom: 3rem; /* Marge sous le contenu */
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 /* -----------------------------
    GALERIE D'IMAGES
    ----------------------------- */
-
-/* Conteneur de la galerie */
 .room-gallery {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Empile verticalement */
-    gap: 1rem; /* Espace entre image principale et vignettes */
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    animation: fadeIn 0.8s ease-out;
 }
 
-/* Conteneur de l'image principale */
 .main-image {
-    width: 100%; /* Pleine largeur */
-    height: 400px; /* Hauteur fixe */
-    border-radius: 8px; /* Coins arrondis */
-    overflow: hidden; /* Masque les dépassements */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Ombre légère */
+    width: 100%;
+    height: 450px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(0, 0, 0, 0.03);
+    position: relative;
 }
 
-/* Image principale avec effet de zoom */
 .main-image img {
-    width: 100%; /* Pleine largeur */
-    height: 100%; /* Pleine hauteur */
-    object-fit: cover; /* Couvre tout l'espace sans déformation */
-    transition: transform 0.3s ease; /* Animation douce pour zoom */
-    background-color: #f1f1f1; /* Fond de chargement */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-/* Animation au survol de l'image principale */
-.main-image img:hover {
-    transform: scale(1.03); /* Léger zoom */
+.main-image:hover img {
+    transform: scale(1.05);
 }
 
-/* Bande de vignettes d'images */
 .image-thumbnails {
-    display: flex; /* Disposition en flexbox */
-    gap: 0.5rem; /* Espace entre les vignettes */
-    flex-wrap: wrap; /* Permet le retour à la ligne */
-    overflow-x: auto; /* Défilement horizontal si nécessaire */
-    padding-bottom: 0.5rem; /* Espace pour scrollbar */
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
 }
 
-/* Vignette individuelle */
 .thumbnail {
-    width: 80px; /* Largeur fixe */
-    height: 60px; /* Hauteur fixe */
-    border-radius: 4px; /* Coins arrondis */
-    overflow: hidden; /* Masque les dépassements */
-    cursor: pointer; /* Curseur main */
-    border: 2px solid transparent; /* Bordure invisible par défaut */
-    transition: all 0.2s ease; /* Animation douce */
-    background-color: #f1f1f1; /* Fond de chargement */
+    width: 85px;
+    height: 65px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
 }
 
-/* Style de la vignette active */
 .thumbnail.active {
-    border-color: #5E75C9; /* Bordure bleue pour l'image active */
+    border-color: var(--cosmos-purple);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
 }
 
-/* Image dans les vignettes */
 .thumbnail img {
-    width: 100%; /* Pleine largeur */
-    height: 100%; /* Pleine hauteur */
-    object-fit: cover; /* Couvre tout l'espace sans déformation */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-/* Animation au survol des vignettes */
-.thumbnail:hover {
-    opacity: 0.9; /* Légère transparence */
+.thumbnail:hover img {
+    transform: scale(1.1);
 }
 
 /* -----------------------------
    INFORMATIONS SUR LA CHAMBRE
    ----------------------------- */
-
-/* Colonne d'informations */
 .room-info {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Empile verticalement */
-    gap: 2rem; /* Espace entre les sections */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.8s ease-out 0.2s;
+    animation-fill-mode: both;
 }
 
-/* Sections d'informations */
 .room-description, .room-amenities, .room-rules {
-    margin-bottom: 1.5rem; /* Espace entre les sections */
+    margin-bottom: 1rem;
+    position: relative;
 }
 
-/* Titres des sections d'information */
 .room-description h2, .room-amenities h2, .room-rules h2 {
-    font-size: 1.5rem; /* Taille moyenne */
-    margin-bottom: 1rem; /* Espace sous le titre */
-    font-weight: 600; /* Semi-gras */
-    color: #333; /* Couleur foncée */
-    border-left: 4px solid #5E75C9; /* Accent bleu à gauche */
-    padding-left: 0.75rem; /* Espace après l'accent */
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    padding-left: 1rem;
 }
 
-/* Texte de description */
+.room-description h2::before, .room-amenities h2::before, .room-rules h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    height: 70%;
+    width: 4px;
+    background: linear-gradient(135deg, var(--cosmos-purple), var(--space-blue));
+    border-radius: 2px;
+}
+
 .room-description p {
-    line-height: 1.6; /* Interligne confortable */
-    color: #555; /* Gris foncé pour lisibilité */
-    text-align: justify; /* Texte justifié */
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
 }
 
-/* Listes d'équipements et règles */
 .room-amenities ul, .room-rules ul {
-    list-style: none; /* Suppression des puces */
-    padding: 0; /* Suppression du padding */
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-/* Éléments de liste avec icônes */
 .room-amenities li, .room-rules li {
-    margin-bottom: 0.5rem; /* Espace entre les éléments */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Alignement vertical */
-    gap: 0.5rem; /* Espace entre icône et texte */
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-secondary);
 }
 
-/* Icônes dans les listes */
-.room-amenities i, .room-rules i {
-    color: #5E75C9; /* Couleur bleue identitaire */
-    font-size: 1.1rem; /* Taille légèrement plus grande */
+.room-amenities i {
+    color: var(--neptune-teal);
+    font-size: 1.1rem;
+}
+
+.room-rules i {
+    color: var(--cosmos-purple);
+    font-size: 1.1rem;
 }
 
 /* -----------------------------
    FORMULAIRE DE RÉSERVATION
    ----------------------------- */
-
-/* Conteneur du bloc de réservation */
 .booking-container {
-    display: grid; /* Disposition en grille */
-    grid-template-columns: 3fr 2fr; /* Ratio de largeur 60/40 */
-    gap: 2rem; /* Espace entre les colonnes */
-    margin-bottom: 3rem; /* Espace sous le conteneur */
-    background-color: #f8f9fa; /* Fond gris très clair */
-    padding: 2rem; /* Espacement interne */
-    border-radius: 8px; /* Coins arrondis */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Ombre légère */
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
+    background-color: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out 0.4s;
+    animation-fill-mode: both;
 }
 
-/* Styles pour le formulaire de réservation */
+/* Élément décoratif: Orbite */
+.booking-container::after {
+    content: "";
+    position: absolute;
+    border: 1px dashed var(--border-light);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    bottom: -150px;
+    right: -150px;
+    z-index: 0;
+    pointer-events: none;
+}
+
 .booking-form-container {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--background);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.03),
+        0 0 0 1px rgba(0, 0, 0, 0.02);
+    position: relative;
+    z-index: 1;
 }
 
 .booking-form-container h2 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 1.5rem;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #495057;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
 }
 
 .form-control {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    background-color: white;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.form-control:focus {
+    border-color: var(--cosmos-purple);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    outline: none;
+    background-color: var(--background);
 }
 
 textarea.form-control {
-    min-height: 100px;
+    min-height: 120px;
     resize: vertical;
 }
 
 .btn-block {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .unavailable-alert {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 15px;
-    border-radius: 4px;
+    background-color: rgba(220, 38, 38, 0.1);
+    color: var(--status-unavailable);
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-/* Titre du formulaire de réservation */
-.booking-form h2 {
-    font-size: 1.5rem; /* Taille moyenne */
-    margin-bottom: 1.5rem; /* Espace sous le titre */
-    font-weight: 600; /* Semi-gras */
-    color: #333; /* Couleur foncée */
-}
-
-/* Groupe de champs de formulaire */
-.form-group {
-    margin-bottom: 1.5rem; /* Espace entre les groupes */
-}
-
-/* Étiquette des champs */
-.form-group label {
-    display: block; /* Affichage en bloc */
-    margin-bottom: 0.5rem; /* Espace sous l'étiquette */
-    font-weight: 500; /* Légèrement en gras */
-    color: #444; /* Gris foncé */
-}
-
-/* Champs de saisie du formulaire */
-.form-group input, .form-group textarea {
-    width: 100%; /* Pleine largeur */
-    padding: 0.75rem; /* Espacement interne */
-    border: 1px solid #ddd; /* Bordure légère */
-    border-radius: 4px; /* Coins arrondis */
-    font-family: 'Inter', sans-serif; /* Police cohérente */
-    transition: border-color 0.3s; /* Animation au focus */
-}
-
-/* État de focus des champs */
-.form-group input:focus, .form-group textarea:focus {
-    border-color: #5E75C9; /* Bordure bleue au focus */
-    outline: none; /* Suppression du contour natif */
-    box-shadow: 0 0 0 2px rgba(94, 117, 201, 0.2); /* Halo subtil */
-}
-
-/* Zone de texte redimensionnable */
-.form-group textarea {
-    resize: vertical; /* Permet de redimensionner verticalement */
-    min-height: 100px; /* Hauteur minimale */
-}
-
-/* Résumé des prix */
-.price-summary {
-    margin: 1.5rem 0; /* Marges verticales */
-    padding: 1rem; /* Espacement interne */
-    background-color: white; /* Fond blanc pour contraste */
-    border-radius: 4px; /* Coins arrondis */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Ombre subtile */
-}
-
-/* Ligne du récapitulatif des prix */
-.price-line {
-    display: flex; /* Disposition en flexbox */
-    justify-content: space-between; /* Sépare libellé et montant */
-    margin-bottom: 0.5rem; /* Espace entre les lignes */
-    padding: 0.25rem 0; /* Espacement interne vertical */
-}
-
-/* Ligne de prix total en évidence */
-.price-line.total {
-    font-weight: bold; /* Texte en gras */
-    margin-top: 1rem; /* Espace au-dessus */
-    padding-top: 1rem; /* Padding interne supérieur */
-    border-top: 1px solid #ddd; /* Séparateur supérieur */
-    color: #5E75C9; /* Couleur bleue identitaire */
-}
-
-/* Texte d'information sur les prix */
-.price-info {
-    margin-top: 0.5rem; /* Espace au-dessus */
-    font-size: 0.85rem; /* Taille réduite */
-    color: #666; /* Gris moyen */
-    font-style: italic; /* Style italique pour distinction */
-}
-
-/* Bloc d'informations complémentaires */
-.booking-info {
-    padding: 1.5rem; /* Espacement interne */
-    background-color: white; /* Fond blanc */
-    border-radius: 4px; /* Coins arrondis */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Ombre subtile */
-}
-
-/* Titre du bloc d'informations */
-.booking-info h3 {
-    font-size: 1.2rem; /* Taille moyenne */
-    margin-bottom: 1rem; /* Espace sous le titre */
-    font-weight: 600; /* Semi-gras */
-    color: #333; /* Couleur foncée */
-}
-
-/* Liste des avantages */
-.booking-info ul {
-    list-style: none; /* Suppression des puces */
-    padding: 0; /* Suppression du padding */
-    margin-bottom: 1.5rem; /* Espace sous la liste */
-}
-
-/* Éléments de la liste d'avantages */
-.booking-info li {
-    margin-bottom: 0.75rem; /* Espace entre éléments */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Alignement vertical */
-    gap: 0.5rem; /* Espace entre icône et texte */
-}
-
-/* Icônes dans la liste d'avantages */
-.booking-info i {
-    color: #28a745; /* Vert pour icônes de validation */
-}
-
-/* Section de support client */
-.contact-support {
-    margin-top: 1.5rem; /* Espace au-dessus */
-    text-align: center; /* Centrage du texte */
-    padding-top: 1rem; /* Espace intérieur supérieur */
-    border-top: 1px dashed #ddd; /* Séparateur pointillé */
-}
-
-/* Numéro de téléphone du support */
-.support-phone {
-    display: block; /* Affichage en bloc */
-    margin-top: 0.5rem; /* Espace au-dessus */
-    color: #5E75C9; /* Couleur bleue identitaire */
-    font-size: 1.2rem; /* Taille légèrement plus grande */
-    text-decoration: none; /* Suppression du soulignement */
-    font-weight: 500; /* Légèrement en gras */
-}
-
-/* Animation au survol du numéro de téléphone */
-.support-phone:hover {
-    color: #4c61b8; /* Bleu légèrement plus foncé */
-}
-
-/* Message de chambre non disponible */
-.unavailable-message {
-    padding: 1.5rem; /* Espacement interne */
-    background-color: #f8d7da; /* Fond rouge pâle */
-    border-radius: 4px; /* Coins arrondis */
-    color: #721c24; /* Texte rouge foncé */
-    margin-bottom: 1.5rem; /* Espace sous le message */
-    text-align: center; /* Centrage du texte */
-}
-
-/* Invitation à se connecter */
-.login-prompt {
-    background-color: #e2f0fd; /* Fond bleu très pâle */
-    padding: 2rem; /* Espacement interne */
-    text-align: center; /* Centrage du texte */
-    border-radius: 8px; /* Coins arrondis */
-    margin-bottom: 3rem; /* Espace sous le bloc */
-    border-left: 4px solid #5E75C9; /* Accent bleu à gauche */
-}
-
-/* Texte d'invitation à la connexion */
-.login-prompt p {
-    margin-bottom: 1.5rem; /* Espace sous le paragraphe */
-    font-weight: 500; /* Légèrement en gras */
-}
-
-/* Boutons dans l'invitation à se connecter */
-.login-prompt .btn {
-    margin: 0 0.5rem; /* Espacement horizontal */
-}
-
-/* -----------------------------
-   CHAMBRES SIMILAIRES
-   ----------------------------- */
-
-/* Conteneur de la section des chambres similaires */
-.similar-rooms {
-    margin-bottom: 3rem; /* Espace sous la section */
-}
-
-/* Titre de la section */
-.similar-rooms h2 {
-    font-size: 1.8rem; /* Taille importante */
-    margin-bottom: 1.5rem; /* Espace sous le titre */
-    font-weight: 600; /* Semi-gras */
-    color: #333; /* Couleur foncée */
-    text-align: center; /* Centrage du texte */
-}
-
-/* Grille des chambres similaires */
-.similar-rooms-container {
-    display: grid; /* Disposition en grille */
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Colonnes responsives */
-    gap: 2rem; /* Espace entre les cartes */
-}
-
-/* Carte de chambre similaire */
-.similar-room {
-    border: 1px solid #ddd; /* Bordure légère */
-    border-radius: 8px; /* Coins arrondis */
-    overflow: hidden; /* Masque les dépassements */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation douce */
-    background-color: #fff; /* Fond blanc */
-}
-
-/* Animation au survol des cartes */
-.similar-room:hover {
-    transform: translateY(-5px); /* Léger flottement */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Ombre portée */
-}
-
-/* Image dans les cartes de chambres similaires */
-.similar-room img {
-    width: 100%; /* Pleine largeur */
-    height: 150px; /* Hauteur fixe */
-    object-fit: cover; /* Couvre tout l'espace sans déformation */
-    background-color: #f1f1f1; /* Fond de chargement */
-}
-
-/* Titre des chambres similaires */
-.similar-room h3 {
-    padding: 1rem 1rem 0.5rem; /* Espacement interne */
-    font-size: 1.2rem; /* Taille moyenne */
-    margin: 0; /* Suppression des marges */
-    color: #333; /* Couleur foncée */
-}
-
-/* Texte descriptif des chambres similaires */
-.similar-room p {
-    padding: 0 1rem 1rem; /* Espacement interne */
-    color: #666; /* Gris moyen */
-    margin: 0; /* Suppression des marges */
-}
-
-/* Bouton dans les cartes de chambres similaires */
-.similar-room .btn {
-    margin: 0 1rem 1rem; /* Marges */
-    display: block; /* Affichage en bloc */
-    text-align: center; /* Centrage du texte */
-}
-
-/* -----------------------------
-   ACCESSIBILITÉ ET ÉTATS DE FOCUS
-   ----------------------------- */
-
-/* Style de focus pour meilleure accessibilité */
-.btn:focus, input:focus, textarea:focus, select:focus {
-    outline: 2px solid #5E75C9; /* Contour bleu */
-    outline-offset: 2px; /* Décalage du contour */
-}
-
-/* Suppression du contour pour utilisateurs sans clavier */
-.btn:focus:not(:focus-visible), input:focus:not(:focus-visible), 
-textarea:focus:not(:focus-visible), select:focus:not(:focus-visible) {
-    outline: none; /* Suppression du contour */
-}
-
-/* État de chargement des images */
-.main-image img::before, .similar-room img::before {
-    content: "Image en cours de chargement"; /* Texte de chargement */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    justify-content: center; /* Centrage horizontal */
-    position: absolute; /* Positionnement absolu */
-    top: 0; /* Aligné en haut */
-    left: 0; /* Aligné à gauche */
-    width: 100%; /* Pleine largeur */
-    height: 100%; /* Pleine hauteur */
-    color: #666; /* Gris moyen */
-    background-color: #f8f9fa; /* Fond gris très clair */
-}
-
-/* -----------------------------
-   STYLES POUR LE CALCULATEUR DE PRIX
-   ----------------------------- */
-
+/* Style pour le calculateur de prix */
 #price-calculator {
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px 0;
-    border-left: 4px solid var(--primary-color);
+    margin-top: 25px;
+    padding: 20px;
+    background-color: var(--background);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
 }
 
 .price-preview {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .price-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 0.95rem;
-    color: #6c757d;
+    color: var(--text-secondary);
+    font-family: 'Space Grotesk', sans-serif;
 }
 
 .price-row.total {
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1.1rem;
-    color: #333;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #dee2e6;
+    color: var(--text-primary);
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-light);
+    font-family: 'Playfair Display', serif;
 }
 
-.d-none {
-    display: none;
+.price-row.total .amount {
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .form-text {
-    margin-top: 5px;
+    margin-top: 8px;
     font-size: 0.85rem;
-    color: #6c757d;
-}
-
-/* Amélioration des éléments de formulaire */
-.form-control {
-    padding: 12px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(94, 117, 201, 0.15);
-}
-
-.booking-btn {
-    margin-top: 15px;
-    padding: 12px 20px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.3s ease;
-}
-
-.booking-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.booking-btn:not(:disabled):hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(94, 117, 201, 0.2);
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
 }
 
 /* -----------------------------
-   ANIMATIONS
+   INFORMATIONS DE RÉSERVATION
    ----------------------------- */
+.booking-info {
+    padding: 30px;
+    background-color: var(--background);
+    border-radius: 16px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.03),
+        0 0 0 1px rgba(0, 0, 0, 0.02);
+    position: relative;
+    z-index: 1;
+}
 
-/* Animation d'apparition progressive */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); } /* État initial invisible et décalé */
-    to { opacity: 1; transform: translateY(0); } /* État final visible et positionné */
+.booking-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: 'Playfair Display', serif;
+    position: relative;
+    background: linear-gradient(135deg, var(--neptune-teal), var(--space-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.booking-info ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.booking-info li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.booking-info i {
+    color: var(--neptune-teal);
+    font-size: 1.1rem;
+    margin-top: 3px;
+}
+
+.contact-support {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-light);
+}
+
+.contact-support p {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.support-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    color: var(--space-blue);
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+    background-color: var(--card-bg);
+}
+
+.support-phone:hover {
+    color: var(--cosmos-purple);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-color: var(--cosmos-purple-light);
+}
+
+/* -----------------------------
+   INVITATION À SE CONNECTER
+   ----------------------------- */
+.login-prompt {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.03), rgba(139, 92, 246, 0.03));
+    padding: 2.5rem;
+    text-align: center;
+    border-radius: 24px;
+    margin-bottom: 3.5rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.8s ease-out 0.6s;
+    animation-fill-mode: both;
+    border: 1px solid var(--border-light);
+}
+
+.login-prompt::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+    opacity: 0.03;
+    top: -150px;
+    left: -150px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.login-prompt p {
+    margin-bottom: 25px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    position: relative;
+    z-index: 1;
+}
+
+.login-prompt .btn {
+    margin: 0 10px;
+    min-width: 140px;
+}
+
+/* -----------------------------
+   CHAMBRES SIMILAIRES
+   ----------------------------- */
+.similar-rooms {
+    margin-bottom: 4rem;
+    animation: fadeIn 0.8s ease-out 0.8s;
+    animation-fill-mode: both;
+}
+
+.similar-rooms h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.similar-rooms-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.similar-room {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.05),
+        0 0 0 1px rgba(0, 0, 0, 0.03);
+    background-color: var(--background);
+    position: relative;
+}
+
+.similar-room:hover {
+    transform: translateY(-10px);
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.similar-room img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.similar-room:hover img {
+    transform: scale(1.05);
+}
+
+.similar-room h3 {
+    padding: 1.25rem 1.25rem 0.5rem;
+    font-size: 1.3rem;
+    margin: 0;
+    color: var(--text-primary);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+.similar-room p {
+    padding: 0 1.25rem 1.25rem;
+    color: var(--text-secondary);
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+}
+
+.similar-room .btn {
+    margin: 0 1.25rem 1.25rem;
+    display: block;
+    text-align: center;
+}
+
+/* -----------------------------
+   DATEPICKER STYLE CUSTOM
+   ----------------------------- */
+.flatpickr-calendar {
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1) !important;
+    border: none !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+}
+
+.flatpickr-monthDropdown-months,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-months .flatpickr-month {
+    background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light)) !important;
+    color: white !important;
+}
+
+.flatpickr-months .flatpickr-prev-month, 
+.flatpickr-months .flatpickr-next-month {
+    fill: white !important;
+    color: white !important;
+}
+
+.flatpickr-day.selected, 
+.flatpickr-day.startRange, 
+.flatpickr-day.endRange, 
+.flatpickr-day.selected.inRange, 
+.flatpickr-day.startRange.inRange, 
+.flatpickr-day.endRange.inRange, 
+.flatpickr-day.selected:focus, 
+.flatpickr-day.startRange:focus, 
+.flatpickr-day.endRange:focus, 
+.flatpickr-day.selected:hover, 
+.flatpickr-day.startRange:hover, 
+.flatpickr-day.endRange:hover, 
+.flatpickr-day.selected.prevMonthDay, 
+.flatpickr-day.startRange.prevMonthDay, 
+.flatpickr-day.endRange.prevMonthDay, 
+.flatpickr-day.selected.nextMonthDay, 
+.flatpickr-day.startRange.nextMonthDay, 
+.flatpickr-day.endRange.nextMonthDay {
+    background: linear-gradient(135deg, var(--cosmos-purple), var(--cosmos-purple-light)) !important;
+    border-color: var(--cosmos-purple) !important;
+    box-shadow: 0 4px 10px rgba(139, 92, 246, 0.2) !important;
+}
+
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n+1)), 
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n+1)), 
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n+1)) {
+    box-shadow: -10px 0 0 var(--cosmos-purple-light) !important;
+}
+
+.flatpickr-day.inRange,
+.flatpickr-day.prevMonthDay.inRange,
+.flatpickr-day.nextMonthDay.inRange,
+.flatpickr-day.today.inRange,
+.flatpickr-day.prevMonthDay.today.inRange,
+.flatpickr-day.nextMonthDay.today.inRange,
+.flatpickr-day:hover,
+.flatpickr-day.prevMonthDay:hover,
+.flatpickr-day.nextMonthDay:hover,
+.flatpickr-day:focus,
+.flatpickr-day.prevMonthDay:focus,
+.flatpickr-day.nextMonthDay:focus {
+    background: rgba(139, 92, 246, 0.1) !important;
+    border-color: rgba(139, 92, 246, 0.3) !important;
 }
 
 /* -----------------------------
    ADAPTATIONS RESPONSIVES
    ----------------------------- */
-
-/* Tablettes et écrans moyens */
 @media (max-width: 992px) {
-    /* Passage en colonne unique pour le contenu principal */
     .room-content, .booking-container {
-        grid-template-columns: 1fr; /* Une seule colonne */
+        grid-template-columns: 1fr;
     }
     
-    /* Adaptation de l'en-tête */
     .room-header {
-        flex-direction: column; /* Empile verticalement */
-        align-items: flex-start; /* Aligne à gauche */
+        flex-direction: column;
+        align-items: flex-start;
     }
     
-    /* Repositionnement des boutons d'action */
     .room-actions {
-        margin-top: 1rem; /* Espace au-dessus */
+        margin-top: 1.5rem;
+        width: 100%;
+        justify-content: flex-start;
     }
     
-    /* Déplacement du bloc d'informations */
-    .booking-info {
-        margin-top: 1rem; /* Espace au-dessus */
-    }
-}
-
-/* Petites tablettes et grands mobiles */
-@media (max-width: 768px) {
-    /* Adaptation de la grille des chambres similaires */
-    .similar-rooms-container {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Colonnes plus étroites */
-    }
-    
-    /* Centrage des vignettes */
-    .image-thumbnails {
-        justify-content: center; /* Centrage horizontal */
-    }
-    
-    /* Adaptation des étiquettes */
-    .room-tags {
-        flex-wrap: wrap; /* Permet le retour à la ligne */
-    }
-}
-
-/* Smartphones */
-@media (max-width: 576px) {
-    /* Réduction des marges latérales */
-    .room-detail-container {
-        padding: 0 1rem; /* Espacement horizontal réduit */
-    }
-    
-    /* Réduction de la taille du titre */
-    .room-title h1 {
-        font-size: 2rem; /* Taille réduite */
-    }
-    
-    /* Réduction de la hauteur de l'image principale */
     .main-image {
-        height: 300px; /* Hauteur réduite */
+        height: 400px;
     }
     
-    /* Réduction du padding du conteneur de réservation */
+    .similar-rooms-container {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .room-detail-container {
+        padding: 0 1.5rem;
+    }
+    
+    .room-title h1 {
+        font-size: 2.2rem;
+    }
+    
+    .main-image {
+        height: 350px;
+    }
+    
     .booking-container {
-        padding: 1.5rem 1rem; /* Espacement interne réduit */
+        padding: 2rem;
     }
     
-    /* Réduction de la taille des boutons */
-    .btn {
-        padding: 0.5rem 0.75rem; /* Espacement interne réduit */
-        font-size: 0.9rem; /* Taille de texte réduite */
+    .similar-rooms-container {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
     
-    /* Adaptation des boutons dans l'invitation à se connecter */
+    .login-prompt {
+        padding: 2rem;
+    }
+    
     .login-prompt .btn {
-        display: block; /* Affichage en bloc */
-        margin: 0.5rem auto; /* Centrage avec espacement */
-        width: 80%; /* Largeur définie */
+        margin: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .room-detail-container {
+        padding: 0 1rem;
+        margin: 1.5rem auto 3rem;
+    }
+    
+    .room-title h1 {
+        font-size: 1.8rem;
+    }
+    
+    .room-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .room-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .main-image {
+        height: 300px;
+    }
+    
+    .booking-container {
+        padding: 1.5rem;
+    }
+    
+    .booking-form-container, .booking-info {
+        padding: 1.5rem;
+    }
+    
+    .similar-rooms-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .login-prompt {
+        padding: 1.5rem;
+    }
+    
+    .login-prompt .btn {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .similar-room .btn {
+        width: calc(100% - 2.5rem);
     }
 }

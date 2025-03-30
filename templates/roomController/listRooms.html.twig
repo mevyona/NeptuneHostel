@@ -5,56 +5,14 @@
 {% block css %} 
     {{ parent() }} 
     <link rel='stylesheet' href='css/room/room.css'> 
-    <style>
-        /* Styles pour les boutons d'administration sur les cartes */
-        .room-admin-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
-            z-index: 5;
-        }
-        
-        .admin-btn {
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            color: white;
-            backdrop-filter: blur(5px);
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        .admin-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        .edit-btn {
-            background-color: rgba(94, 117, 201, 0.9);
-        }
-        
-        .edit-btn:hover {
-            background-color: #4c61b8;
-        }
-        
-        .delete-btn {
-            background-color: rgba(220, 53, 69, 0.9);
-        }
-        
-        .delete-btn:hover {
-            background-color: #c82333;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
+<!-- Éléments spatiaux décoratifs -->
+<div class="float-element"></div>
+<div class="float-element"></div>
+<div class="float-element"></div>
+
 <section class="rooms-header">
     <h1>Nos chambres</h1>
     <p>Découvrez nos chambres à thème inspirées de l'espace</p>
@@ -94,7 +52,7 @@
                         <div class="details">
                             <div class="room-info">
                                 <p class="room-name">Chambre {{ room.name }} #{{ room.id }}</p>
-                                <p class="room-capacity">Capacité : {{ room.capacity }} personne{% if room.capacity > 1 %}s{% endif %}</p>
+                                <p class="room-capacity"><i class="bi bi-people-fill"></i> Capacité : {{ room.capacity }} personne{% if room.capacity > 1 %}s{% endif %}</p>
                                 <p class="room-price">{{ room.price }}€ / nuit</p>
                             </div>
                             <div class="room-amenities">

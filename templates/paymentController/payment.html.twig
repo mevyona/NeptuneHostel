@@ -9,6 +9,14 @@
 {% endblock %}
        
 {% block content %} 
+<!-- Éléments spatiaux décoratifs -->
+<div class="float-element"></div>
+<div class="float-element"></div>
+<div class="float-element"></div>
+<div class="planet"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star"></div>
+
 <div class="payment-page-title">
     <h1>Finaliser votre réservation</h1>
     <p>Complétez vos informations pour confirmer votre séjour</p>
@@ -208,7 +216,7 @@
                 
                 <button type="submit" form="payment-form" class="checkout-btn">
                     <i class="bi bi-lock-fill"></i>
-                    Confirmer et payer
+                    <span>Confirmer et payer</span>
                 </button>
                 
                 <a href="index.php?page=showRoom&id={{ room.id }}" class="back-btn">
