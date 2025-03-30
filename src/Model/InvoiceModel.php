@@ -207,4 +207,18 @@ class InvoiceModel
     {
         return (int)$this->db->lastInsertId();
     }
+
+    /**
+     * Récupère une facture par ID de réservation
+     */
+    public function getInvoiceByReservationId(int $reservationId): ?array
+    {
+        $sql = "SELECT * FROM Invoice WHERE reservation_id = :reservation_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':reservation_id', $reservationId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $invoice = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $invoice ?: null;
+    }
 }

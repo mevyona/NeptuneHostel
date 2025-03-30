@@ -52,7 +52,10 @@ class ReservationModel
 
     public function getReservationById(int $id): ?array
     {
-        $sql = "SELECT r.*, ro.name as room_name, ro.price as room_price, u.first_name, u.last_name, u.email 
+        $sql = "SELECT r.*, 
+                      ro.name as room_name, ro.price as room_price, 
+                      u.first_name, u.last_name, u.email,
+                      DATEDIFF(r.check_out, r.check_in) as number_of_nights
                 FROM Reservation r
                 INNER JOIN Room ro ON r.room_id = ro.id
                 INNER JOIN User u ON r.user_id = u.id

@@ -7,6 +7,7 @@ namespace MyApp\Controller;
 use MyApp\Model\ReservationModel;
 use MyApp\Model\UserModel;
 use MyApp\Model\RoomModel;
+use MyApp\Model\InvoiceModel; // Ajoutez l'import en haut du fichier
 use MyApp\Entity\Reservation;
 use MyApp\Entity\User;
 use MyApp\Entity\Room;
@@ -20,6 +21,7 @@ class ReservationController
     private ReservationModel $reservationModel;
     private UserModel $userModel;
     private RoomModel $roomModel;
+    private InvoiceModel $invoiceModel; // Ajoutez cette propriété
 
     public function __construct(Environment $twig, DependencyContainer $container)
     {
@@ -27,6 +29,7 @@ class ReservationController
         $this->reservationModel = $container->get('ReservationModel');
         $this->userModel = $container->get('UserModel');
         $this->roomModel = $container->get('RoomModel');
+        $this->invoiceModel = $container->get('InvoiceModel'); // Ajoutez cette ligne
     }
 
     public function listReservations()
@@ -178,9 +181,36 @@ class ReservationController
             exit();
         }
 
+        // Calculer le nombre de nuits
+        $checkIn = new DateTime($reservation['check_in']);
+        $checkOut = new DateTime($reservation['check_out']);
+        $interval = $checkIn->diff($checkOut);
+        $numberOfNights = $interval->days;
+        
+        // Ajouter le nombre de nuits à l'objet réservation
+        $reservation['number_of_nights'] = $numberOfNights;
+        
+        // Récupérer la chambre pour afficher plus d'informations
+        $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
+        
+        // Créer l'adresse de facturation formatée
+        $billingAddress = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_STRING) . ", " . 
+                          filter_input(INPUT_POST, 'zip', FILTER_SANITIZE_STRING) . " " . 
+                          filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING) . ", " . 
+                          filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);
+        
+        $reservation['billing_address'] = $billingAddress ?? "Adresse non spécifiée";
+        
+        // Récupérer l'invoice pour avoir le montant total correct
+        $invoice = $this->invoiceModel->getInvoiceByReservationId((int)$reservationId);
+        if ($invoice) {
+            $reservation['total_amount'] = $invoice['total_amount'];
+        }
+
         // Afficher la page de confirmation
         echo $this->twig->render('reservationController/confirmation.html.twig', [
             'reservation' => $reservation,
+            'room' => $room,
             'session' => $_SESSION ?? []
         ]);
     }

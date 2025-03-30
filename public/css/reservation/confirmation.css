@@ -1,185 +1,446 @@
+:root {
+  /* Palette de couleurs moderne */
+  --primary-color: #5e75c9;
+  --primary-gradient: linear-gradient(135deg, #5e75c9, #7986cb);
+  --success-color: #28a745;
+  --success-gradient: linear-gradient(135deg, #28a745, #48bb78);
+  --pending-color: #f59e0b;
+  --cancelled-color: #ef4444;
+  
+  /* Textes */
+  --text-dark: #1e293b;  /* Slate 800 */
+  --text-muted: #64748b; /* Slate 500 */
+  --text-light: #f8fafc; /* Slate 50 */
+  
+  /* Bordures et arrière-plans */
+  --border-light: #e2e8f0;  /* Slate 200 */
+  --bg-light: #f8fafc;     /* Slate 50 */
+  --bg-white: #ffffff;
+  
+  /* Ombres et effets */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Espacements */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Rayons */
+  --radius-sm: 6px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+}
+
+body {
+  background-color: #f9fafb;
+  color: var(--text-dark);
+}
+
 .confirmation-container {
-    max-width: 900px;
-    margin: 3rem auto;
-    padding: 0 1.5rem;
+  max-width: 900px;
+  margin: var(--spacing-xl) auto;
+  padding: 0 var(--spacing-md);
+  font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, sans-serif;
 }
 
+/* Header avec icône de succès et effet brillant */
 .confirmation-header {
-    text-align: center;
-    margin-bottom: 3rem;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: fadeIn 0.8s ease-in-out;
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
+.confirmation-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(94, 117, 201, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+  z-index: -1;
+  animation: rotate 25s linear infinite;
+}
+
+/* Simplification et amélioration de l'icône de succès */
 .success-icon {
-    font-size: 5rem;
-    color: #28a745;
-    margin-bottom: 1rem;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Le cercle blanc devient l'élément principal qui sera animé */
+.success-icon::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: var(--shadow-sm);
+  z-index: 1;
+  border: 2px solid var(--success-color);
+  opacity: 0.9;
+  animation: pulseWithBorder 2s infinite ease-in-out;
+}
+
+.success-icon i {
+  font-size: 3.5rem;
+  color: var(--success-color);
+  position: relative;
+  z-index: 2;
+  animation: fadeInScale 0.5s ease-out;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
 }
 
 .confirmation-header h1 {
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-    color: #333;
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-dark);
+  letter-spacing: -0.025em;
+  background-image: var(--primary-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .confirmation-header p {
-    font-size: 1.2rem;
-    color: #6c757d;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.confirmation-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-bottom: 3rem;
+/* Carte de détails de réservation */
+.reservation-details {
+  margin-bottom: var(--spacing-lg);
+  animation: slideUp 0.5s ease-in-out;
 }
 
-.reservation-summary, .guest-info {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    padding: 1.5rem;
+.reservation-details h2 {
+  font-size: 1.3rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-dark);
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
 }
 
-h2 {
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 0.75rem;
-    color: #333;
+.reservation-details h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-image: var(--primary-gradient);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
 }
 
-h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--primary-color);
-    border-radius: 2px;
+.details-card {
+  background-color: var(--bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-light);
+}
+
+.details-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background-image: var(--primary-gradient);
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
 .detail-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing);
+  padding-bottom: var(--spacing);
+  border-bottom: 1px solid var(--border-light);
+  transition: all 0.2s ease;
+}
+
+.detail-row:hover {
+  transform: translateX(4px);
+  background-color: rgba(94, 117, 201, 0.03);
 }
 
 .detail-row:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .detail-label {
-    font-weight: 500;
-    color: #6c757d;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .detail-value {
-    font-weight: 600;
-    color: #333;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-align: right;
+}
+
+/* Badge de statut moderne */
+.status-confirmed, .status-pending, .status-cancelled {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .status-confirmed {
-    color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+  color: var(--success-color);
 }
 
+.status-confirmed::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  background-color: var(--success-color);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.status-pending {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--pending-color);
+}
+
+.status-pending::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  background-color: var(--pending-color);
+  border-radius: 50%;
+}
+
+.status-cancelled {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--cancelled-color);
+}
+
+.status-cancelled::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  background-color: var(--cancelled-color);
+  border-radius: 50%;
+}
+
+/* Section d'information hôtel */
 .hotel-info {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  animation: slideUp 0.7s ease-in-out;
 }
 
 .info-item {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+  background-color: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--spacing-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  gap: var(--spacing);
+  align-items: flex-start;
+  border: 1px solid var(--border-light);
 }
 
-.info-item:last-child {
-    margin-bottom: 0;
+.info-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
 .info-item i {
-    font-size: 2rem;
-    color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-image: var(--primary-gradient);
+  color: white;
+  font-size: 1.2rem;
+}
+
+.info-item div {
+  flex: 1;
 }
 
 .info-item h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
+  font-size: 1rem;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-dark);
+  font-weight: 600;
 }
 
 .info-item p {
-    color: #6c757d;
-    line-height: 1.5;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
 }
 
+/* Boutons d'action modernes */
 .actions {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing);
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+  animation: slideUp 0.9s ease-in-out;
 }
 
-.btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
+/* Animations avancées */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
+@keyframes fadeInScale {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9);
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1);
+  }
 }
 
-.btn-primary:hover {
-    background-color: #4c61b8;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(94, 117, 201, 0.2);
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-outline {
-    background-color: transparent;
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.btn-outline:hover {
-    background-color: rgba(94, 117, 201, 0.1);
-    transform: translateY(-3px);
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.thank-you-message {
-    text-align: center;
-    font-style: italic;
-    color: #6c757d;
+/* Nouvelle animation pour le cercle avec bordure */
+@keyframes pulseWithBorder {
+  0% {
+    transform: scale(1);
+    border-color: var(--success-color);
+    border-width: 2px;
+  }
+  50% {
+    transform: scale(1.05);
+    border-color: rgba(40, 167, 69, 0.5);
+    border-width: 3px;
+  }
+  100% {
+    transform: scale(1);
+    border-color: var(--success-color);
+    border-width: 2px;
+  }
 }
 
+/* Media queries améliorées */
 @media (max-width: 768px) {
-    .confirmation-details {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .actions {
-        flex-direction: column;
-    }
-    
-    .btn {
-        width: 100%;
-        justify-content: center;
-    }
+  .confirmation-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hotel-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-header {
+    padding: var(--spacing-md) var(--spacing);
+  }
+  
+  .details-card {
+    padding: var(--spacing-md);
+  }
+  
+  .detail-row {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .detail-value {
+    align-self: flex-start;
+    text-align: left;
+  }
 }
