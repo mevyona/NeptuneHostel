@@ -338,6 +338,44 @@ body {
   animation: slideUp 0.9s ease-in-out;
 }
 
+/* Bouton de téléchargement de facture */
+.invoice-download {
+  margin-top: var(--spacing-md);
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.btn-invoice {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: white;
+  color: var(--text-dark);
+  border: 1px solid var(--border-light);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow);
+}
+
+.btn-invoice i {
+  color: #e74c3c;
+  font-size: 1.2rem;
+}
+
+.btn-invoice:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-invoice:active {
+  transform: translateY(-1px);
+}
+
 /* Animations avancées */
 @keyframes fadeIn {
   from { opacity: 0; }

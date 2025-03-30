@@ -66,6 +66,7 @@ class Router
             'processPayment' => [PaymentController::class, 'processPayment', 'client'],
 
             'reservationConfirmed' => [InvoiceController::class, 'reservationConfirmed', null],
+            'downloadInvoice' => [InvoiceController::class, 'downloadInvoice', 'client'],
             
             'rooms' => [RoomController::class, 'listRooms', null],
             'showRoom' => [RoomController::class, 'showRoom', null],

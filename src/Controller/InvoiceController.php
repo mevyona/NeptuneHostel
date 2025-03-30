@@ -7,10 +7,12 @@ namespace MyApp\Controller;
 use MyApp\Model\InvoiceModel;
 use MyApp\Model\ReservationModel;
 use MyApp\Model\UserModel;
+use MyApp\Model\RoomModel;
 use MyApp\Entity\Invoice;
 use MyApp\Entity\Reservation;
 use MyApp\Service\DependencyContainer;
 use Twig\Environment;
+use PDO;
 
 // Tentative de chargement de FPDF depuis plusieurs emplacements possibles
 if (file_exists(__DIR__ . '/../../vendor/setasign/fpdf/fpdf.php')) {
@@ -36,6 +38,8 @@ class InvoiceController
     private InvoiceModel $invoiceModel;
     private ReservationModel $reservationModel;
     private UserModel $userModel;
+    private RoomModel $roomModel;
+    private PDO $db;
 
     public function __construct(Environment $twig, DependencyContainer $container)
     {
@@ -43,6 +47,8 @@ class InvoiceController
         $this->invoiceModel = $container->get('InvoiceModel');
         $this->reservationModel = $container->get('ReservationModel');
         $this->userModel = $container->get('UserModel');
+        $this->roomModel = $container->get('RoomModel');
+        $this->db = $container->get('PDO'); // Récupérer l'instance PDO du conteneur
     }
 
     public function listInvoices()
@@ -156,149 +162,6 @@ class InvoiceController
     }
 
     /**
-     * Génère une facture PDF pour une réservation
-     * 
-     * @param Invoice $invoice La facture à générer en PDF
-     * @return string Le chemin relatif vers le fichier PDF généré
-     */
-    public function generateInvoicePdf(Invoice $invoice): string
-    {
-        $reservation = $invoice->getReservation();
-        $user = $reservation->getUser();
-        $room = $reservation->getRoom();
-        
-        // Calculer les dates et nombres de nuits
-        $checkInDate = new \DateTime($reservation->getCheckIn());
-        $checkOutDate = new \DateTime($reservation->getCheckOut());
-        $interval = $checkInDate->diff($checkOutDate);
-        $numberOfNights = $interval->days;
-        
-        // Démarrer le document PDF
-        $pdf = new FPDF();
-        $pdf->AddPage();
-        
-        // Définir les polices
-        $pdf->SetFont('Arial', 'B', 16);
-        
-        // En-tête de la facture
-        $pdf->Image(__DIR__ . '/../../public/images/logo.png', 10, 10, 30);
-        $pdf->SetXY(150, 10);
-        $pdf->Cell(40, 10, 'FACTURE', 0, 1, 'R');
-        
-        // Numéro de facture et date
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetXY(150, 20);
-        $pdf->Cell(40, 5, 'Facture n°' . $invoice->getInvoiceNumber(), 0, 1, 'R');
-        $pdf->SetXY(150, 25);
-        $pdf->Cell(40, 5, 'Date: ' . date('d/m/Y'), 0, 1, 'R');
-        
-        // Informations de l'hôtel
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetXY(10, 35);
-        $pdf->Cell(100, 6, 'Hôtel Neptune', 0, 1);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetX(10);
-        $pdf->Cell(100, 5, '123 Avenue des Étoiles', 0, 1);
-        $pdf->SetX(10);
-        $pdf->Cell(100, 5, '75000 Paris, France', 0, 1);
-        $pdf->SetX(10);
-        $pdf->Cell(100, 5, 'Tel: +33 1 23 45 67 89', 0, 1);
-        $pdf->SetX(10);
-        $pdf->Cell(100, 5, 'Email: contact@hotel-neptune.com', 0, 1);
-        
-        // Ligne de séparation
-        $pdf->Ln(5);
-        $pdf->SetDrawColor(200, 200, 200);
-        $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
-        $pdf->Ln(5);
-        
-        // Informations du client
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(100, 6, 'Facturé à:', 0, 1);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(100, 5, $user->getFirstName() . ' ' . $user->getLastName(), 0, 1);
-        $pdf->Cell(100, 5, 'Email: ' . $user->getEmail(), 0, 1);
-        $pdf->Cell(100, 5, 'Téléphone: ' . $user->getPhone(), 0, 1);
-        
-        // Détails de la réservation
-        $pdf->Ln(10);
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(190, 6, 'Détails de la réservation', 0, 1);
-        
-        // En-têtes de tableau
-        $pdf->Ln(5);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->SetFillColor(240, 240, 240);
-        $pdf->Cell(70, 7, 'Description', 1, 0, 'L', true);
-        $pdf->Cell(30, 7, 'Dates', 1, 0, 'C', true);
-        $pdf->Cell(20, 7, 'Nuits', 1, 0, 'C', true);
-        $pdf->Cell(30, 7, 'Prix unitaire', 1, 0, 'R', true);
-        $pdf->Cell(40, 7, 'Montant', 1, 1, 'R', true);
-        
-        // Ligne de détail
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(70, 7, 'Chambre ' . $room->getName(), 1, 0, 'L');
-        $pdf->Cell(30, 7, $checkInDate->format('d/m/Y') . ' - ' . $checkOutDate->format('d/m/Y'), 1, 0, 'C');
-        $pdf->Cell(20, 7, $numberOfNights, 1, 0, 'C');
-        $pdf->Cell(30, 7, number_format($room->getPrice(), 2, ',', ' ') . ' €', 1, 0, 'R');
-        $pdf->Cell(40, 7, number_format($invoice->getAmount(), 2, ',', ' ') . ' €', 1, 1, 'R');
-        
-        // Sous-total, taxes et total
-        $pdf->Ln(5);
-        $pdf->Cell(150, 7, 'Sous-total:', 0, 0, 'R');
-        $pdf->Cell(40, 7, number_format($invoice->getAmount(), 2, ',', ' ') . ' €', 0, 1, 'R');
-        
-        $pdf->Cell(150, 7, 'Taxe de séjour (10%):', 0, 0, 'R');
-        $pdf->Cell(40, 7, number_format($invoice->getTaxAmount(), 2, ',', ' ') . ' €', 0, 1, 'R');
-        
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(150, 7, 'Total TTC:', 0, 0, 'R');
-        $pdf->Cell(40, 7, number_format($invoice->getTotalAmount(), 2, ',', ' ') . ' €', 0, 1, 'R');
-        
-        // Informations de paiement
-        $pdf->Ln(10);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(190, 6, 'Informations de paiement', 0, 1);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Cell(190, 6, 'Statut: ' . ($invoice->getStatus() === 'paid' ? 'Payé' : 'En attente'), 0, 1);
-        $pdf->Cell(190, 6, 'Date de paiement: ' . date('d/m/Y'), 0, 1);
-        $pdf->Cell(190, 6, 'Méthode de paiement: Carte de crédit', 0, 1);
-        
-        // Pied de page
-        $pdf->Ln(15);
-        $pdf->SetFont('Arial', 'I', 9);
-        $pdf->Cell(190, 5, 'Nous vous remercions pour votre confiance et vous souhaitons un agréable séjour.', 0, 1, 'C');
-        $pdf->Cell(190, 5, 'Pour toute question concernant cette facture, merci de nous contacter.', 0, 1, 'C');
-        
-        // Créer le nom de fichier et le chemin
-        $invoiceNumber = $invoice->getInvoiceNumber();
-        $fileName = 'facture_' . $invoiceNumber . '.pdf';
-        $filePath = __DIR__ . '/../../public/factures/' . $fileName;
-        
-        // Vérifier si le répertoire existe, sinon le créer
-        $dir = __DIR__ . '/../../public/factures';
-        if (!is_dir($dir)) {
-            if (!mkdir($dir, 0755, true)) {
-                // Si la création échoue, log l'erreur
-                error_log("Impossible de créer le répertoire des factures: $dir");
-                // Utiliser un répertoire alternatif
-                $dir = __DIR__ . '/../../public/';
-            }
-        }
-        
-        // Sauvegarder le PDF
-        $pdf->Output('F', $filePath);
-        
-        // Mettre à jour le chemin du PDF dans l'entité Invoice
-        $relativeFilePath = 'factures/' . $fileName;
-        $invoice->setPdfPath($relativeFilePath);
-        $this->invoiceModel->updateInvoice($invoice);
-        
-        // Retourner le chemin relatif pour l'accès via le navigateur
-        return $relativeFilePath;
-    }
-
-    /**
      * Affiche la page de confirmation de réservation
      */
     public function reservationConfirmed()
@@ -378,6 +241,246 @@ class InvoiceController
             $_SESSION['message'] = 'Erreur: ' . $e->getMessage();
             header('Location: index.php?page=dashboard');
             exit();
+        }
+    }
+
+    /**
+     * Télécharge ou génère la facture PDF pour une réservation spécifique
+     */
+    public function downloadInvoice()
+    {
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['message'] = 'Vous devez être connecté pour télécharger une facture.';
+            $_SESSION['success'] = false;
+            header('Location: index.php?page=login');
+            exit();
+        }
+
+        // Récupérer l'ID de la réservation
+        $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        
+        if (!$reservationId) {
+            $_SESSION['message'] = 'Numéro de réservation invalide.';
+            $_SESSION['success'] = false;
+            header('Location: index.php?page=dashboard');
+            exit();
+        }
+
+        // Récupérer les détails de la réservation
+        $reservation = $this->reservationModel->getReservationById((int)$reservationId);
+        
+        if (!$reservation) {
+            $_SESSION['message'] = 'Réservation introuvable.';
+            $_SESSION['success'] = false;
+            header('Location: index.php?page=dashboard');
+            exit();
+        }
+
+        // Vérifier que la réservation appartient bien à l'utilisateur connecté
+        // Sauf si l'utilisateur est un admin
+        if ($reservation['user_id'] != $_SESSION['user_id'] && $_SESSION['user_role'] != 'admin') {
+            $_SESSION['message'] = 'Vous n\'êtes pas autorisé à voir cette facture.';
+            $_SESSION['success'] = false;
+            header('Location: index.php?page=dashboard');
+            exit();
+        }
+
+        // Vérifier si une facture existe déjà pour cette réservation
+        $invoice = $this->invoiceModel->getInvoiceByReservationId((int)$reservationId);
+        
+        // Créer le répertoire pour les factures s'il n'existe pas
+        $invoiceDir = sys_get_temp_dir() . '/neptune_factures';
+        if (!is_dir($invoiceDir)) {
+            // Utiliser 0777 pour être sûr que les permissions sont suffisantes
+            if (!@mkdir($invoiceDir, 0777, true)) {
+                // Si on ne peut pas créer le répertoire, utiliser le répertoire temp du système
+                $invoiceDir = sys_get_temp_dir();
+            }
+        }
+
+        // Nom du fichier PDF
+        $filename = 'facture_' . date('Ymd') . '_reservation_' . $reservationId . '.pdf';
+        $pdfPath = 'factures/' . $filename;
+        $fullPath = $invoiceDir . '/' . $filename;
+
+        // Générer ou récupérer le PDF
+        if (!$invoice || empty($invoice['pdf_path']) || !file_exists(__DIR__ . '/../../public/' . $invoice['pdf_path'])) {
+            // Générer le PDF
+            $this->generateInvoicePDF($reservation, $fullPath);
+            
+            // Mettre à jour le chemin du PDF dans la base de données si la facture existe
+            if ($invoice) {
+                $sql = "UPDATE Invoice SET pdf_path = :pdf_path WHERE reservation_id = :reservation_id";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindValue(':pdf_path', $pdfPath, PDO::PARAM_STR);
+                $stmt->bindValue(':reservation_id', $reservationId, PDO::PARAM_INT);
+                $stmt->execute();
+            } else {
+                // Créer une nouvelle facture si elle n'existe pas
+                $invoiceNumber = 'INV-' . date('Ymd') . '-' . $reservationId;
+                
+                // Calculer le nombre de nuits
+                $checkIn = new \DateTime($reservation['check_in']);
+                $checkOut = new \DateTime($reservation['check_out']);
+                $interval = $checkIn->diff($checkOut);
+                $numberOfNights = $interval->days;
+                
+                // Récupérer le prix de la chambre
+                $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
+                $roomPrice = $room->getPrice();
+                
+                // Calculer les montants
+                $amount = $roomPrice * $numberOfNights;
+                $taxAmount = $amount * 0.1; // 10% de taxe
+                $totalAmount = $amount + $taxAmount;
+                
+                // Créer l'entrée de facture
+                $invoiceData = [
+                    'reservation_id' => $reservationId,
+                    'invoice_number' => $invoiceNumber,
+                    'amount' => $amount,
+                    'tax_amount' => $taxAmount,
+                    'total_amount' => $totalAmount,
+                    'due_date' => date('Y-m-d', strtotime('+7 days')),
+                    'status' => 'paid',
+                    'pdf_path' => $pdfPath
+                ];
+                
+                $this->invoiceModel->createInvoice($invoiceData);
+            }
+        } else {
+            // Utiliser le PDF existant
+            $fullPath = __DIR__ . '/../../public/' . $invoice['pdf_path'];
+        }
+
+        // Envoyer le PDF au navigateur
+        if (file_exists($fullPath)) {
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="facture_reservation_' . $reservationId . '.pdf"');
+            header('Content-Length: ' . filesize($fullPath));
+            readfile($fullPath);
+            exit();
+        } else {
+            $_SESSION['message'] = 'Erreur lors de la génération de la facture. Vérifiez les permissions.';
+            $_SESSION['success'] = false;
+            header('Location: index.php?page=confirmationReservation&id=' . $reservationId);
+            exit();
+        }
+    }
+
+    /**
+     * Génère un PDF de facture pour une réservation
+     */
+    private function generateInvoicePDF(array $reservation, string $outputPath)
+    {
+        // Créer une nouvelle instance de FPDF
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        
+        // Définir la police
+        $pdf->SetFont('Arial', 'B', 16);
+        
+        // Logo et informations de l'hôtel
+        $pdf->Cell(190, 10, 'HOTEL NEPTUNE', 0, 1, 'C');
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(190, 6, '2 Rue du Depot, 8200 France', 0, 1, 'C');
+        $pdf->Cell(190, 6, 'Tel: 06 00 00 00 00 | Email: contact@neptune-hotel.fr', 0, 1, 'C');
+        $pdf->Ln(10);
+        
+        // Titre de la facture
+        $pdf->SetFont('Arial', 'B', 14);
+        $pdf->Cell(190, 10, 'FACTURE', 0, 1, 'C');
+        $pdf->Ln(5);
+        
+        // Numéro de facture et date
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(95, 10, 'Facture #INV-' . date('Ymd') . '-' . $reservation['id'], 0, 0);
+        $pdf->Cell(95, 10, 'Date: ' . date('d/m/Y'), 0, 1, 'R');
+        
+        // Informations client
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Cell(190, 10, 'INFORMATIONS CLIENT', 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(190, 6, 'Nom: ' . ($reservation['first_name'] ?? '') . ' ' . ($reservation['last_name'] ?? ''), 0, 1);
+        $pdf->Cell(190, 6, 'Email: ' . ($reservation['email'] ?? ''), 0, 1);
+        $pdf->Ln(5);
+        
+        // Informations de réservation
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Cell(190, 10, 'DETAILS DE LA RESERVATION', 0, 1);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(190, 6, 'Chambre: ' . ($reservation['room_name'] ?? ''), 0, 1);
+        $pdf->Cell(190, 6, 'Période: Du ' . date('d/m/Y', strtotime($reservation['check_in'])) . ' au ' . date('d/m/Y', strtotime($reservation['check_out'])), 0, 1);
+        
+        // Calculer le nombre de nuits
+        $checkIn = new \DateTime($reservation['check_in']);
+        $checkOut = new \DateTime($reservation['check_out']);
+        $interval = $checkIn->diff($checkOut);
+        $numberOfNights = $interval->days;
+        
+        $pdf->Cell(190, 6, 'Nombre de nuits: ' . $numberOfNights, 0, 1);
+        $pdf->Ln(5);
+        
+        // Tableau de détails
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(90, 10, 'Description', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'Prix unitaire', 1, 0, 'C');
+        $pdf->Cell(30, 10, 'Quantité', 1, 0, 'C');
+        $pdf->Cell(40, 10, 'Montant', 1, 1, 'C');
+        
+        // Obtenir le prix de la chambre (avec conversion en nombre)
+        $roomPrice = isset($reservation['room_price']) ? (float)$reservation['room_price'] : 0;
+        
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(90, 10, 'Chambre ' . ($reservation['room_name'] ?? ''), 1, 0);
+        $pdf->Cell(30, 10, number_format((float)$reservation['room_price'], 2, ',', ' ') . ' €', 1, 0, 'R');
+        $pdf->Cell(30, 10, $numberOfNights, 1, 0, 'C');
+        
+        $subtotal = (float)$reservation['room_price'] * $numberOfNights;
+        $pdf->Cell(40, 10, number_format($subtotal, 2, ',', ' ') . ' €', 1, 1, 'R');
+        
+        // Calcul des taxes et du total
+        $taxRate = 0.1; // 10%
+        $taxAmount = $subtotal * $taxRate;
+        $totalAmount = $subtotal + $taxAmount;
+        
+        // Sous-total, taxe et total
+        $pdf->Cell(150, 10, 'Sous-total', 1, 0, 'R');
+        $pdf->Cell(40, 10, number_format($subtotal, 2, ',', ' ') . ' €', 1, 1, 'R');
+        
+        $pdf->Cell(150, 10, 'TVA (10%)', 1, 0, 'R');
+        $pdf->Cell(40, 10, number_format($taxAmount, 2, ',', ' ') . ' €', 1, 1, 'R');
+        
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(150, 10, 'TOTAL', 1, 0, 'R');
+        $pdf->Cell(40, 10, number_format($totalAmount, 2, ',', ' ') . ' €', 1, 1, 'R');
+        
+        // Pied de page
+        $pdf->Ln(10);
+        $pdf->SetFont('Arial', 'I', 8);
+        $pdf->Cell(0, 10, 'Facture générée le ' . date('d/m/Y H:i:s'), 0, 1, 'C');
+        $pdf->Cell(0, 10, 'Merci d\'avoir choisi l\'Hôtel Neptune pour votre séjour!', 0, 1, 'C');
+        
+        // S'assurer que le répertoire parent existe
+        $dir = dirname($outputPath);
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0777, true);
+        }
+        
+        // Sauvegarder le PDF
+        try {
+            $pdf->Output('F', $outputPath);
+            return true;
+        } catch (\Exception $e) {
+            // En cas d'erreur, essayer de sauvegarder dans le répertoire temporaire
+            $tempFile = sys_get_temp_dir() . '/' . basename($outputPath);
+            $pdf->Output('F', $tempFile);
+            
+            // Copier le fichier vers l'emplacement final si possible
+            @copy($tempFile, $outputPath);
+            
+            return file_exists($outputPath);
         }
     }
 }

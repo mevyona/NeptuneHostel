@@ -51,6 +51,13 @@
                 <span class="detail-value status-{{ reservation.status }}">{{ reservation.status|capitalize }}</span>
             </div>
         </div>
+
+        <!-- Bouton de téléchargement de facture -->
+        <div class="invoice-download">
+            <a href="index.php?page=downloadInvoice&id={{ reservation.id }}" class="btn-invoice" target="_blank">
+                <i class="bi bi-file-earmark-pdf"></i> Télécharger votre facture
+            </a>
+        </div>
     </div>
 
     <div class="hotel-info">
