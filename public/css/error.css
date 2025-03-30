@@ -1,358 +1,659 @@
 /* ==========================================================================
    STYLES DE PAGE D'ERREUR - HÔTEL NEPTUNE
-   Feuille de style pour les pages d'erreur et de notification,
-   avec design minimaliste et typographie spatiale
+   Design ultra-moderne avec thème spatial et fond blanc
    ========================================================================== */
 
 /* -----------------------------
-   MASQUAGE DES ÉLÉMENTS DE NAVIGATION
+   IMPORTATION DES POLICES MODERNES
    ----------------------------- */
+   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+   /* -----------------------------
+      VARIABLES GLOBALES - THÈME SPATIAL
+      ----------------------------- */
+   :root {
+       --space-blue: #0c1d4a;
+       --space-blue-light: #1e3a8a;
+       --neptune-teal: #2dd4bf;
+       --neptune-teal-dark: #0d9488;
+       --cosmos-purple: #8b5cf6;
+       --cosmos-purple-light: #a78bfa;
+       --star-yellow: #eab308;
+       --text-primary: #1e293b;
+       --text-secondary: #64748b;
+       --background: #ffffff;
+       --card-bg: #f8fafc;
+       --border-light: #e2e8f0;
+   }
+   
+   /* -----------------------------
+      STYLE GLOBAL
+      ----------------------------- */
+   body {
+       margin: 0;
+       padding: 0;
+       min-height: 100vh;
+       background: var(--background);
+       color: var(--text-primary);
+       font-family: 'Space Grotesk', sans-serif;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       text-align: center;
+       overflow-x: hidden;
+       background-image: radial-gradient(var(--border-light) 1px, transparent 1px);
+       background-size: 30px 30px;
+   }
+   
+   /* -----------------------------
+      CONTENEUR PRINCIPAL
+      ----------------------------- */
+   .error-container {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       justify-content: center;
+       padding: 3rem;
+       width: 90%;
+       max-width: 650px;
+       background: var(--background);
+       border-radius: 24px;
+       box-shadow: 
+           0 20px 50px rgba(0, 0, 0, 0.05),
+           0 0 0 1px rgba(0, 0, 0, 0.03);
+       position: relative;
+       overflow: hidden;
+       animation: fadeIn 0.8s ease-out;
+   }
+   
+   /* Élément décoratif: Neptune */
+   .error-container::before {
+       content: "";
+       position: absolute;
+       width: 400px;
+       height: 400px;
+       border-radius: 50%;
+       background: linear-gradient(135deg, var(--neptune-teal-dark), var(--space-blue-light));
+       opacity: 0.04;
+       top: -200px;
+       right: -200px;
+       z-index: 0;
+   }
+   
+   /* Élément décoratif: Orbite */
+   .error-container::after {
+       content: "";
+       position: absolute;
+       border: 1px dashed var(--border-light);
+       width: 300px;
+       height: 300px;
+       border-radius: 50%;
+       bottom: -150px;
+       left: -150px;
+       z-index: 0;
+   }
+   
+   /* -----------------------------
+      ANIMATIONS MODERNES
+      ----------------------------- */
+   @keyframes fadeIn {
+       0% {
+           opacity: 0;
+           transform: translateY(30px);
+       }
+       100% {
+           opacity: 1;
+           transform: translateY(0);
+       }
+   }
+   
+   @keyframes floatAnimation {
+       0%, 100% {
+           transform: translateY(0);
+       }
+       50% {
+           transform: translateY(-15px);
+       }
+   }
+   
+   @keyframes pulse {
+       0%, 100% {
+           transform: scale(1);
+           opacity: 1;
+       }
+       50% {
+           transform: scale(1.05);
+           opacity: 0.9;
+       }
+   }
+   
+   @keyframes orbit {
+       0% {
+           transform: rotate(0deg) translateX(60px) rotate(0deg);
+       }
+       100% {
+           transform: rotate(360deg) translateX(60px) rotate(-360deg);
+       }
+   }
+   
+   @keyframes shimmer {
+       0% {
+           background-position: -100px;
+       }
+       100% {
+           background-position: 300px;
+       }
+   }
 
-/* Masque les éléments de navigation pour une interface d'erreur épurée */
-header, nav, footer {
-    display: none; /* Supprime l'affichage des éléments de navigation */
-}
+   @keyframes slight-shake {
+       0%, 100% {
+           transform: rotate(0deg);
+       }
+       25% {
+           transform: rotate(1deg);
+       }
+       50% {
+           transform: rotate(0deg);
+       }
+       75% {
+           transform: rotate(-1deg);
+       }
+   }
+   
+   /* -----------------------------
+      TITRE ET CODE D'ERREUR
+      ----------------------------- */
+   .error-code {
+       font-size: 9rem;
+       font-weight: 800;
+       background: linear-gradient(135deg, var(--space-blue), var(--cosmos-purple));
+       -webkit-background-clip: text;
+       background-clip: text;
+       -webkit-text-fill-color: transparent;
+       line-height: 1;
+       margin: 0;
+       position: relative;
+       z-index: 1;
+       font-family: 'Syne', sans-serif;
+       letter-spacing: -0.03em;
+   }
+   
+   /* Version 403 */
+   .error-403 .error-code {
+       background: linear-gradient(135deg, #dc2626, #ef4444);
+       -webkit-background-clip: text;
+       background-clip: text;
+       -webkit-text-fill-color: transparent;
+   }
+   
+   /* Version 500 */
+   .error-500 .error-code {
+       background: linear-gradient(135deg, var(--cosmos-purple), #c026d3);
+       -webkit-background-clip: text;
+       background-clip: text;
+       -webkit-text-fill-color: transparent;
+   }
+   
+   h2 {
+       font-size: 2.25rem;
+       font-weight: 700;
+       color: var(--text-primary);
+       margin-top: 0.5rem;
+       margin-bottom: 1.2rem;
+       font-family: 'Syne', sans-serif;
+       position: relative;
+       z-index: 1;
+   }
+   
+   .error-message {
+       font-size: 1.1rem;
+       color: var(--text-secondary);
+       margin-bottom: 2.5rem;
+       line-height: 1.6;
+       position: relative;
+       z-index: 1;
+   }
+   
+   /* -----------------------------
+      ÉLÉMENTS GRAPHIQUES SPATIAUX
+      ----------------------------- */
+   .pulse-animation {
+       margin-bottom: 2rem;
+       animation: pulse 3s infinite ease-in-out;
+       position: relative;
+       z-index: 1;
+   }
 
-/* -----------------------------
-   ÉLÉMENTS DE TITRE
-   ----------------------------- */
+   .error-500 .pulse-animation {
+       animation: pulse 3s infinite ease-in-out, slight-shake 2.5s infinite ease-in-out;
+   }
+   
+   .pulse-animation svg {
+       display: block;
+       margin: 0 auto;
+       filter: drop-shadow(0 4px 6px rgba(12, 29, 74, 0.1));
+   }
+   
+   .pulse-animation svg path,
+   .pulse-animation svg circle {
+       stroke: var(--space-blue);
+   }
+   
+   .error-403 .pulse-animation svg path,
+   .error-403 .pulse-animation svg circle {
+       stroke: #dc2626;
+   }
+   
+   .error-500 .pulse-animation svg path,
+   .error-500 .pulse-animation svg circle {
+       stroke: var(--cosmos-purple);
+   }
+   
+   /* Élément flottant */
+   .float-element {
+       position: absolute;
+       width: 10px;
+       height: 10px;
+       border-radius: 50%;
+       background: var(--star-yellow);
+       box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.2);
+       z-index: 2;
+       animation: floatAnimation 5s infinite ease-in-out;
+   }
+   
+   .float-element:nth-child(1) {
+       top: 20%;
+       right: 15%;
+       width: 8px;
+       height: 8px;
+       animation-delay: 0s;
+   }
+   
+   .float-element:nth-child(2) {
+       top: 70%;
+       left: 10%;
+       width: 6px;
+       height: 6px;
+       animation-delay: 1s;
+   }
+   
+   .float-element:nth-child(3) {
+       bottom: 15%;
+       right: 20%;
+       width: 7px;
+       height: 7px;
+       animation-delay: 2s;
+   }
+   
+   /* Planète en orbite */
+   .planet {
+       position: absolute;
+       width: 20px;
+       height: 20px;
+       border-radius: 50%;
+       background: linear-gradient(135deg, var(--neptune-teal), var(--neptune-teal-dark));
+       box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
+       z-index: 2;
+       animation: orbit 20s infinite linear;
+   }
+   
+   /* Anneaux de planète */
+   .animated-bg {
+       position: relative;
+       padding: 2rem;
+       margin-bottom: 2rem;
+       z-index: 1;
+   }
+   
+   .animated-bg::before {
+       content: "";
+       position: absolute;
+       width: 180px;
+       height: 40px;
+       border-radius: 50%;
+       border: 2px solid var(--border-light);
+       top: calc(50% - 20px);
+       left: calc(50% - 90px);
+       transform: rotate(-20deg);
+       z-index: -1;
+       opacity: 0.7;
+   }
+   
+   .animated-bg::after {
+       content: "";
+       position: absolute;
+       width: 200px;
+       height: 40px;
+       border-radius: 50%;
+       border: 1px solid var(--border-light);
+       top: calc(50% - 20px);
+       left: calc(50% - 100px);
+       transform: rotate(-15deg);
+       z-index: -1;
+       opacity: 0.4;
+   }
+   
+   /* Étoiles filantes */
+   .shooting-star {
+       position: absolute;
+       width: 100px;
+       height: 2px;
+       background: linear-gradient(to right, transparent, var(--cosmos-purple-light), transparent);
+       opacity: 0;
+       z-index: 1;
+       transform: rotate(-45deg);
+       animation: shootingStar 5s infinite ease-out;
+   }
+   
+   .shooting-star:nth-child(1) {
+       top: 20%;
+       right: 10%;
+       animation-delay: 0s;
+   }
+   
+   .shooting-star:nth-child(2) {
+       top: 40%;
+       left: 20%;
+       width: 60px;
+       animation-delay: 2s;
+   }
+   
+   @keyframes shootingStar {
+       0% {
+           transform: translateX(0) translateY(0) rotate(-45deg);
+           opacity: 0;
+       }
+       10% {
+           opacity: 1;
+       }
+       30% {
+           transform: translateX(-100px) translateY(100px) rotate(-45deg);
+           opacity: 0;
+       }
+       100% {
+           opacity: 0;
+       }
+   }
+   
+   /* Constellation */
+   .constellation {
+       position: absolute;
+       width: 120px;
+       height: 120px;
+       top: 20px;
+       right: 20px;
+       z-index: 0;
+       opacity: 0.5;
+   }
+   
+   .constellation-dot {
+       position: absolute;
+       width: 3px;
+       height: 3px;
+       background: var(--cosmos-purple-light);
+       border-radius: 50%;
+   }
+   
+   .constellation-dot:nth-child(1) { top: 30%; left: 20%; }
+   .constellation-dot:nth-child(2) { top: 50%; left: 40%; }
+   .constellation-dot:nth-child(3) { top: 70%; left: 30%; }
+   .constellation-dot:nth-child(4) { top: 30%; left: 60%; }
+   .constellation-dot:nth-child(5) { top: 60%; left: 70%; }
+   
+   .constellation-line {
+       position: absolute;
+       background: var(--border-light);
+       height: 1px;
+       transform-origin: 0 0;
+   }
+   
+   /* -----------------------------
+      BOUTONS STYLISÉS
+      ----------------------------- */
+   .error-actions {
+       display: flex;
+       gap: 1rem;
+       flex-wrap: wrap;
+       justify-content: center;
+       position: relative;
+       z-index: 3;
+       margin-top: 1rem;
+   }
+   
+   .error-button {
+       position: relative;
+       padding: 0.9rem 1.8rem;
+       border-radius: 12px;
+       font-size: 1rem;
+       font-weight: 600;
+       text-decoration: none;
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       transition: all 0.3s ease;
+       overflow: hidden;
+       font-family: 'Inter', sans-serif;
+       letter-spacing: 0.01em;
+       background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
+       color: white;
+       box-shadow: 
+           0 4px 6px rgba(30, 58, 138, 0.1),
+           0 10px 15px -3px rgba(30, 58, 138, 0.1),
+           0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+   }
+   
+   .error-button::before {
+       content: '';
+       position: absolute;
+       top: 0;
+       left: -100%;
+       width: 100%;
+       height: 100%;
+       background: linear-gradient(
+           90deg,
+           transparent 0%,
+           rgba(255, 255, 255, 0.2) 50%,
+           transparent 100%
+       );
+       transition: left 0.7s ease;
+   }
+   
+   .error-button:hover {
+       transform: translateY(-3px);
+       box-shadow: 
+           0 10px 20px -3px rgba(30, 58, 138, 0.15),
+           0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+   }
+   
+   .error-button:hover::before {
+       left: 100%;
+   }
+   
+   /* -----------------------------
+      CORRECTION DES BOUTONS OUTLINE
+      ----------------------------- */
+   .outline-button {
+       background: transparent;
+       color: var(--space-blue);
+       border: 2px solid var(--space-blue);
+       padding: 0.9rem 1.8rem;
+       border-radius: 12px;
+       font-size: 1rem;
+       font-weight: 600;
+       text-decoration: none;
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       transition: transform 0.3s ease, box-shadow 0.3s ease;
+       font-family: 'Inter', sans-serif;
+       letter-spacing: 0.01em;
+       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+       position: relative;
+       overflow: hidden;
+       z-index: 1;
+   }
+   
+   .outline-button::after {
+       content: '';
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 0;
+       height: 100%;
+       background-color: var(--space-blue);
+       z-index: -1;
+       transition: width 0.3s ease;
+   }
+   
+   .outline-button:hover {
+       color: white;
+       transform: translateY(-3px);
+       box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+   }
+   
+   .outline-button:hover::after {
+       width: 100%;
+   }
+   
+   .error-403 .outline-button {
+       color: #dc2626;
+       border: 2px solid #dc2626;
+       z-index: 1;
+   }
 
-/* Style du titre secondaire avec typographie spatiale */
-h2 {
-    text-align: center; /* Centrage horizontal du texte */
-    font-family: 'Space Mono', serif; /* Police à chasse fixe pour style technique */
-    color: black; /* Couleur noire pour contraste maximal */
-    font-size: 2rem; /* Taille importante pour hiérarchie visuelle */
-    margin-top: 0.5rem; /* Léger espacement supérieur */
-    margin-bottom: 1rem; /* Espacement inférieur modéré */
-}
+   .error-403 .outline-button:hover {
+       color: white;
+   }
+   
+   .error-500 .outline-button {
+       color: var(--cosmos-purple);
+       border: 2px solid var(--cosmos-purple);
+       z-index: 1;
+   }
 
-/* Style distinctif pour le code d'erreur principal */
-.error-code {
-    font-size: 8rem; /* Taille très large pour impact visuel maximal */
-    font-weight: 700; /* Police en gras pour mise en évidence */
-    color: #1e293b; /* Couleur bleu-gris foncé */
-    margin-bottom: 1rem; /* Espacement sous le code */
-    font-family: 'Space Mono', monospace; /* Police à chasse fixe pour effet technique */
-    letter-spacing: -0.05em; /* Espacement négatif entre les caractères pour style compact */
-    text-shadow: 2px 2px 0px rgba(30, 41, 59, 0.2); /* Ombre portée subtile pour effet de profondeur */
-    line-height: 1; /* Hauteur de ligne réduite pour un affichage compact */
-}
-
-/* Style du message explicatif de l'erreur */
-.error-message {
-    font-size: 1.5rem; /* Taille intermédiaire pour lisibilité */
-    color: #64748b; /* Couleur grise pour contraste modéré avec le code d'erreur */
-    margin-bottom: 2rem; /* Espacement généreux avant les actions */
-    max-width: 600px; /* Largeur maximale pour faciliter la lecture */
-    line-height: 1.4; /* Hauteur de ligne confortable */
-    font-family: 'Space Mono', sans-serif; /* Cohérence avec la typographie générale */
-    font-weight: 400; /* Graisse normale pour lecture facile */
-}
-
-/* -----------------------------
-   CONTENEUR PRINCIPAL
-   ----------------------------- */
-
-/* Structure globale de la page d'erreur avec centrage et fond subtil */
-.error-container {
-    display: flex; /* Disposition en flexbox */
-    flex-direction: column; /* Organisation verticale des éléments */
-    align-items: center; /* Centrage horizontal */
-    justify-content: center; /* Centrage vertical */
-    min-height: 100vh; /* Hauteur minimale couvrant tout l'écran */
-    padding: 2rem; /* Espacement intérieur généreux */
-    box-sizing: border-box; /* Inclut le padding dans les dimensions */
-    text-align: center; /* Alignement central des textes */
-    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%); /* Dégradé subtil pour profondeur */
-}
-
-/* -----------------------------
-   ILLUSTRATIONS ET ANIMATIONS
-   ----------------------------- */
-
-/* Configuration de base des illustrations d'erreur */
-.error-illustration {
-    max-width: 100%; /* Adaptation responsive à la largeur disponible */
-    height: auto; /* Hauteur proportionnelle préservée */
-    margin-bottom: 2rem; /* Espacement sous l'illustration */
-    max-height: 300px; /* Hauteur maximale pour équilibre visuel */
-}
-
-/* Animation de flottement pour effet spatial */
-.floating {
-    animation: floating 3s ease-in-out infinite; /* Animation perpétuelle de flottement */
-}
-
-/* Définition de l'animation de flottement vertical */
-@keyframes floating {
-    0% { transform: translateY(0px); } /* Position initiale */
-    50% { transform: translateY(-15px); } /* Déplacement vers le haut */
-    100% { transform: translateY(0px); } /* Retour à la position initiale */
-}
-
-/* Animation pulsante pour attirer l'attention */
-.pulse-animation {
-    animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; /* Animation avec courbe d'accélération personnalisée */
-    position: relative; /* Positionnement relatif pour enfants absolus */
-    margin-bottom: 1rem; /* Espacement inférieur */
-}
-
-/* Définition de l'animation d'impulsion */
-@keyframes pulse-ring {
-    0% { transform: scale(0.95); } /* Légère réduction initiale */
-    50% { transform: scale(1); } /* Taille normale à mi-parcours */
-    100% { transform: scale(0.95); } /* Retour à la réduction */
-}
-
-/* Fond animé pour les icônes et illustrations */
-.animated-bg {
-    background-color: rgba(59, 130, 246, 0.1); /* Fond bleu très transparent */
-    border-radius: 50%; /* Forme circulaire */
-    padding: 2rem; /* Espacement intérieur généreux */
-    margin-bottom: 2rem; /* Espace sous l'élément */
-    animation: pulse 2s infinite ease-in-out; /* Animation de pulsation perpétuelle */
-}
-
-/* Définition de l'animation de pulsation pour le fond */
-@keyframes pulse {
-    0% { transform: scale(1); } /* Taille normale au départ */
-    50% { transform: scale(1.05); } /* Légère expansion */
-    100% { transform: scale(1); } /* Retour à la taille normale */
-}
-
-/* -----------------------------
-   BOUTONS D'ACTION
-   ----------------------------- */
-
-/* Conteneur des boutons d'action avec espacement flexible */
-.error-actions {
-    display: flex; /* Disposition en flexbox */
-    flex-wrap: wrap; /* Permettre le retour à la ligne sur petits écrans */
-    justify-content: center; /* Centrage horizontal */
-    gap: 1rem; /* Espacement entre les boutons */
-    margin-top: 1rem; /* Marge supérieure modérée */
-}
-
-/* Style de base pour les boutons d'action */
-.error-button {
-    background-color: #3b82f6; /* Fond bleu vif */
-    color: white; /* Texte blanc pour contraste optimal */
-    padding: 1rem 2rem; /* Espacement interne généreux */
-    border-radius: 8px; /* Coins légèrement arrondis */
-    font-family: 'Space Mono', monospace; /* Cohérence typographique */
-    font-weight: 700; /* Police en gras pour mise en évidence */
-    text-decoration: none; /* Suppression du soulignement des liens */
-    display: inline-flex; /* Disposition en ligne avec propriétés flex */
-    align-items: center; /* Centrage vertical des éléments internes */
-    transition: all 0.3s ease; /* Animation douce pour tous les changements d'état */
-    border: none; /* Suppression des bordures par défaut */
-    cursor: pointer; /* Curseur main au survol */
-    font-size: 1rem; /* Taille de texte standard */
-    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2); /* Ombre légère pour effet de profondeur */
-}
-
-/* Animation au survol des boutons pour feedback visuel */
-.error-button:hover {
-    background-color: #2563eb; /* Bleu légèrement plus foncé */
-    transform: translateY(-2px); /* Léger effet de flottement */
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3); /* Ombre plus prononcée */
-}
-
-/* Espacement entre l'icône et le texte du bouton */
-.error-button svg {
-    margin-right: 8px; /* Marge à droite de l'icône */
-}
-
-/* -----------------------------
-   VARIANTES COULEUR PAR CODE D'ERREUR
-   ----------------------------- */
-
-/* 403 - Rouge pour accès interdit */
-.error-403 .error-code {
-    color: #e63946; /* Rouge vif pour signaler interdiction */
-    text-shadow: 2px 2px 0px rgba(230, 57, 70, 0.2); /* Ombre adaptée à la couleur */
-}
-
-/* Bouton principal en rouge pour page 403 */
-.error-403 .error-button {
-    background-color: #e63946; /* Rouge assorti au code d'erreur */
-}
-
-/* Animation au survol du bouton rouge */
-.error-403 .error-button:hover {
-    background-color: #d32f2f; /* Rouge légèrement plus foncé */
-    box-shadow: 0 6px 12px rgba(230, 57, 70, 0.3); /* Ombre adaptée */
-}
-
-/* Fond d'animation pour page 403 */
-.error-403 .animated-bg {
-    background-color: rgba(230, 57, 70, 0.1); /* Rouge très transparent */
-}
-
-/* Couleur des tracés SVG pour page 403 */
-.error-403 svg path {
-    stroke: #e63946; /* Contours en rouge */
-}
-
-/* 404 - Bleu pour page non trouvée */
-.error-404 .error-code {
-    color: #3b82f6; /* Bleu standard */
-    text-shadow: 2px 2px 0px rgba(59, 130, 246, 0.2); /* Ombre adaptée */
-}
-
-/* Couleur des tracés SVG pour page 404 */
-.error-404 svg path {
-    stroke: #3b82f6; /* Contours en bleu */
-}
-
-/* 500 - Violet pour erreur serveur */
-.error-500 .error-code {
-    color: #6d28d9; /* Violet pour erreur technique */
-    text-shadow: 2px 2px 0px rgba(109, 40, 217, 0.2); /* Ombre adaptée */
-}
-
-/* Bouton principal en violet pour page 500 */
-.error-500 .error-button {
-    background-color: #6d28d9; /* Violet assorti au code d'erreur */
-}
-
-/* Animation au survol du bouton violet */
-.error-500 .error-button:hover {
-    background-color: #5b21b6; /* Violet légèrement plus foncé */
-    box-shadow: 0 6px 12px rgba(109, 40, 217, 0.3); /* Ombre adaptée */
-}
-
-/* Couleur des tracés SVG pour page 500 */
-.error-500 svg path {
-    stroke: #6d28d9; /* Contours en violet */
-}
-
-/* Fond d'animation pour page 500 */
-.error-500 .animated-bg {
-    background-color: rgba(109, 40, 217, 0.1); /* Violet très transparent */
-}
-
-/* -----------------------------
-   ÉLÉMENTS SPÉCIFIQUES
-   ----------------------------- */
-
-/* Style pour bouton avec bordure et fond transparent */
-.outline-button {
-    background-color: transparent; /* Suppression du fond coloré */
-    box-shadow: none; /* Suppression de l'ombre portée */
-    border: 1px solid currentColor; /* Bordure adaptative à la couleur du texte */
-}
-
-/* Adaptation du bouton contour pour page 404 */
-.error-404 .outline-button {
-    color: #3b82f6; /* Texte bleu */
-    border-color: #3b82f6; /* Bordure bleue */
-}
-
-/* Adaptation du bouton contour pour page 500 */
-.error-500 .outline-button {
-    color: #6d28d9; /* Texte violet */
-    border-color: #6d28d9; /* Bordure violette */
-}
-
-/* Style pour bouton secondaire en gris */
-.secondary-button {
-    background-color: #64748b; /* Fond gris bleuté */
-}
-
-/* Animation au survol du bouton secondaire */
-.secondary-button:hover {
-    background-color: #475569; /* Gris légèrement plus foncé */
-    box-shadow: 0 6px 12px rgba(100, 116, 139, 0.3); /* Ombre adaptée */
-}
-
-/* Bloc d'information technique pour erreurs serveur */
-.technician {
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Centrage vertical */
-    justify-content: center; /* Centrage horizontal */
-    margin-top: 1.5rem; /* Espacement supérieur */
-    padding: 1rem; /* Espacement interne */
-    border-radius: 8px; /* Coins arrondis */
-    font-family: 'Space Mono', monospace; /* Police technique */
-    font-size: 0.9rem; /* Taille réduite */
-}
-
-/* Style spécifique pour le bloc technique sur page 500 */
-.error-500 .technician {
-    background-color: rgba(109, 40, 217, 0.05); /* Fond violet très léger */
-    color: #6d28d9; /* Texte violet */
-}
-
-/* Affichage des coordonnées métaphoriques pour page 404 */
-.coordinates {
-    margin-top: 2rem; /* Espacement supérieur important */
-    opacity: 0.6; /* Semi-transparent pour effet secondaire */
-    font-size: 0.9rem; /* Taille réduite */
-    font-family: 'Space Mono', monospace; /* Police technique */
-    display: inline-flex; /* Disposition en ligne avec propriétés flex */
-    align-items: center; /* Centrage vertical */
-}
-
-/* Icône dans le bloc de coordonnées */
-.coordinates svg {
-    margin-right: 5px; /* Espacement avant le texte */
-}
-
-/* -----------------------------
-   ADAPTATIONS RESPONSIVES
-   ----------------------------- */
-
-/* Tablettes et petits écrans */
-@media (max-width: 768px) {
-    /* Réorganisation verticale des boutons */
-    .error-actions {
-        flex-direction: column; /* Empile les boutons verticalement */
-        width: 100%; /* Occupe toute la largeur disponible */
-        max-width: 300px; /* Largeur maximale pour lisibilité */
-        gap: 0.75rem; /* Espacement réduit entre les boutons */
+   .error-500 .outline-button:hover {
+        color: white;
     }
-    
-    /* Adaptation des boutons en largeur pleine */
-    .error-button {
-        width: 100%; /* Largeur complète */
-        justify-content: center; /* Centrage du contenu */
-        margin-left: 0 !important; /* Suppression des marges gauches */
-    }
-}
-
-/* Smartphones et très petits écrans */
-@media (max-width: 640px) {
-    /* Réduction de la taille du code d'erreur */
-    .error-code {
-        font-size: 4rem; /* Taille réduite pour petits écrans */
-    }
-    
-    /* Adaptation du message d'erreur */
-    .error-message {
-        font-size: 1.2rem; /* Taille réduite */
-        margin-bottom: 1.5rem; /* Espacement inférieur réduit */
-    }
-    
-    /* Réduction des marges du conteneur principal */
-    .error-container {
-        padding: 1rem; /* Espacement interne réduit */
-    }
-    
-    /* Réduction de la taille du titre */
-    h2 {
-        font-size: 1.5rem; /* Taille réduite */
-    }
-    
-    /* Adaptation du fond animé */
-    .animated-bg {
-        padding: 1.5rem; /* Espacement interne réduit */
-    }
-    
-    /* Adaptation des boutons pour petits écrans */
-    .error-button {
-        padding: 0.75rem 1.5rem; /* Espacement interne réduit */
-        font-size: 0.9rem; /* Taille de texte réduite */
-    }
-}
+   
+   .error-500 .outline-button::after {
+       background-color: var(--cosmos-purple);
+       z-index: -1;
+   }
+   
+   /* Bouton de version 403 */
+   .error-403 .error-button {
+       background: linear-gradient(135deg, #dc2626, #b91c1c);
+       box-shadow: 
+           0 4px 6px rgba(220, 38, 38, 0.1),
+           0 10px 15px -3px rgba(220, 38, 38, 0.1),
+           0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+   }
+   
+   .error-403 .error-button:hover {
+       box-shadow: 
+           0 10px 20px -3px rgba(220, 38, 38, 0.15),
+           0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+   }
+   
+   .error-403 .outline-button {
+       color: #dc2626;
+       border: 2px solid #dc2626;
+   }
+   
+   .error-403 .outline-button::after {
+       background-color: #dc2626;
+   }
+   
+   /* Bouton de version 500 */
+   .error-500 .error-button {
+       background: linear-gradient(135deg, var(--cosmos-purple), #9333ea);
+       box-shadow: 
+           0 4px 6px rgba(147, 51, 234, 0.1),
+           0 10px 15px -3px rgba(147, 51, 234, 0.1),
+           0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+   }
+   
+   .error-500 .error-button:hover {
+       box-shadow: 
+           0 10px 20px -3px rgba(147, 51, 234, 0.15),
+           0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+   }
+   
+   .error-500 .outline-button {
+       color: var(--cosmos-purple);
+       border: 2px solid var(--cosmos-purple);
+   }
+   
+   .error-500 .outline-button::after {
+       background-color: var(--cosmos-purple);
+   }
+   
+   /* Bouton secondaire */
+   .secondary-button {
+       background: linear-gradient(135deg, var(--text-secondary), #475569);
+   }
+   
+   /* -----------------------------
+      ÉLÉMENTS SUPPLÉMENTAIRES
+      ----------------------------- */
+   .technician {
+       margin-top: 2rem;
+       padding: 0.75rem 1.5rem;
+       border-radius: 10px;
+       font-size: 0.85rem;
+       color: var(--text-secondary);
+       background-color: var(--card-bg);
+       display: inline-flex;
+       align-items: center;
+       gap: 0.75rem;
+       font-family: 'JetBrains Mono', monospace;
+       border: 1px solid var(--border-light);
+   }
+   
+   .coordinates {
+       margin-top: 2rem;
+       font-size: 0.85rem;
+       color: var(--text-secondary);
+       font-family: 'JetBrains Mono', monospace;
+       display: inline-flex;
+       align-items: center;
+       gap: 0.5rem;
+   }
+   
+   /* -----------------------------
+      ANIMATIONS RESPONSIVE
+      ----------------------------- */
+   @media (max-width: 768px) {
+       .error-container {
+           padding: 2rem;
+       }
+       
+       .error-code {
+           font-size: 7rem;
+       }
+       
+       .error-actions {
+           flex-direction: column;
+       }
+       
+       .error-button, .outline-button {
+           width: 100%;
+       }
+   }
+   
+   @media (max-width: 480px) {
+       .error-code {
+           font-size: 5rem;
+       }
+       
+       h2 {
+           font-size: 1.75rem;
+       }
+       
+       .pulse-animation svg {
+           width: 80px;
+           height: 80px;
+       }
+   }

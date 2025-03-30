@@ -107,6 +107,12 @@ class InvoiceController
             $status = $_POST['status'] ?? 'pending';
             $pdf_path = filter_input(INPUT_POST, 'pdf_path', FILTER_SANITIZE_STRING);
 
+            // Vérifier que le statut correspond aux valeurs autorisées dans la base de données
+            $validStatuses = ['pending', 'paid', 'cancelled', 'refunded'];
+            if (!in_array($status, $validStatuses)) {
+                $status = 'pending'; // Valeur par défaut si invalide
+            }
+
             $reservation = $this->reservationModel->getOneReservation((int)$reservation_id);
             $invoice = $this->invoiceModel->getOneInvoice((int)$id);
 
@@ -311,6 +317,7 @@ class InvoiceController
             
             // Mettre à jour le chemin du PDF dans la base de données si la facture existe
             if ($invoice) {
+                // Correction du SQL pour correspondre exactement à la structure de la table Invoice
                 $sql = "UPDATE Invoice SET pdf_path = :pdf_path WHERE reservation_id = :reservation_id";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindValue(':pdf_path', $pdfPath, PDO::PARAM_STR);
@@ -335,7 +342,7 @@ class InvoiceController
                 $taxAmount = $amount * 0.1; // 10% de taxe
                 $totalAmount = $amount + $taxAmount;
                 
-                // Créer l'entrée de facture
+                // Créer l'entrée de facture avec les champs exacts de la table Invoice
                 $invoiceData = [
                     'reservation_id' => $reservationId,
                     'invoice_number' => $invoiceNumber,
@@ -345,9 +352,11 @@ class InvoiceController
                     'due_date' => date('Y-m-d', strtotime('+7 days')),
                     'status' => 'paid',
                     'pdf_path' => $pdfPath
+                    // Remarque : invoice_date n'est pas nécessaire car c'est un TIMESTAMP avec DEFAULT CURRENT_TIMESTAMP
                 ];
                 
-                $this->invoiceModel->createInvoice($invoiceData);
+                // Utilisez une méthode qui insère exactement ces champs
+                $this->createInvoiceRecord($invoiceData);
             }
         } else {
             // Utiliser le PDF existant
@@ -367,6 +376,45 @@ class InvoiceController
             header('Location: index.php?page=confirmationReservation&id=' . $reservationId);
             exit();
         }
+    }
+
+    /**
+     * Crée un nouvel enregistrement dans la table Invoice en utilisant exactement la structure de la base de données
+     */
+    private function createInvoiceRecord(array $data)
+    {
+        // S'assurer que tous les champs dans le SQL correspondent exactement à la structure de la table
+        $sql = "INSERT INTO Invoice (
+            reservation_id, 
+            invoice_number, 
+            amount, 
+            tax_amount, 
+            total_amount, 
+            due_date, 
+            status, 
+            pdf_path
+        ) VALUES (
+            :reservation_id, 
+            :invoice_number, 
+            :amount, 
+            :tax_amount, 
+            :total_amount, 
+            :due_date, 
+            :status, 
+            :pdf_path
+        )";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':reservation_id', $data['reservation_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':invoice_number', $data['invoice_number'], PDO::PARAM_STR);
+        $stmt->bindValue(':amount', $data['amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':tax_amount', $data['tax_amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':total_amount', $data['total_amount'], PDO::PARAM_STR);
+        $stmt->bindValue(':due_date', $data['due_date'], PDO::PARAM_STR);
+        $stmt->bindValue(':status', $data['status'], PDO::PARAM_STR);
+        $stmt->bindValue(':pdf_path', $data['pdf_path'], PDO::PARAM_STR);
+        
+        return $stmt->execute();
     }
 
     /**
@@ -565,5 +613,18 @@ class InvoiceController
             
             return file_exists($outputPath);
         }
+    }
+
+    /**
+     * Obtient l'invoice par ID de réservation, conformément à la structure de base de données
+     */
+    public function getInvoiceByReservationId(int $reservationId)
+    {
+        $sql = "SELECT * FROM Invoice WHERE reservation_id = :reservation_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':reservation_id', $reservationId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

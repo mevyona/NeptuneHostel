@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "blank.html.twig" %}
 
 {% block title %} {{ parent() }} Erreur 404 {% endblock %}
 
@@ -6,35 +6,47 @@
        
 {% block content %} 
     <div class="error-container error-404">
-        <div class="floating">
-            <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z" stroke-width="1.5"/>
-                <path d="M12 14V15M12 9V12" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M10.1904 3L4.00004 4.5M13.8096 3L19.9999 4.5" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M10.1904 21L4.00004 19.5M13.8096 21L19.9999 19.5" stroke-width="1.5" stroke-linecap="round"/>
-                <circle cx="12" cy="12" r="10" stroke-width="1.5" stroke-dasharray="1 3"/>
+        <!-- Éléments spatiaux -->
+        <div class="float-element"></div>
+        <div class="float-element"></div>
+        <div class="float-element"></div>
+        <div class="planet"></div>
+        <div class="shooting-star"></div>
+        <div class="shooting-star"></div>
+        <div class="constellation">
+            <div class="constellation-dot"></div>
+            <div class="constellation-dot"></div>
+            <div class="constellation-dot"></div>
+            <div class="constellation-dot"></div>
+            <div class="constellation-dot"></div>
+            <div class="constellation-line"></div>
+            <div class="constellation-line"></div>
+            <div class="constellation-line"></div>
+            <div class="constellation-line"></div>
+        </div>
+        
+        <div class="pulse-animation">
+            <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="#4f46e5" stroke-width="2"/>
+                <path d="M12 8V12L14 14" stroke="#4f46e5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </div>
         <div class="error-code">404</div>
         <h2>Page Non Trouvée</h2>
         <p class="error-message">
             La page que vous recherchez semble avoir disparu dans l'espace.
-            <br>Elle a peut-être été déplacée, renommée ou n'a jamais existé.
+            <br>Elle a peut-être été déplacée ou n'existe plus dans notre galaxie.
         </p>
-        <div class="error-actions">
-            <a href="index.php" class="error-button">
-                Retour à l'accueil
-            </a>
-            <a href="javascript:history.back()" class="error-button outline-button">
-                Page précédente
-            </a>
-        </div>
         <div class="coordinates">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 6V12L16 14" stroke="#64748b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="12" r="9" stroke="#64748b" stroke-width="1.5"/>
+                <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3.5 12H9M15 12H20.5M12 3.5V9M12 15V20.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            Coordonnées galactiques : 404.NeptuneHostel.local
+            Coordonnées: 404.NeptuneHostel.Sector
+        </div>
+        <div class="error-actions">
+            <a href="/" class="error-button">Retour à la station d'accueil</a>
+            <a href="javascript:history.back()" class="outline-button">Voyage précédent</a>
         </div>
     </div>
 {% endblock %}

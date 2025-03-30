@@ -65,7 +65,7 @@ class Router
             'payment' => [PaymentController::class, 'showPaymentPage', 'client'],
             'processPayment' => [PaymentController::class, 'processPayment', 'client'],
 
-            'reservationConfirmed' => [InvoiceController::class, 'reservationConfirmed', null],
+            'reservationConfirmed' => [InvoiceController::class, 'reservationConfirmed', 'client'],
             'downloadInvoice' => [InvoiceController::class, 'downloadInvoice', 'client'],
             
             'rooms' => [RoomController::class, 'listRooms', null],
@@ -74,6 +74,8 @@ class Router
             'updateRoom' => [RoomController::class, 'updateRoom', 'admin'],
             'deleteRoom' => [RoomController::class, 'deleteRoom', 'admin'],
             'bookRoomDirectly' => [RoomController::class, 'bookRoomDirectly', 'client'],
+
+            'test' => [PaymentController::class, 'grjntj', null],
 
         ];
         $this->defaultPage = 'home';
