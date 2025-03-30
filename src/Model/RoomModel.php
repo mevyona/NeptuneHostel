@@ -92,8 +92,7 @@ class RoomModel
 
     public function getSimilarRooms(int $capacity, int $currentRoomId, int $limit = 3): array
     {
-        // Récupérer des chambres avec une capacité similaire (±1) mais pas la chambre actuelle
-        $sql = "SELECT r.*, m.id as media_id, m.file_name, m.file_path, m.file_type, m.file_size, m.created_at as media_created
+                $sql = "SELECT r.*, m.id as media_id, m.file_name, m.file_path, m.file_type, m.file_size, m.created_at as media_created
                 FROM Room r
                 LEFT JOIN Media m ON r.featured_image_id = m.id
                 WHERE r.id != :current_room_id 
@@ -135,8 +134,7 @@ class RoomModel
             );
         }
         
-        // Si nous n'avons pas assez de chambres similaires par capacité, compléter avec d'autres chambres
-        if (count($rooms) < $limit) {
+                if (count($rooms) < $limit) {
             $additionalLimit = $limit - count($rooms);
             $existingIds = array_merge([$currentRoomId], array_map(function($room) {
                 return $room->getId();
@@ -153,8 +151,7 @@ class RoomModel
                     
             $stmt = $this->db->prepare($sql);
             
-            // Bind all existing IDs
-            $paramIndex = 1;
+                        $paramIndex = 1;
             foreach ($existingIds as $id) {
                 $stmt->bindValue($paramIndex++, $id, PDO::PARAM_INT);
             }
@@ -220,10 +217,7 @@ class RoomModel
         return $stmt->execute();
     }
 
-    /**
-     * Met à jour la disponibilité d'une chambre
-     */
-    public function updateRoomAvailability(int $roomId, bool $isAvailable): bool
+        public function updateRoomAvailability(int $roomId, bool $isAvailable): bool
     {
         $sql = "UPDATE Room SET is_available = :is_available WHERE id = :id";
         $stmt = $this->db->prepare($sql);

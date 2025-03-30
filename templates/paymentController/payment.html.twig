@@ -9,7 +9,6 @@
 {% endblock %}
        
 {% block content %} 
-<!-- Éléments spatiaux décoratifs -->
 <div class="float-element"></div>
 <div class="float-element"></div>
 <div class="float-element"></div>
@@ -24,8 +23,7 @@
 
 <div class="payment-wrapper">
     <div class="payment-grid">
-        <!-- Formulaire de paiement -->
-        <div class="payment-card">
+                <div class="payment-card">
             <div class="card-header">
                 <h3>
                     Informations de réservation
@@ -41,8 +39,7 @@
                     <input type="hidden" name="number_of_nights" value="{{ numberOfNights }}">
                     <input type="hidden" name="total_amount" value="{{ totalAmount }}">
                     
-                    <!-- Informations personnelles -->
-                    <div class="form-section">
+                                        <div class="form-section">
                         <h4><i class="bi bi-person-circle"></i> Informations personnelles</h4>
                         
                         <div class="form-row">
@@ -70,8 +67,7 @@
                         </div>
                     </div>
                     
-                    <!-- Adresse de facturation -->
-                    <div class="form-section">
+                                        <div class="form-section">
                         <h4><i class="bi bi-geo-alt"></i> Adresse de facturation</h4>
                         
                         <div class="form-group">
@@ -97,8 +93,7 @@
                         </div>
                     </div>
                     
-                    <!-- Méthode de paiement -->
-                    <div class="form-section">
+                                        <div class="form-section">
                         <h4>
                             <i class="bi bi-credit-card"></i> Méthode de paiement
                             <div class="payment-icons">
@@ -147,8 +142,7 @@
                         </div>
                     </div>
                     
-                    <!-- Conditions -->
-                    <div class="payment-terms">
+                                        <div class="payment-terms">
                         <input type="checkbox" id="terms" name="terms" required>
                         <label for="terms">
                             J'accepte les <a href="#">conditions générales de vente</a> et la <a href="#">politique de confidentialité</a>
@@ -158,8 +152,7 @@
             </div>
         </div>
         
-        <!-- Résumé de réservation -->
-        <div class="payment-card">
+                <div class="payment-card">
             <div class="card-header">
                 <h3>Votre réservation</h3>
             </div>

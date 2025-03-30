@@ -7,8 +7,7 @@ namespace MyApp\Controller;
 use MyApp\Model\ReservationModel;
 use MyApp\Model\UserModel;
 use MyApp\Model\RoomModel;
-use MyApp\Model\InvoiceModel; // Ajoutez l'import en haut du fichier
-use MyApp\Entity\Reservation;
+use MyApp\Model\InvoiceModel; use MyApp\Entity\Reservation;
 use MyApp\Entity\User;
 use MyApp\Entity\Room;
 use MyApp\Service\DependencyContainer;
@@ -21,16 +20,14 @@ class ReservationController
     private ReservationModel $reservationModel;
     private UserModel $userModel;
     private RoomModel $roomModel;
-    private InvoiceModel $invoiceModel; // Ajoutez cette propriété
-
+    private InvoiceModel $invoiceModel; 
     public function __construct(Environment $twig, DependencyContainer $container)
     {
         $this->twig = $twig;
         $this->reservationModel = $container->get('ReservationModel');
         $this->userModel = $container->get('UserModel');
         $this->roomModel = $container->get('RoomModel');
-        $this->invoiceModel = $container->get('InvoiceModel'); // Ajoutez cette ligne
-    }
+        $this->invoiceModel = $container->get('InvoiceModel');     }
 
     public function listReservations()
     {
@@ -84,15 +81,10 @@ class ReservationController
         header('Location: index.php?page=list-reservations');
     }
 
-    /**
-     * Initialise le processus de paiement après la sélection des dates sur la page showRoom
-     * Cette méthode fait le pont entre la page de chambre et la page de paiement
-     */
-    public function initializePayment()
+        public function initializePayment()
     {
         
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_id'])) {
+                if (!isset($_SESSION['user_id'])) {
             $_SESSION['message'] = 'Vous devez être connecté pour effectuer une réservation.';
             $_SESSION['success'] = false;
             $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
@@ -100,14 +92,12 @@ class ReservationController
             exit();
         }
 
-        // Récupérer les données du formulaire
-        $roomId = filter_input(INPUT_POST, 'room_id', FILTER_SANITIZE_NUMBER_INT);
+                $roomId = filter_input(INPUT_POST, 'room_id', FILTER_SANITIZE_NUMBER_INT);
         $checkIn = filter_input(INPUT_POST, 'check_in', FILTER_SANITIZE_STRING);
         $checkOut = filter_input(INPUT_POST, 'check_out', FILTER_SANITIZE_STRING);
         $specialRequests = filter_input(INPUT_POST, 'special_requests', FILTER_SANITIZE_STRING);
 
-        // Validation plus explicite pour débugger
-        if (!$roomId) {
+                if (!$roomId) {
             $_SESSION['message'] = 'ID de chambre manquant.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=rooms');
@@ -121,39 +111,28 @@ class ReservationController
             exit();
         }
 
-        // Suite du code...
-
-        // Assurez-vous que cette redirection est atteinte
-        $_SESSION['message'] = 'Redirection vers la page de paiement...';
+        
+                $_SESSION['message'] = 'Redirection vers la page de paiement...';
         $_SESSION['success'] = true;
         header('Location: index.php?page=payment');
         exit();
     }
 
-    /**
-     * Vérifie si une chambre est déjà réservée pour les dates spécifiées
-     */
-    private function isRoomBooked(int $roomId, string $checkIn, string $checkOut): bool
+        private function isRoomBooked(int $roomId, string $checkIn, string $checkOut): bool
     {
-        // Utiliser la méthode existante dans le modèle de réservation
-        return $this->reservationModel->isRoomBooked($roomId, $checkIn, $checkOut);
+                return $this->reservationModel->isRoomBooked($roomId, $checkIn, $checkOut);
     }
 
-    /**
-     * Méthode pour afficher la page de confirmation après un paiement réussi
-     */
-    public function showConfirmation()
+        public function showConfirmation()
     {
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_id'])) {
+                if (!isset($_SESSION['user_id'])) {
             $_SESSION['message'] = 'Vous devez être connecté pour voir vos réservations.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=login');
             exit();
         }
 
-        // Récupérer l'ID de la réservation depuis l'URL
-        $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+                $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         
         if (!$reservationId) {
             $_SESSION['message'] = 'Numéro de réservation invalide.';
@@ -162,8 +141,7 @@ class ReservationController
             exit();
         }
 
-        // Récupérer les détails de la réservation
-        $reservation = $this->reservationModel->getReservationById((int)$reservationId);
+                $reservation = $this->reservationModel->getReservationById((int)$reservationId);
         
         if (!$reservation) {
             $_SESSION['message'] = 'Réservation introuvable.';
@@ -172,64 +150,51 @@ class ReservationController
             exit();
         }
 
-        // Vérifier que la réservation appartient bien à l'utilisateur connecté
-        // Sauf si l'utilisateur est un admin
-        if ($reservation['user_id'] != $_SESSION['user_id'] && $_SESSION['user_role'] != 'admin') {
+                        if ($reservation['user_id'] != $_SESSION['user_id'] && $_SESSION['user_role'] != 'admin') {
             $_SESSION['message'] = 'Vous n\'êtes pas autorisé à voir cette réservation.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=dashboard');
             exit();
         }
 
-        // Calculer le nombre de nuits
-        $checkIn = new DateTime($reservation['check_in']);
+                $checkIn = new DateTime($reservation['check_in']);
         $checkOut = new DateTime($reservation['check_out']);
         $interval = $checkIn->diff($checkOut);
         $numberOfNights = $interval->days;
         
-        // Ajouter le nombre de nuits à l'objet réservation
-        $reservation['number_of_nights'] = $numberOfNights;
+                $reservation['number_of_nights'] = $numberOfNights;
         
-        // Récupérer la chambre pour afficher plus d'informations
-        $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
+                $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
         
-        // Créer l'adresse de facturation formatée
-        $billingAddress = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_STRING) . ", " . 
+                $billingAddress = filter_input(INPUT_POST, 'address', FILTER_SANITIZE_STRING) . ", " . 
                           filter_input(INPUT_POST, 'zip', FILTER_SANITIZE_STRING) . " " . 
                           filter_input(INPUT_POST, 'city', FILTER_SANITIZE_STRING) . ", " . 
                           filter_input(INPUT_POST, 'country', FILTER_SANITIZE_STRING);
         
         $reservation['billing_address'] = $billingAddress ?? "Adresse non spécifiée";
         
-        // Récupérer l'invoice pour avoir le montant total correct
-        $invoice = $this->invoiceModel->getInvoiceByReservationId((int)$reservationId);
+                $invoice = $this->invoiceModel->getInvoiceByReservationId((int)$reservationId);
         if ($invoice) {
             $reservation['total_amount'] = $invoice['total_amount'];
         }
 
-        // Afficher la page de confirmation
-        echo $this->twig->render('reservationController/confirmation.html.twig', [
+                echo $this->twig->render('reservationController/confirmation.html.twig', [
             'reservation' => $reservation,
             'room' => $room,
             'session' => $_SESSION ?? []
         ]);
     }
 
-    /**
-     * Méthode pour afficher les détails d'une réservation
-     */
-    public function showReservation()
+        public function showReservation()
     {
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_id'])) {
+                if (!isset($_SESSION['user_id'])) {
             $_SESSION['message'] = 'Vous devez être connecté pour voir vos réservations.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=login');
             exit();
         }
 
-        // Récupérer l'ID de la réservation depuis l'URL
-        $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+                $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         
         if (!$reservationId) {
             $_SESSION['message'] = 'Numéro de réservation invalide.';
@@ -238,8 +203,7 @@ class ReservationController
             exit();
         }
 
-        // Récupérer les détails de la réservation
-        $reservation = $this->reservationModel->getReservationById((int)$reservationId);
+                $reservation = $this->reservationModel->getReservationById((int)$reservationId);
         
         if (!$reservation) {
             $_SESSION['message'] = 'Réservation introuvable.';
@@ -248,9 +212,7 @@ class ReservationController
             exit();
         }
 
-        // Vérifier que la réservation appartient bien à l'utilisateur connecté
-        // Sauf si l'utilisateur est un admin ou un membre du personnel
-        if ($reservation['user_id'] != $_SESSION['user_id'] && 
+                        if ($reservation['user_id'] != $_SESSION['user_id'] && 
             $_SESSION['user_role'] != 'admin' && 
             $_SESSION['user_role'] != 'staff') {
             $_SESSION['message'] = 'Vous n\'êtes pas autorisé à voir cette réservation.';
@@ -259,32 +221,25 @@ class ReservationController
             exit();
         }
 
-        // Récupérer la chambre associée pour afficher les détails
-        $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
+                $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
 
-        // Afficher la page de détail de la réservation
-        echo $this->twig->render('reservationController/showReservation.html.twig', [
+                echo $this->twig->render('reservationController/showReservation.html.twig', [
             'reservation' => $reservation,
             'room' => $room,
             'session' => $_SESSION ?? []
         ]);
     }
 
-    /**
-     * Méthode pour annuler une réservation
-     */
-    public function cancelReservation()
+        public function cancelReservation()
     {
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_id'])) {
+                if (!isset($_SESSION['user_id'])) {
             $_SESSION['message'] = 'Vous devez être connecté pour annuler une réservation.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=login');
             exit();
         }
 
-        // Récupérer l'ID de la réservation depuis l'URL
-        $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+                $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
         
         if (!$reservationId) {
             $_SESSION['message'] = 'Numéro de réservation invalide.';
@@ -293,8 +248,7 @@ class ReservationController
             exit();
         }
 
-        // Récupérer les détails de la réservation
-        $reservation = $this->reservationModel->getReservationById((int)$reservationId);
+                $reservation = $this->reservationModel->getReservationById((int)$reservationId);
         
         if (!$reservation) {
             $_SESSION['message'] = 'Réservation introuvable.';
@@ -303,25 +257,21 @@ class ReservationController
             exit();
         }
 
-        // Vérifier que la réservation appartient bien à l'utilisateur connecté
-        // Sauf si l'utilisateur est un admin
-        if ($reservation['user_id'] != $_SESSION['user_id'] && $_SESSION['user_role'] != 'admin') {
+                        if ($reservation['user_id'] != $_SESSION['user_id'] && $_SESSION['user_role'] != 'admin') {
             $_SESSION['message'] = 'Vous n\'êtes pas autorisé à annuler cette réservation.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=dashboard');
             exit();
         }
 
-        // Vérifier que la réservation n'est pas déjà annulée
-        if ($reservation['status'] === 'cancelled') {
+                if ($reservation['status'] === 'cancelled') {
             $_SESSION['message'] = 'Cette réservation est déjà annulée.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=dashboard');
             exit();
         }
 
-        // Annuler la réservation
-        $success = $this->reservationModel->cancelReservation((int)$reservationId);
+                $success = $this->reservationModel->cancelReservation((int)$reservationId);
         
         if ($success) {
             $_SESSION['message'] = 'Votre réservation a été annulée avec succès.';
@@ -335,14 +285,9 @@ class ReservationController
         exit();
     }
 
-    /**
-     * Méthode pour mettre à jour le statut d'une réservation
-     * Utilisée par le personnel ou l'admin
-     */
-    public function updateReservationStatus()
+        public function updateReservationStatus()
     {
-        // Vérifier si l'utilisateur est connecté et a les droits
-        if (!isset($_SESSION['user_id']) || 
+                if (!isset($_SESSION['user_id']) || 
             ($_SESSION['user_role'] != 'admin' && $_SESSION['user_role'] != 'staff')) {
             $_SESSION['message'] = 'Vous n\'êtes pas autorisé à effectuer cette action.';
             $_SESSION['success'] = false;
@@ -350,8 +295,7 @@ class ReservationController
             exit();
         }
 
-        // Récupérer les données du formulaire
-        $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_SANITIZE_NUMBER_INT);
+                $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_SANITIZE_NUMBER_INT);
         $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
         
         if (!$reservationId || !$status) {
@@ -361,8 +305,7 @@ class ReservationController
             exit();
         }
 
-        // Mettre à jour le statut
-        $success = $this->reservationModel->updateReservationStatus((int)$reservationId, $status);
+                $success = $this->reservationModel->updateReservationStatus((int)$reservationId, $status);
         
         if ($success) {
             $_SESSION['message'] = 'Le statut de la réservation a été mis à jour avec succès.';
@@ -376,22 +319,15 @@ class ReservationController
         exit();
     }
 
-    /**
-     * Méthode pour mettre à jour les disponibilités des chambres
-     * Cette méthode devrait être exécutée par une tâche cron quotidienne
-     */
-    public function updateRoomAvailability()
+        public function updateRoomAvailability()
     {
-        // 1. Récupérer toutes les réservations terminées (date de départ passée)
-        $completedReservations = $this->reservationModel->getCompletedReservations();
+                $completedReservations = $this->reservationModel->getCompletedReservations();
         
-        // 2. Pour chaque réservation terminée, vérifier s'il y a d'autres réservations à venir
-        foreach ($completedReservations as $reservation) {
+                foreach ($completedReservations as $reservation) {
             $roomId = $reservation['room_id'];
             $futureReservations = $this->reservationModel->getFutureReservationsForRoom($roomId);
             
-            // 3. Si aucune réservation future, rendre la chambre disponible
-            if (empty($futureReservations)) {
+                        if (empty($futureReservations)) {
                 $this->roomModel->updateRoomAvailability($roomId, true);
             }
         }

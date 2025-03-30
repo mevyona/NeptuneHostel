@@ -25,8 +25,7 @@ class UserModel
         $this->db = $db;
     }
     
-    // Méthodes d'accès aux autres modèles
-    private function getReservationModel(): ReservationModel
+        private function getReservationModel(): ReservationModel
     {
         if ($this->reservationModel === null) {
             $this->reservationModel = new ReservationModel($this->db);
@@ -253,36 +252,25 @@ class UserModel
         return $users;
     }
     
-    // Relations - récupération des entités liées
-    
-    /**
-     * Récupère les réservations de l'utilisateur
-     */
-    public function getUserReservations(int $userId): array
+        
+        public function getUserReservations(int $userId): array
     {
-        // Vérifier si le modèle de réservation est accessible
-        if (!isset($this->dependencyContainer) || !$this->dependencyContainer->has('ReservationModel')) {
+                if (!isset($this->dependencyContainer) || !$this->dependencyContainer->has('ReservationModel')) {
             return [];
         }
         
         $reservationModel = $this->dependencyContainer->get('ReservationModel');
         
-        // Appeler la méthode correcte "getUserReservations" au lieu de "getReservationsByUserId"
-        return $reservationModel->getUserReservations($userId);
+                return $reservationModel->getUserReservations($userId);
     }
     
-    /**
-     * Charge toutes les relations d'un utilisateur (réservations, avis, etc.)
-     */
-    public function getUserRelationsArray(int $userId): array
+        public function getUserRelationsArray(int $userId): array
     {
         $relations = [];
         
-        // Charger les réservations
-        $relations['reservations'] = $this->getUserReservations($userId);
+                $relations['reservations'] = $this->getUserReservations($userId);
         
-        // Autres relations...
-        
+                
         return $relations;
     }
     
@@ -301,8 +289,7 @@ class UserModel
         return $this->getCancellationModel()->getCancellationsByUserId($userId);
     }
     
-    // Méthode pour charger toutes les relations d'un utilisateur
-    public function loadUserRelations(User $user): void
+        public function loadUserRelations(User $user): void
     {
         if ($user->getId() === null) {
             return;

@@ -208,10 +208,7 @@ class InvoiceModel
         return (int)$this->db->lastInsertId();
     }
 
-    /**
-     * Récupère une facture par ID de réservation
-     */
-    public function getInvoiceByReservationId(int $reservationId): ?array
+        public function getInvoiceByReservationId(int $reservationId): ?array
     {
         $sql = "SELECT * FROM Invoice WHERE reservation_id = :reservation_id";
         $stmt = $this->db->prepare($sql);

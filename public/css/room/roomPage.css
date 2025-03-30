@@ -1,19 +1,9 @@
-/* ==========================================================================
-   STYLES DE PAGE DE CHAMBRE - HÔTEL NEPTUNE
-   Design ultra-moderne avec thème spatial assorti aux pages d'erreur
-   ========================================================================== */
 
-/* -----------------------------
-   IMPORTATION DES POLICES MODERNES
-   ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
    
-/* -----------------------------
-   VARIABLES GLOBALES - THÈME SPATIAL
-   ----------------------------- */
 :root {
     --space-blue: #0c1d4a;
     --space-blue-light: #1e3a8a;
@@ -28,14 +18,11 @@
     --card-bg: #f8fafc;
     --border-light: #e2e8f0;
     
-    /* Status colors - harmonized with theme */
+    
     --status-available: #0d9488;
     --status-unavailable: #dc2626;
 }
 
-/* -----------------------------
-   ANIMATIONS MODERNES
-   ----------------------------- */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -85,9 +72,6 @@
     }
 }
 
-/* -----------------------------
-   CONTENEUR PRINCIPAL
-   ----------------------------- */
 .room-detail-container {
     max-width: 1200px;
     margin: 2rem auto 4rem;
@@ -96,7 +80,7 @@
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Éléments spatiaux décoratifs */
+
 .room-detail-container::before {
     content: "";
     position: absolute;
@@ -124,7 +108,7 @@
     pointer-events: none;
 }
 
-/* Élément flottant */
+
 .float-element {
     position: fixed;
     width: 8px;
@@ -161,9 +145,6 @@
     animation-delay: 2s;
 }
 
-/* -----------------------------
-   EN-TÊTE DE LA PAGE
-   ----------------------------- */
 .room-header {
     display: flex;
     justify-content: space-between;
@@ -225,9 +206,6 @@
     flex-wrap: wrap;
 }
 
-/* -----------------------------
-   BOUTONS D'ACTION
-   ----------------------------- */
 .btn {
     position: relative;
     padding: 0.9rem 1.8rem;
@@ -345,9 +323,6 @@
     width: 100%;
 }
 
-/* -----------------------------
-   CONTENU PRINCIPAL
-   ----------------------------- */
 .room-content {
     display: grid;
     grid-template-columns: 3fr 2fr;
@@ -357,9 +332,6 @@
     z-index: 1;
 }
 
-/* -----------------------------
-   GALERIE D'IMAGES
-   ----------------------------- */
 .room-gallery {
     display: flex;
     flex-direction: column;
@@ -424,9 +396,6 @@
     transform: scale(1.1);
 }
 
-/* -----------------------------
-   INFORMATIONS SUR LA CHAMBRE
-   ----------------------------- */
 .room-info {
     display: flex;
     flex-direction: column;
@@ -493,9 +462,6 @@
     font-size: 1.1rem;
 }
 
-/* -----------------------------
-   FORMULAIRE DE RÉSERVATION
-   ----------------------------- */
 .booking-container {
     display: grid;
     grid-template-columns: 3fr 2fr;
@@ -513,7 +479,7 @@
     animation-fill-mode: both;
 }
 
-/* Élément décoratif: Orbite */
+
 .booking-container::after {
     content: "";
     position: absolute;
@@ -607,7 +573,7 @@ textarea.form-control {
     border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-/* Style pour le calculateur de prix */
+
 #price-calculator {
     margin-top: 25px;
     padding: 20px;
@@ -653,9 +619,6 @@ textarea.form-control {
     font-family: 'Inter', sans-serif;
 }
 
-/* -----------------------------
-   INFORMATIONS DE RÉSERVATION
-   ----------------------------- */
 .booking-info {
     padding: 30px;
     background-color: var(--background);
@@ -739,9 +702,6 @@ textarea.form-control {
     border-color: var(--cosmos-purple-light);
 }
 
-/* -----------------------------
-   INVITATION À SE CONNECTER
-   ----------------------------- */
 .login-prompt {
     background: linear-gradient(135deg, rgba(30, 58, 138, 0.03), rgba(139, 92, 246, 0.03));
     padding: 2.5rem;
@@ -784,9 +744,6 @@ textarea.form-control {
     min-width: 140px;
 }
 
-/* -----------------------------
-   CHAMBRES SIMILAIRES
-   ----------------------------- */
 .similar-rooms {
     margin-bottom: 4rem;
     animation: fadeIn 0.8s ease-out 0.8s;
@@ -864,9 +821,6 @@ textarea.form-control {
     text-align: center;
 }
 
-/* -----------------------------
-   DATEPICKER STYLE CUSTOM
-   ----------------------------- */
 .flatpickr-calendar {
     border-radius: 16px !important;
     overflow: hidden;
@@ -933,9 +887,6 @@ textarea.form-control {
     border-color: rgba(139, 92, 246, 0.3) !important;
 }
 
-/* -----------------------------
-   ADAPTATIONS RESPONSIVES
-   ----------------------------- */
 @media (max-width: 992px) {
     .room-content, .booking-container {
         grid-template-columns: 1fr;

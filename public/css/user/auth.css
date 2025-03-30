@@ -1,19 +1,9 @@
-/* ==========================================================================
-   STYLES D'AUTHENTIFICATION - HÔTEL NEPTUNE
-   Design ultra-moderne avec thème spatial assorti aux pages d'erreur
-   ========================================================================== */
 
-/* -----------------------------
-   IMPORTATION DES POLICES MODERNES
-   ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
    
-/* -----------------------------
-   VARIABLES GLOBALES - THÈME SPATIAL
-   ----------------------------- */
 :root {
     --space-blue: #0c1d4a;
     --space-blue-light: #1e3a8a;
@@ -29,9 +19,6 @@
     --border-light: #e2e8f0;
 }
 
-/* -----------------------------
-   STYLE GLOBAL
-   ----------------------------- */
 body {
     margin: 0;
     padding: 0;
@@ -48,9 +35,6 @@ body {
     background-size: 30px 30px;
 }
 
-/* -----------------------------
-   ANIMATIONS MODERNES
-   ----------------------------- */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -108,9 +92,6 @@ body {
     }
 }
 
-/* -----------------------------
-   CONTENEUR PRINCIPAL
-   ----------------------------- */
 .page-container {
     position: relative;
     display: flex;
@@ -123,7 +104,7 @@ body {
     padding: 20px;
 }
 
-/* Éléments décoratifs spatiaux flottants */
+
 .float-element {
     position: absolute;
     width: 10px;
@@ -159,7 +140,7 @@ body {
     animation-delay: 2s;
 }
 
-/* Planète en orbite */
+
 .planet {
     position: absolute;
     width: 20px;
@@ -171,7 +152,7 @@ body {
     animation: orbit 20s infinite linear;
 }
 
-/* Étoiles filantes */
+
 .shooting-star {
     position: absolute;
     width: 100px;
@@ -196,7 +177,7 @@ body {
     animation-delay: 2s;
 }
 
-/* Constellation */
+
 .constellation {
     position: absolute;
     width: 120px;
@@ -221,9 +202,6 @@ body {
 .constellation-dot:nth-child(4) { top: 30%; left: 60%; }
 .constellation-dot:nth-child(5) { top: 60%; left: 70%; }
 
-/* -----------------------------
-   FORMULAIRE D'AUTHENTIFICATION
-   ----------------------------- */
 .login-form {
     display: flex;
     flex-direction: column;
@@ -241,7 +219,7 @@ body {
     z-index: 10;
 }
 
-/* Élément décoratif: Neptune */
+
 .login-form::before {
     content: "";
     position: absolute;
@@ -255,7 +233,7 @@ body {
     z-index: 0;
 }
 
-/* Élément décoratif: Orbite */
+
 .login-form::after {
     content: "";
     position: absolute;
@@ -268,9 +246,6 @@ body {
     z-index: 0;
 }
 
-/* -----------------------------
-   ÉLÉMENTS DE TITRE
-   ----------------------------- */
 .textelogin {
     font-size: 2.25rem;
     font-weight: 700;
@@ -297,9 +272,6 @@ body {
     filter: drop-shadow(0 4px 6px rgba(12, 29, 74, 0.1));
 }
 
-/* -----------------------------
-   ÉLÉMENTS DE FORMULAIRE
-   ----------------------------- */
 .form-label {
     display: block;
     font-size: 0.95rem;
@@ -335,9 +307,6 @@ body {
     background-color: var(--background);
 }
 
-/* -----------------------------
-   BOUTON DE SOUMISSION
-   ----------------------------- */
 .submit-button {
     position: relative;
     padding: 0.9rem 1.8rem;
@@ -393,9 +362,6 @@ body {
     left: 100%;
 }
 
-/* -----------------------------
-   LIENS SECONDAIRES
-   ----------------------------- */
 .form-links {
     display: flex;
     flex-direction: column;
@@ -438,9 +404,6 @@ body {
     transform-origin: left;
 }
 
-/* -----------------------------
-   LIEN DE RETOUR ACCUEIL
-   ----------------------------- */
 .home-link {
     position: fixed;
     top: 20px;
@@ -493,17 +456,11 @@ body {
     margin-right: 8px;
 }
 
-/* -----------------------------
-   MASQUAGE DES ÉLÉMENTS DE NAVIGATION
-   ----------------------------- */
 body:has(.login-form) nav,
 body:has(.login-form) footer {
     display: none;
 }
 
-/* -----------------------------
-   ADAPTATIONS MOBILES
-   ----------------------------- */
 @media (max-width: 768px) {
     .login-form {
         padding: 2rem;
@@ -535,7 +492,7 @@ body:has(.login-form) footer {
     }
 }
 
-/* Animation de l'orbite */
+
 @keyframes orbit {
     0% {
         transform: rotate(0deg) translateX(60px) rotate(0deg);

@@ -1,19 +1,9 @@
-/* ==========================================================================
-   STYLES DE TABLEAU DE BORD - HÔTEL NEPTUNE
-   Design ultra-moderne avec thème spatial assorti aux pages d'erreur
-   ========================================================================== */
 
-/* -----------------------------
-   IMPORTATION DES POLICES MODERNES
-   ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
    
-/* -----------------------------
-   VARIABLES GLOBALES - THÈME SPATIAL
-   ----------------------------- */
 :root {
     --space-blue: #0c1d4a;
     --space-blue-light: #1e3a8a;
@@ -28,16 +18,13 @@
     --card-bg: #f8fafc;
     --border-light: #e2e8f0;
     
-    /* Status colors - harmonized with theme */
+    
     --status-confirmed: #0d9488;
     --status-cancelled: #dc2626;
     --status-pending: #eab308;
     --status-completed: #64748b;
 }
 
-/* -----------------------------
-   STYLE GLOBAL
-   ----------------------------- */
 body {
     margin: 0;
     padding: 0;
@@ -50,9 +37,6 @@ body {
     overflow-x: hidden;
 }
 
-/* -----------------------------
-   ANIMATIONS MODERNES
-   ----------------------------- */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -93,9 +77,6 @@ body {
     }
 }
 
-/* -----------------------------
-   CONTENEUR PRINCIPAL
-   ----------------------------- */
 .dashboard-container {
     max-width: 1400px;
     margin: 2rem auto;
@@ -104,7 +85,7 @@ body {
     z-index: 1;
 }
 
-/* Éléments spatiaux décoratifs */
+
 .dashboard-container::before {
     content: "";
     position: fixed;
@@ -130,7 +111,7 @@ body {
     z-index: -1;
 }
 
-/* Élément flottant */
+
 .float-element {
     position: fixed;
     width: 8px;
@@ -166,9 +147,6 @@ body {
     animation-delay: 2s;
 }
 
-/* -----------------------------
-   BANNIÈRE D'ACCUEIL
-   ----------------------------- */
 .welcome-banner {
     display: flex;
     justify-content: space-between;
@@ -186,7 +164,7 @@ body {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Élément décoratif: Orbite */
+
 .welcome-banner::after {
     content: "";
     position: absolute;
@@ -199,7 +177,7 @@ body {
     z-index: 0;
 }
 
-/* Style du titre de bienvenue */
+
 .user-welcome h1 {
     font-size: 2rem;
     font-weight: 700;
@@ -212,7 +190,7 @@ body {
     z-index: 1;
 }
 
-/* Texte secondaire dans le message de bienvenue */
+
 .user-welcome p {
     margin: 8px 0 0;
     font-size: 1.1rem;
@@ -222,7 +200,7 @@ body {
     z-index: 1;
 }
 
-/* Badge indicateur du rôle utilisateur */
+
 .user-role-badge {
     display: inline-block;
     padding: 4px 12px;
@@ -233,7 +211,7 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* Badges spécifiques selon le rôle */
+
 .badge-admin {
     background-color: rgba(220, 53, 69, 0.8);
     box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
@@ -249,9 +227,6 @@ body {
     box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
 }
 
-/* -----------------------------
-   ACTIONS UTILISATEUR
-   ----------------------------- */
 .user-actions {
     display: flex;
     gap: 12px;
@@ -260,7 +235,7 @@ body {
     z-index: 1;
 }
 
-/* Style commun pour tous les boutons du tableau de bord */
+
 .dashboard-btn {
     position: relative;
     padding: 0.8rem 1.4rem;
@@ -280,7 +255,7 @@ body {
     overflow: hidden;
 }
 
-/* Effet de brillance au survol */
+
 .dashboard-btn::before {
     content: '';
     position: absolute;
@@ -302,26 +277,26 @@ body {
     left: 100%;
 }
 
-/* Style des icônes dans les boutons */
+
 .dashboard-btn i {
     font-size: 1.1rem;
     position: relative;
     z-index: 2;
 }
 
-/* Texte dans les boutons */
+
 .dashboard-btn span {
     position: relative;
     z-index: 2;
 }
 
-/* Animation des boutons au survol */
+
 .dashboard-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.15);
 }
 
-/* Variantes de couleurs pour les boutons */
+
 .dashboard-btn.primary {
     background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
     box-shadow: 
@@ -364,16 +339,13 @@ body {
         0 10px 15px -3px rgba(139, 92, 246, 0.1);
 }
 
-/* -----------------------------
-   GRILLE ET CARTES
-   ----------------------------- */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 30px;
 }
 
-/* Style des cartes d'information */
+
 .dashboard-card {
     background-color: white;
     border-radius: 24px;
@@ -386,7 +358,7 @@ body {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Élément décoratif: Orbite */
+
 .dashboard-card::after {
     content: "";
     position: absolute;
@@ -400,7 +372,7 @@ body {
     opacity: 0.7;
 }
 
-/* Animation des cartes au survol */
+
 .dashboard-card:hover {
     transform: translateY(-5px);
     box-shadow: 
@@ -408,12 +380,12 @@ body {
         0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
-/* Carte sur double largeur */
+
 .dashboard-card.wide {
     grid-column: span 2;
 }
 
-/* En-tête des cartes d'information */
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -425,7 +397,7 @@ body {
     z-index: 1;
 }
 
-/* Titres des cartes */
+
 .card-header h2 {
     margin: 0;
     font-size: 1.4rem;
@@ -437,7 +409,7 @@ body {
     font-family: 'Playfair Display', serif;
 }
 
-/* Compteur numérique dans l'en-tête */
+
 .card-header .counter {
     background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
     color: white;
@@ -453,16 +425,13 @@ body {
     box-shadow: 0 4px 8px rgba(12, 29, 74, 0.2);
 }
 
-/* Corps des cartes avec contenu principal */
+
 .card-body {
     padding: 25px;
     position: relative;
     z-index: 1;
 }
 
-/* -----------------------------
-   LIGNES D'INFORMATION
-   ----------------------------- */
 .info-row {
     display: flex;
     margin-bottom: 20px;
@@ -476,7 +445,7 @@ body {
     padding-bottom: 0;
 }
 
-/* Étiquette descriptive */
+
 .info-label {
     font-weight: 600;
     color: var(--text-primary);
@@ -485,28 +454,25 @@ body {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Valeur de l'information */
+
 .info-value {
     color: var(--text-secondary);
     font-family: 'Inter', sans-serif;
 }
 
-/* -----------------------------
-   TABLEAUX DE DONNÉES
-   ----------------------------- */
 .table-responsive {
     overflow-x: auto;
     border-radius: 12px;
 }
 
-/* Style du tableau principal */
+
 .dashboard-table {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Inter', sans-serif;
 }
 
-/* En-têtes de colonnes */
+
 .dashboard-table th {
     background-color: var(--card-bg);
     color: var(--text-primary);
@@ -516,7 +482,7 @@ body {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Cellules du tableau */
+
 .dashboard-table td {
     padding: 15px 20px;
     border-top: 1px solid var(--border-light);
@@ -524,14 +490,11 @@ body {
     color: var(--text-secondary);
 }
 
-/* Survol des lignes pour meilleure lisibilité */
+
 .dashboard-table tbody tr:hover {
     background-color: rgba(45, 212, 191, 0.05);
 }
 
-/* -----------------------------
-   BADGES DE STATUT
-   ----------------------------- */
 .status-badge {
     display: inline-block;
     padding: 5px 12px;
@@ -541,7 +504,7 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* Variantes de couleurs selon le statut */
+
 .status-confirmée {
     background-color: rgba(45, 212, 191, 0.2);
     color: var(--neptune-teal-dark);
@@ -566,9 +529,6 @@ body {
     border: 1px solid rgba(100, 116, 139, 0.2);
 }
 
-/* -----------------------------
-   BOUTONS D'ACTION
-   ----------------------------- */
 .action-btn {
     display: inline-flex;
     align-items: center;
@@ -583,7 +543,7 @@ body {
     overflow: hidden;
 }
 
-/* Effet de brillance au survol */
+
 .action-btn::before {
     content: '';
     position: absolute;
@@ -600,7 +560,7 @@ body {
     transition: left 0.5s ease;
 }
 
-/* Animation des boutons au survol */
+
 .action-btn:hover {
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
@@ -610,7 +570,7 @@ body {
     left: 100%;
 }
 
-/* Variantes de couleurs pour les boutons d'action */
+
 .action-btn.info {
     background: linear-gradient(135deg, var(--cosmos-purple), var(--cosmos-purple-light));
     box-shadow: 0 4px 8px rgba(139, 92, 246, 0.2);
@@ -626,16 +586,13 @@ body {
     box-shadow: 0 4px 8px rgba(45, 212, 191, 0.2);
 }
 
-/* -----------------------------
-   ÉTATS VIDES
-   ----------------------------- */
 .empty-state {
     text-align: center;
     padding: 40px 30px;
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Icône dans l'état vide */
+
 .empty-state i {
     font-size: 3.5rem;
     color: var(--border-light);
@@ -644,7 +601,7 @@ body {
     animation: pulse 3s infinite ease-in-out;
 }
 
-/* Message principal */
+
 .empty-state p {
     color: var(--text-secondary);
     margin-bottom: 25px;
@@ -652,23 +609,20 @@ body {
     font-size: 1.1rem;
 }
 
-/* Texte secondaire plus petit */
+
 .empty-state p.small {
     font-size: 0.9rem;
     opacity: 0.7;
     font-family: 'Inter', sans-serif;
 }
 
-/* -----------------------------
-   LISTES D'AVIS
-   ----------------------------- */
 .reviews-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Élément d'avis individuel */
+
 .review-item {
     border-bottom: 1px solid var(--border-light);
     padding-bottom: 20px;
@@ -679,13 +633,13 @@ body {
     transform: translateY(-3px);
 }
 
-/* Suppression du séparateur pour le dernier avis */
+
 .review-item:last-child {
     border-bottom: none;
     padding-bottom: 0;
 }
 
-/* En-tête de l'avis avec info utilisateur et date */
+
 .review-header {
     display: flex;
     justify-content: space-between;
@@ -693,19 +647,19 @@ body {
     margin-bottom: 12px;
 }
 
-/* Style des étoiles de notation */
+
 .rating {
     color: var(--star-yellow);
 }
 
-/* Style de la date de l'avis */
+
 .review-date {
     font-size: 0.85rem;
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Contenu textuel de l'avis */
+
 .review-content p {
     margin: 0;
     line-height: 1.6;
@@ -713,16 +667,13 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* -----------------------------
-   NOTIFICATIONS
-   ----------------------------- */
 .notifications-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Élément de notification individuel */
+
 .notification-item {
     border-left: 3px solid var(--cosmos-purple);
     padding-left: 18px;
@@ -734,12 +685,12 @@ body {
     transform: translateX(5px);
 }
 
-/* Suppression de la marge pour la dernière notification */
+
 .notification-item:last-child {
     margin-bottom: 0;
 }
 
-/* En-tête de notification avec titre et date */
+
 .notification-header {
     display: flex;
     justify-content: space-between;
@@ -747,7 +698,7 @@ body {
     margin-bottom: 10px;
 }
 
-/* Titre de la notification */
+
 .notification-header h4 {
     margin: 0;
     font-size: 1.1rem;
@@ -756,14 +707,14 @@ body {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Date de la notification */
+
 .notification-date {
     font-size: 0.85rem;
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Contenu textuel de la notification */
+
 .notification-content p {
     margin: 0;
     line-height: 1.6;
@@ -771,16 +722,13 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* -----------------------------
-   ONGLETS
-   ----------------------------- */
 .tabs {
     display: flex;
     margin-bottom: 25px;
     border-bottom: 1px solid var(--border-light);
 }
 
-/* Boutons d'onglet */
+
 .tab-btn {
     padding: 12px 24px;
     border: none;
@@ -795,19 +743,19 @@ body {
     overflow: hidden;
 }
 
-/* Onglet actif */
+
 .tab-btn.active {
     color: var(--cosmos-purple);
     border-bottom-color: var(--cosmos-purple);
     font-weight: 600;
 }
 
-/* Survol des onglets */
+
 .tab-btn:hover {
     color: var(--cosmos-purple);
 }
 
-/* Effet de brillance au survol */
+
 .tab-btn::before {
     content: '';
     position: absolute;
@@ -829,22 +777,19 @@ body {
     left: 100%;
 }
 
-/* Contenu des onglets */
+
 .tab-content {
     display: block;
     animation: fadeIn 0.5s ease-out;
 }
 
-/* -----------------------------
-   STATISTIQUES
-   ----------------------------- */
 .stats-row {
     display: flex;
     justify-content: space-around;
     margin-bottom: 30px;
 }
 
-/* Boîte individuelle de statistique */
+
 .stat-box {
     text-align: center;
     padding: 20px 15px;
@@ -861,7 +806,7 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Valeur numérique de la statistique */
+
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
@@ -872,7 +817,7 @@ body {
     font-family: 'Playfair Display', serif;
 }
 
-/* Libellé de la statistique */
+
 .stat-label {
     font-size: 0.9rem;
     color: var(--text-secondary);
@@ -880,31 +825,25 @@ body {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* -----------------------------
-   GROUPE DE BOUTONS D'ACTION
-   ----------------------------- */
 .action-buttons {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
 }
 
-/* Centrage horizontal des boutons */
+
 .action-buttons.centered {
     justify-content: center;
 }
 
-/* -----------------------------
-   ADAPTATIONS RESPONSIVES
-   ----------------------------- */
 @media (max-width: 992px) {
-    /* Adaptation de la bannière de bienvenue */
+    
     .welcome-banner {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    /* Ajustement des actions utilisateur */
+    
     .user-actions {
         margin-top: 20px;
         flex-wrap: wrap;
@@ -916,25 +855,25 @@ body {
         min-width: 120px;
     }
 
-    /* Désactive l'étalement sur deux colonnes */
+    
     .dashboard-card.wide {
         grid-column: span 1;
     }
 }
 
 @media (max-width: 768px) {
-    /* Passage à une disposition verticale */
+    
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
 
-    /* Adaptation des statistiques */
+    
     .stats-row {
         flex-wrap: wrap;
         gap: 15px;
     }
 
-    /* Redimensionnement des boîtes de statistiques */
+    
     .stat-box {
         width: calc(33.333% - 15px);
         min-width: 80px;
@@ -942,50 +881,50 @@ body {
 }
 
 @media (max-width: 576px) {
-    /* Réduction des marges du conteneur */
+    
     .dashboard-container {
         padding: 10px;
         margin-top: 1rem;
     }
 
-    /* Réduction du padding de la bannière */
+    
     .welcome-banner {
         padding: 25px;
     }
 
-    /* Réduction de la taille du titre */
+    
     .user-welcome h1 {
         font-size: 1.5rem;
     }
 
-    /* Réduction des en-têtes de carte */
+    
     .card-header {
         padding: 18px;
     }
 
-    /* Réduction de la taille des titres de carte */
+    
     .card-header h2 {
         font-size: 1.2rem;
     }
 
-    /* Réduction du contenu des cartes */
+    
     .card-body {
         padding: 18px;
     }
     
-    /* Élargissement des boutons */
+    
     .dashboard-btn {
         width: 100%;
         justify-content: center;
     }
     
-    /* Ajustement des tableaux pour mobile */
+    
     .dashboard-table th,
     .dashboard-table td {
         padding: 12px 15px;
     }
     
-    /* Réduction des tailles de polices */
+    
     .stat-value {
         font-size: 1.5rem;
     }

@@ -1,24 +1,12 @@
-/* ==========================================================================
-   STYLES PRINCIPAUX - HÔTEL NEPTUNE
-   Thème spatial unifié avec les pages d'erreur
-   ========================================================================== */
 
-/* -----------------------------
-   IMPORTATION DES POLICES
-   ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
 
-/* -----------------------------
-   VARIABLES CSS (CUSTOM PROPERTIES)
-   ----------------------------- */
 
-/* Définition des variables globales pour cohérence visuelle - Uniformisées avec pages d'erreur */
 :root {
-    /* Palette de couleurs spatiales */
-    --space-blue: #0c1d4a;
+        --space-blue: #0c1d4a;
     --space-blue-light: #1e3a8a;
     --neptune-teal: #2dd4bf;
     --neptune-teal-dark: #0d9488;
@@ -26,15 +14,13 @@
     --cosmos-purple-light: #a78bfa;
     --star-yellow: #eab308;
     
-    /* Couleurs de texte et de fond */
-    --text-primary: #1e293b;
+        --text-primary: #1e293b;
     --text-secondary: #64748b;
     --background: #ffffff;
     --card-bg: #f8fafc;
     --border-light: #e2e8f0;
     
-    /* Remplacements des anciennes variables */
-    --primary-color: var(--space-blue);
+        --primary-color: var(--space-blue);
     --primary-light: var(--space-blue-light);
     --primary-gradient: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
     --dark-color: var(--text-primary);
@@ -43,31 +29,24 @@
     --gray-medium: var(--border-light);
     --gray-dark: var(--text-secondary);
     
-    /* Ombres standardisées */
-    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+        --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
     
-    /* Rayons de bordure */
-    --radius-sm: 8px;
+        --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-pill: 50px;
     
-    /* Transitions et animations */
-    --transition-fast: 0.2s ease;
+        --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     
-    /* Familles de polices */
-    --font-base: 'Space Grotesk', sans-serif;
+        --font-base: 'Space Grotesk', sans-serif;
     --font-title: 'Playfair Display', serif;
     --font-mono: 'JetBrains Mono', monospace;
     --font-ui: 'Inter', sans-serif;
 }
 
-/* -----------------------------
-   STYLE GLOBAL
-   ----------------------------- */
 body {
     line-height: 1.5;
     display: flex;
@@ -84,7 +63,6 @@ main {
     flex: 1;
 }
 
-/* Styles de base pour les titres */
 h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     margin-bottom: 1rem;
@@ -92,31 +70,24 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-title);
 }
 
-/* Taille pour les grands titres */
 h1 {
     font-size: 2.2rem;
 }
 
-/* Taille pour les titres de section */
 h2 {
     font-size: 1.8rem;
 }
 
-/* Taille pour les sous-titres */
 h3 {
     font-size: 1.5rem;
 }
 
-/* Style de base pour les liens */
 a {
     text-decoration: none;
     color: var(--space-blue);
     transition: color var(--transition-normal);
 }
 
-/* -----------------------------
-   NAVIGATION - THEME SPATIAL
-   ----------------------------- */
 .navbar {
     display: flex;
     align-items: center;
@@ -132,7 +103,6 @@ a {
     overflow: hidden;
 }
 
-/* Éléments décoratifs spatiaux dans la navbar */
 .navbar::before {
     content: "";
     position: absolute;
@@ -146,7 +116,6 @@ a {
     z-index: 0;
 }
 
-/* Logo dans la barre de navigation */
 .logo img {
     width: 6rem;
     height: auto;
@@ -155,12 +124,10 @@ a {
     z-index: 1;
 }
 
-/* Animation du logo au survol */
 .logo img:hover {
     transform: rotate(15deg) scale(1.1);
 }
 
-/* Conteneur des liens de navigation */
 .nav-links {
     display: flex;
     align-items: center;
@@ -169,19 +136,16 @@ a {
     z-index: 1;
 }
 
-/* Icônes dans la navigation */
 .icon img {
     width: 1.9rem;
     height: auto;
     transition: transform var(--transition-fast);
 }
 
-/* Animation des icônes au survol */
 .icon img:hover {
     transform: scale(1.1);
 } 
 
-/* Lien spécial pour la réservation */
 .link-reserver {
     font-family: var(--font-ui);
     position: relative;
@@ -193,7 +157,6 @@ a {
     transition: color var(--transition-normal);
 }
 
-/* Ligne décorative apparaissant sous le lien de réservation */
 .link-reserver::after {
     content: '';
     position: absolute;
@@ -207,20 +170,15 @@ a {
     transition: transform var(--transition-normal);
 }
 
-/* Changement de couleur du lien au survol */
 .link-reserver:hover {
     color: var(--space-blue);
 }
 
-/* Apparition de la ligne sous le lien au survol */
 .link-reserver:hover::after {
     transform: scaleX(1);
     transform-origin: left;
 }
 
-/* -----------------------------
-   BOUTONS - HARMONISATION SPATIALE
-   ----------------------------- */
 .btn {
     position: relative;
     display: inline-flex;
@@ -242,7 +200,6 @@ a {
     letter-spacing: 0.01em;
 }
 
-/* Bouton d'action principale en dégradé bleu spatial */
 .btn-primary {
     background: linear-gradient(135deg, var(--space-blue), var(--space-blue-light));
     color: white;
@@ -251,7 +208,6 @@ a {
         0 10px 15px -3px rgba(30, 58, 138, 0.1);
 }
 
-/* Animation du bouton principal au survol */
 .btn-primary:hover {
     transform: translateY(-3px);
     box-shadow: 
@@ -259,7 +215,6 @@ a {
         0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
-/* Effet de brillance au survol */
 .btn-primary::before {
     content: '';
     position: absolute;
@@ -281,7 +236,6 @@ a {
     left: 100%;
 }
 
-/* Bouton avec contour et fond transparent */
 .btn-outline {
     background-color: transparent;
     color: var(--space-blue);
@@ -290,7 +244,6 @@ a {
     overflow: hidden;
 }
 
-/* Animation du bouton contour au survol */
 .btn-outline::after {
     content: '';
     position: absolute;
@@ -313,9 +266,6 @@ a {
     width: 100%;
 }
 
-/* -----------------------------
-   PIED DE PAGE STANDARD - THÈME SPATIAL
-   ----------------------------- */
 footer.normal {
     display: flex;
     padding: 3rem;
@@ -327,7 +277,6 @@ footer.normal {
     overflow: hidden;
 }
 
-/* Éléments décoratifs spatiaux */
 footer.normal::before {
     content: "";
     position: absolute;
@@ -353,7 +302,6 @@ footer.normal::after {
     z-index: 0;
 }
 
-/* Séparateur vertical dans le pied de page */
 hr.solid-normal {
     border-left: 2px solid var(--border-light);
     height: 95%;
@@ -363,7 +311,6 @@ hr.solid-normal {
     z-index: 1;
 }
 
-/* Bloc d'informations de l'hôtel */
 .args {
     margin: 0 auto;
     align-self: center;
@@ -371,26 +318,22 @@ hr.solid-normal {
     z-index: 1;
 }
 
-/* Style commun pour texte et liens du pied de page */
 .args, footer.normal .footer-links a {
     font-family: var(--font-base);
     text-decoration: none;
     color: var(--text-primary);
 }
 
-/* Liens dans le pied de page standard */
 footer.normal .footer-links a {
     font-size: 0.85rem;
     transition: color var(--transition-normal);
     position: relative;
 }
 
-/* Effet au survol des liens du pied de page */
 footer.normal .footer-links a:hover {
     color: var(--space-blue);
 }
 
-/* Ligne sous les liens au survol */
 footer.normal .footer-links a::after {
     content: '';
     position: absolute;
@@ -409,7 +352,6 @@ footer.normal .footer-links a:hover::after {
     transform-origin: left;
 }
 
-/* Bloc d'informations de contact */
 .contact-info {
     display: flex;
     flex-direction: column;
@@ -419,7 +361,6 @@ footer.normal .footer-links a:hover::after {
     z-index: 1;
 }
 
-/* Titre des informations de contact */
 .contact-info h3 {
     margin-bottom: 0.75rem;
     font-weight: 700;
@@ -432,7 +373,6 @@ footer.normal .footer-links a:hover::after {
     color: transparent;
 }
 
-/* Texte des informations de contact */
 .contact-info p {
     display: flex;
     align-items: center;
@@ -442,21 +382,18 @@ footer.normal .footer-links a:hover::after {
     font-size: 0.85rem;
 }
 
-/* Icônes dans les informations de contact */
 .contact-info img {
     width: 20px;
     height: 20px;
     filter: invert(27%) sepia(33%) saturate(1982%) hue-rotate(210deg) brightness(97%) contrast(88%);
 }
 
-/* Conteneur d'information avec icône */
 .contact-info div {
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
-/* Formulaire dans le pied de page standard */
 footer.normal form {
     display: flex;
     flex-wrap: wrap;
@@ -468,14 +405,12 @@ footer.normal form {
     z-index: 1;
 }
 
-/* Groupe de champs dans le formulaire */
 footer.normal .input-group {
     display: flex;
     gap: 1rem;
     width: 100%;
 }
 
-/* Champs de saisie du formulaire */
 footer.normal input, footer.normal textarea {
     font-family: var(--font-base);
     font-size: 1rem;
@@ -489,27 +424,23 @@ footer.normal input, footer.normal textarea {
     transition: all var(--transition-normal);
 }
 
-/* Style des placeholders dans les champs */
 footer.normal input::placeholder, footer.normal textarea::placeholder {
     font-family: var(--font-mono);
     color: var(--text-secondary);
 }
 
-/* Effet de focus sur les champs */
 footer.normal input:focus, footer.normal textarea:focus {
     border-bottom: 2px solid var(--space-blue);
     box-shadow: 0 4px 6px rgba(12, 29, 74, 0.1);
     background-color: var(--background);
 }
 
-/* Zone de texte multi-ligne du formulaire */
 footer.normal textarea {
     resize: none;
     height: 120px;
     width: 100%;
 }
 
-/* Bouton d'envoi du formulaire */
 footer.normal button {
     font-family: var(--font-ui);
     font-size: 1rem;
@@ -526,13 +457,11 @@ footer.normal button {
     overflow: hidden;
 }
 
-/* Animation du bouton au survol */
 footer.normal button:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px -3px rgba(12, 29, 74, 0.15);
 }
 
-/* Effet de brillance au survol */
 footer.normal button::before {
     content: '';
     position: absolute;
@@ -553,9 +482,6 @@ footer.normal button:hover::before {
     left: 100%;
 }
 
-/* -----------------------------
-   PIED DE PAGE MOBILE - THÈME SPATIAL
-   ----------------------------- */
 footer.mobile {
     display: none;
     flex-direction: column;
@@ -571,7 +497,6 @@ footer.mobile {
     overflow: hidden;
 }
 
-/* Élément décoratif spatial pour le mobile */
 footer.mobile::before {
     content: "";
     position: absolute;
@@ -585,7 +510,6 @@ footer.mobile::before {
     z-index: 0;
 }
 
-/* Bloc d'informations dans le pied de page mobile */
 footer.mobile .args {
     display: flex;
     flex-direction: column;
@@ -595,7 +519,6 @@ footer.mobile .args {
     z-index: 1;
 }
 
-/* Bloc de contact dans le pied de page mobile */
 footer.mobile .contact-info {
     display: flex;
     flex-direction: column;
@@ -604,7 +527,6 @@ footer.mobile .contact-info {
     margin-bottom: 1.5rem;
 }
 
-/* Bloc d'information individuel pour mobile */
 footer.mobile .info {
     display: flex;
     flex-direction: column;
@@ -612,7 +534,6 @@ footer.mobile .info {
     gap: 0.75rem;
 }
 
-/* Titre de contact pour mobile */
 footer.mobile .contact-info h3 {
     font-size: 1.5rem;
     margin-bottom: 1.25rem;
@@ -623,28 +544,24 @@ footer.mobile .contact-info h3 {
     font-family: var(--font-title);
 }
 
-/* Conteneur d'information avec icône pour mobile */
 footer.mobile .contact-info div {
     display: flex;
     align-items: center;
     gap: 0.75rem;
 }
 
-/* Texte pour information de contact mobile */
 footer.mobile .contact-info p {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
-/* Icônes pour mobile */
 footer.mobile .contact-info img {
     width: 20px;
     height: 20px;
     filter: invert(27%) sepia(33%) saturate(1982%) hue-rotate(210deg) brightness(97%) contrast(88%);
 }
 
-/* Séparateur horizontal pour mobile */
 hr.solid-mobile {
     border: none;
     height: 2px;
@@ -653,7 +570,6 @@ hr.solid-mobile {
     margin: 1rem 0;
 }
 
-/* Conteneur des liens dans le pied de page mobile */
 footer.mobile .footer-links {
     display: flex;
     gap: 1.5rem;
@@ -661,7 +577,6 @@ footer.mobile .footer-links {
     z-index: 1;
 }
 
-/* Liens pour mobile */
 footer.mobile .footer-links a {
     font-family: var(--font-base);
     font-size: 0.85rem;
@@ -671,12 +586,10 @@ footer.mobile .footer-links a {
     position: relative;
 }
 
-/* Effet au survol des liens du pied de page mobile */
 footer.mobile .footer-links a:hover {
     color: var(--space-blue);
 }
 
-/* Ligne sous les liens au survol (mobile) */
 footer.mobile .footer-links a::after {
     content: '';
     position: absolute;
@@ -695,7 +608,6 @@ footer.mobile .footer-links a:hover::after {
     transform-origin: left;
 }
 
-/* Formulaire mobile */
 footer.mobile form {
     position: relative;
     z-index: 1;

@@ -23,15 +23,8 @@ class Router
     public function __construct(DependencyContainer $dependencyContainer)
     {
         $this->dependencyContainer = $dependencyContainer;
-        // Tableau contenant l'ensemble des pages (controller) de votre site
-        // La clé est le mot qui sera récupéré dans la variable page de l'url
-        // La valeur est un tableau composé de 3 colonnes
-        // Colonne 1 : classe du contrôleur
-        // Colonne 2 : nom de la méthode à appeler
-        // Colonne 3 : rôle requis (null si accessible à tous)
-
-        // Organize routes by controller for better readability
-        $this->pageMappings = [
+                                                
+                $this->pageMappings = [
             'home' => [DefaultController::class, 'home', null],
             '404' => [DefaultController::class, 'error404', null],
             '500' => [DefaultController::class, 'error500', null],
@@ -74,9 +67,6 @@ class Router
             'updateRoom' => [RoomController::class, 'updateRoom', 'admin'],
             'deleteRoom' => [RoomController::class, 'deleteRoom', 'admin'],
             'bookRoomDirectly' => [RoomController::class, 'bookRoomDirectly', 'client'],
-
-            'test' => [PaymentController::class, 'grjntj', null],
-
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';
@@ -85,36 +75,28 @@ class Router
 
     public function route($twig)
     {
-        // Start the session to access $_SESSION variables
-        if (session_status() === PHP_SESSION_NONE) {
+                if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         
         $requestedPage = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING);
 
-        // Si l'url ne contient pas la variable page, redirection vers la page d'accueil
-        if (!$requestedPage) {
+                if (!$requestedPage) {
             $requestedPage = $this->defaultPage;
         } else {
-            // Si la valeur de la page ne correspond pas à une clé du tableau associatif, redirection vers une page d'erreur
-            if (!array_key_exists($requestedPage, $this->pageMappings)) {
+                        if (!array_key_exists($requestedPage, $this->pageMappings)) {
                 $requestedPage = $this->errorPage;
             }
         }
 
-        // Récupère la ligne qui correspond à la clé comprise dans page
-        $controllerInfo = $this->pageMappings[$requestedPage];
-        /* Destructuration du tableau en récupérant les informations du contrôleur */
-        [$controllerClass, $method, $requiredRole] = $controllerInfo;
+                $controllerInfo = $this->pageMappings[$requestedPage];
+                [$controllerClass, $method, $requiredRole] = $controllerInfo;
 
-        // Vérifier les permissions si un rôle est requis
-        if ($requiredRole !== null) {
+                if ($requiredRole !== null) {
             $userRole = $this->getUserRole();
             
-            // Vérifier si l'utilisateur est connecté et a le rôle requis
-            if (!$this->hasPermission($userRole, $requiredRole)) {
-                // Rediriger vers la page non autorisée
-                $unauthorizedInfo = $this->pageMappings[$this->unauthorizedPage];
+                        if (!$this->hasPermission($userRole, $requiredRole)) {
+                                $unauthorizedInfo = $this->pageMappings[$this->unauthorizedPage];
                 [$errorControllerClass, $errorMethod] = $unauthorizedInfo;
                 $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
                 call_user_func([$errorController, $errorMethod]);
@@ -122,15 +104,11 @@ class Router
             }
         }
 
-        // Vérification de l'existence de la classe et de la méthode du contrôleur a appeler
-        if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
-            // Instancie la classe récupérée
-            $controller = new $controllerClass($twig, $this->dependencyContainer);
-            //la fonction call_user_func appelle une méthode sur un objet
-            call_user_func([$controller, $method]);
+                if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
+                        $controller = new $controllerClass($twig, $this->dependencyContainer);
+                        call_user_func([$controller, $method]);
         } else {
-            // Si la classe ou la méthode n'existe pas, utilisez le contrôleur d'erreur 500
-            $error500Info = $this->pageMappings['500'];
+                        $error500Info = $this->pageMappings['500'];
             [$errorControllerClass, $errorMethod] = $error500Info;
             $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
             call_user_func([$errorController, $errorMethod]);
@@ -139,8 +117,7 @@ class Router
     
     private function getUserRole(): ?string
     {
-        // Vérifier si l'utilisateur est connecté via la session
-        if (isset($_SESSION['user_role'])) {
+                if (isset($_SESSION['user_role'])) {
             return $_SESSION['user_role'];
         }
         

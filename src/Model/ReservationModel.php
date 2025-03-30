@@ -18,10 +18,8 @@ class ReservationModel
 
     public function createReservation(array $data): int
     {
-        // Si c'est un objet Reservation
-        if ($data instanceof Reservation) {
-            // Convertir l'objet en tableau
-            $user = $data->getUser();
+                if ($data instanceof Reservation) {
+                        $user = $data->getUser();
             $room = $data->getRoom();
             $data = [
                 'user_id' => $user->getId(),
@@ -69,10 +67,7 @@ class ReservationModel
         return $reservation ?: null;
     }
 
-    /**
-     * Récupère les réservations d'un utilisateur spécifique
-     */
-    public function getUserReservations(int $userId): array
+        public function getUserReservations(int $userId): array
     {
         $sql = "SELECT r.*, ro.name as room_name, ro.price 
                 FROM Reservation r
@@ -87,10 +82,7 @@ class ReservationModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Alias pour getUserReservations pour maintenir la compatibilité
-     */
-    public function getReservationsByUserId(int $userId): array
+        public function getReservationsByUserId(int $userId): array
     {
         return $this->getUserReservations($userId);
     }
@@ -141,10 +133,7 @@ class ReservationModel
         return (int)$stmt->fetchColumn() > 0;
     }
 
-    /**
-     * Récupère les réservations dont la date de départ est passée
-     */
-    public function getCompletedReservations(): array
+        public function getCompletedReservations(): array
     {
         $today = date('Y-m-d H:i:s');
         $sql = "SELECT * FROM Reservation 
@@ -159,10 +148,7 @@ class ReservationModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Récupère les réservations futures pour une chambre spécifique
-     */
-    public function getFutureReservationsForRoom(int $roomId): array
+        public function getFutureReservationsForRoom(int $roomId): array
     {
         $today = date('Y-m-d H:i:s');
         $sql = "SELECT * FROM Reservation 

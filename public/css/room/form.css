@@ -1,18 +1,8 @@
-/* ==========================================================================
-    STYLES DE FORMULAIRE DE CHAMBRE - HÔTEL NEPTUNE
-    Design ultra-moderne avec thème spatial et fond blanc
-    ========================================================================== */
 
-/* -----------------------------
-    IMPORTATION DES POLICES MODERNES
-    ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-/* -----------------------------
-    VARIABLES GLOBALES - THÈME SPATIAL
-    ----------------------------- */
 :root {
      --space-blue: #0c1d4a;
      --space-blue-light: #1e3a8a;
@@ -28,9 +18,6 @@
      --border-light: #e2e8f0;
 }
 
-/* -----------------------------
-    ANIMATIONS MODERNES
-    ----------------------------- */
 @keyframes fadeIn {
      0% {
           opacity: 0;
@@ -60,9 +47,6 @@
      }
 }
 
-/* -----------------------------
-    CONTENEUR PRINCIPAL
-    ----------------------------- */
 .room-form-container {
      max-width: 800px;
      margin: 3rem auto;
@@ -71,7 +55,7 @@
      position: relative;
 }
 
-/* Éléments flottants décoratifs */
+
 .room-form-container::before {
      content: "";
      position: absolute;
@@ -100,7 +84,7 @@
      animation: floatAnimation 7s infinite ease-in-out;
 }
 
-/* En-tête du formulaire */
+
 .form-header {
      display: flex;
      justify-content: space-between;
@@ -119,7 +103,7 @@
      margin: 0;
 }
 
-/* Bloc principal du formulaire */
+
 .room-form {
      background: var(--background);
      padding: 3rem;
@@ -132,7 +116,7 @@
      z-index: 1;
 }
 
-/* Élément décoratif: Neptune */
+
 .room-form::before {
      content: "";
      position: absolute;
@@ -146,7 +130,7 @@
      z-index: 0;
 }
 
-/* Élément décoratif: Orbite */
+
 .room-form::after {
      content: "";
      position: absolute;
@@ -159,9 +143,6 @@
      z-index: 0;
 }
 
-/* -----------------------------
-    ÉLÉMENTS DE FORMULAIRE
-    ----------------------------- */
 .form-group {
      margin-bottom: 2rem;
      position: relative;
@@ -219,9 +200,6 @@ small {
      margin-left: 0.25rem;
 }
 
-/* -----------------------------
-    SYSTÈME D'ONGLETS
-    ----------------------------- */
 .form-tabs {
      position: relative;
      z-index: 2;
@@ -253,9 +231,6 @@ small {
      box-shadow: 0 4px 10px rgba(12, 29, 74, 0.15);
 }
 
-/* -----------------------------
-    PRÉVISUALISATION D'IMAGES
-    ----------------------------- */
 .image-preview {
      margin-top: 1.5rem;
 }
@@ -286,9 +261,6 @@ small {
      text-align: center;
 }
 
-/* -----------------------------
-    BOUTONS D'ACTION
-    ----------------------------- */
 .form-actions {
      display: flex;
      gap: 1rem;
@@ -382,7 +354,7 @@ small {
      width: 100%;
 }
 
-/* Pour les alertes d'information */
+
 .alert {
      padding: 1rem 1.5rem;
      border-radius: 12px;
@@ -396,9 +368,6 @@ small {
      color: var(--cosmos-purple);
 }
 
-/* -----------------------------
-    ADAPTATIONS RESPONSIVES
-    ----------------------------- */
 @media (max-width: 768px) {
      .room-form {
           padding: 2rem;

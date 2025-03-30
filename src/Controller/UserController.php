@@ -38,12 +38,11 @@ class UserController
                 if ($user !== null && password_verify($password, $user->getPassword())) {
                     $_SESSION['user_id'] = $user->getId();
                     $_SESSION['user_name'] = $user->getFirstName() . ' ' . $user->getLastName();
-                    $_SESSION['user_role'] = $user->getRole(); // Utilisation de getRole()
+                    $_SESSION['user_role'] = $user->getRole();                     
                     $_SESSION['message'] = 'Bienvenue, ' . $user->getFirstName() . ' !';
                     $_SESSION['success'] = true;
                     
-                    ob_clean(); // Clear any output buffers
-                    header('Location: index.php?page=dashboard');
+                    ob_clean();                     header('Location: index.php?page=dashboard');
                     exit();
                 } else {
                     $_SESSION['message'] = 'Email ou mot de passe invalide.';
@@ -73,11 +72,9 @@ class UserController
             session_start();
         }
         
-        // Destroy all session data
-        $_SESSION = [];
+                $_SESSION = [];
         
-        // If a session cookie is used, destroy it
-        if (ini_get('session.use_cookies')) {
+                if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();
             setcookie(
                 session_name(),
@@ -172,8 +169,7 @@ class UserController
             exit;
         }
         
-        // Charger les relations
-        $this->userModel->loadUserRelations($user);
+                $this->userModel->loadUserRelations($user);
         
         echo $this->twig->render('userController/showUser.html.twig', [
             'user' => $user,
@@ -192,18 +188,15 @@ class UserController
             $role = filter_input(INPUT_POST, 'role', FILTER_SANITIZE_STRING);
             
             if (!empty($firstName) && !empty($lastName) && !empty($email) && !empty($password)) {
-                // Vérifier si l'email existe déjà
-                $existingUser = $this->userModel->getUserByEmail($email);
+                                $existingUser = $this->userModel->getUserByEmail($email);
                 
                 if ($existingUser !== null) {
                     $_SESSION['message'] = 'Cet email existe déjà.';
                     $_SESSION['success'] = false;
                 } else {
-                    // Hasher le mot de passe
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     
-                    // Créer l'utilisateur
-                    $user = new User(
+                                        $user = new User(
                         null, 
                         $firstName, 
                         $lastName, 
@@ -256,8 +249,7 @@ class UserController
                     exit;
                 }
                 
-                // Vérifier si l'email existe déjà pour un autre utilisateur
-                if ($email !== $existingUser->getEmail()) {
+                                if ($email !== $existingUser->getEmail()) {
                     $emailUser = $this->userModel->getUserByEmail($email);
                     if ($emailUser !== null) {
                         $_SESSION['message'] = 'Cet email existe déjà pour un autre utilisateur.';
@@ -267,15 +259,13 @@ class UserController
                     }
                 }
                 
-                // Mettre à jour l'utilisateur
-                $user = new User(
+                                $user = new User(
                     intval($id),
                     $firstName,
                     $lastName,
                     $email,
                     $phone,
-                    $existingUser->getPassword(), // Garder le même mot de passe
-                    $role ?? 'client'
+                    $existingUser->getPassword(),                     $role ?? 'client'
                 );
                 
                 $success = $this->userModel->updateUser($user);
@@ -336,16 +326,14 @@ class UserController
                     exit;
                 }
                 
-                // Vérifier le mot de passe actuel
-                if (!password_verify($currentPassword, $user->getPassword())) {
+                                if (!password_verify($currentPassword, $user->getPassword())) {
                     $_SESSION['message'] = 'Le mot de passe actuel est incorrect.';
                     $_SESSION['success'] = false;
                     header('Location: index.php?page=changePassword&id=' . $id);
                     exit;
                 }
                 
-                // Hasher et mettre à jour le nouveau mot de passe
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 $success = $this->userModel->updateUserPassword(intval($id), $hashedPassword);
                 
                 if ($success) {

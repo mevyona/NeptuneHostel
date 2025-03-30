@@ -1,19 +1,9 @@
-/* ==========================================================================
-   STYLES DE CHAMBRE - HÔTEL NEPTUNE
-   Design ultra-moderne avec thème spatial assorti aux pages d'erreur
-   ========================================================================== */
 
-/* -----------------------------
-   IMPORTATION DES POLICES MODERNES
-   ----------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
 
-/* -----------------------------
-   VARIABLES GLOBALES - THÈME SPATIAL
-   ----------------------------- */
 :root {
     --space-blue: #0c1d4a;
     --space-blue-light: #1e3a8a;
@@ -28,14 +18,11 @@
     --card-bg: #f8fafc;
     --border-light: #e2e8f0;
     
-    /* Status colors - harmonized with theme */
+    
     --status-available: #0d9488;
     --status-unavailable: #dc2626;
 }
 
-/* -----------------------------
-   ANIMATIONS MODERNES
-   ----------------------------- */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -65,9 +52,6 @@
     }
 }
 
-/* -----------------------------
-   CONTENEUR PRINCIPAL DE FORMULAIRE
-   ----------------------------- */
 .room-form-container {
     max-width: 800px;
     margin: 2rem auto;
@@ -76,7 +60,7 @@
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Éléments décoratifs spatiaux */
+
 .room-form-container::before {
     content: "";
     position: absolute;
@@ -131,7 +115,7 @@
     overflow: hidden;
 }
 
-/* Élément décoratif: Orbite */
+
 .room-form::after {
     content: "";
     position: absolute;
@@ -145,9 +129,6 @@
     opacity: 0.7;
 }
 
-/* -----------------------------
-   ÉLÉMENTS DE FORMULAIRE
-   ----------------------------- */
 .form-group {
     margin-bottom: 1.75rem;
     position: relative;
@@ -208,9 +189,6 @@ small {
     margin-left: 3px;
 }
 
-/* -----------------------------
-   PRÉVISUALISATION D'IMAGES
-   ----------------------------- */
 .image-preview {
     margin-top: 1.5rem;
 }
@@ -246,9 +224,6 @@ small {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* -----------------------------
-   BOUTONS D'ACTION
-   ----------------------------- */
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -352,10 +327,7 @@ small {
     width: 100%;
 }
 
-/* -----------------------------
-   LISTE DES CHAMBRES
-   ----------------------------- */
-/* En-tête de la page des chambres */
+
 .rooms-header {
     text-align: center;
     padding: 4rem 1rem;
@@ -366,7 +338,7 @@ small {
     animation: fadeIn 0.8s ease-out;
 }
 
-/* Éléments décoratifs spatiaux dans l'en-tête */
+
 .rooms-header::before {
     content: "";
     position: absolute;
@@ -415,7 +387,7 @@ small {
     font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Élément flottant dans l'en-tête */
+
 .float-element {
     position: absolute;
     width: 8px;
@@ -451,7 +423,7 @@ small {
     animation-delay: 2s;
 }
 
-/* Grille de chambres */
+
 .rooms {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -462,7 +434,7 @@ small {
     position: relative;
 }
 
-/* Message quand aucune chambre n'est disponible */
+
 .no-rooms {
     grid-column: 1 / -1;
     text-align: center;
@@ -492,7 +464,7 @@ small {
     z-index: 0;
 }
 
-/* Conteneur de chambre individuelle */
+
 .room-container {
     position: relative;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
@@ -511,14 +483,14 @@ small {
         0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
-/* Lien vers la page détaillée */
+
 .room-link {
     text-decoration: none;
     color: inherit;
     display: block;
 }
 
-/* Carte de chambre */
+
 .room {
     display: flex;
     flex-direction: column;
@@ -528,7 +500,7 @@ small {
     overflow: hidden;
 }
 
-/* Image de la chambre */
+
 .room img {
     width: 100%;
     height: 220px;
@@ -540,7 +512,7 @@ small {
     transform: scale(1.05);
 }
 
-/* Section des détails */
+
 .details {
     display: flex;
     flex-direction: column;
@@ -550,7 +522,7 @@ small {
     z-index: 1;
 }
 
-/* Informations principales */
+
 .room-info {
     margin-bottom: 1.25rem;
 }
@@ -625,7 +597,7 @@ small {
     border: 1px solid rgba(220, 38, 38, 0.2);
 }
 
-/* Bouton d'action */
+
 .room-action {
     margin-top: auto;
     text-align: center;
@@ -676,7 +648,7 @@ small {
     left: 100%;
 }
 
-/* Actions d'administration sur les cartes */
+
 .room-admin-actions {
     position: absolute;
     top: 10px;
@@ -744,7 +716,7 @@ small {
     background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
-/* Boutons d'administration en bas de page */
+
 .admin-actions {
     display: flex;
     justify-content: center;
@@ -763,9 +735,6 @@ small {
     font-size: 1.2rem;
 }
 
-/* -----------------------------
-   SYSTÈME D'ONGLETS
-   ----------------------------- */
 .form-tabs {
     margin-bottom: 2.5rem;
     border-radius: 16px;
@@ -852,9 +821,6 @@ small {
     object-fit: contain;
 }
 
-/* -----------------------------
-   MESSAGES D'ALERTE
-   ----------------------------- */
 .alert {
     padding: 1.25rem;
     margin-bottom: 1.5rem;
@@ -883,9 +849,6 @@ small {
     background-color: var(--neptune-teal);
 }
 
-/* -----------------------------
-   ADAPTATIONS RESPONSIVES
-   ----------------------------- */
 @media (max-width: 992px) {
     .rooms {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

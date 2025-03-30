@@ -1,542 +1,501 @@
-/* ==========================================================================
-   STYLES DE GESTION UTILISATEURS - HÔTEL NEPTUNE
-   Feuille de style pour les interfaces administratives de gestion des 
-   utilisateurs, affichage des profils et formulaires d'édition
-   ========================================================================== */
 
-/* -----------------------------
-   CONTENEUR PRINCIPAL
-   ----------------------------- */
 
-/* Conteneur fluide avec largeur maximale et centrage */
+
 .container-fluid {
-    max-width: 1400px; /* Limite la largeur sur grands écrans */
-    margin: 0 auto; /* Centrage horizontal */
-    padding: 20px; /* Espacement intérieur */
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 20px; 
 }
 
-/* -----------------------------
-   TITRES ET EN-TÊTES
-   ----------------------------- */
 
-/* Titre principal avec décoration */
+
 h1.text-primary {
-    font-size: 1.8rem; /* Taille proportionnée */
-    font-weight: 700; /* Police en gras */
-    margin-bottom: 2rem; /* Espace sous le titre */
-    color: #333; /* Noir atténué pour lisibilité */
-    position: relative; /* Pour positionnement de la décoration */
-    text-align: center; /* Centrage horizontal */
-    padding-bottom: 15px; /* Espace pour la décoration */
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    margin-bottom: 2rem; 
+    color: #333; 
+    position: relative; 
+    text-align: center; 
+    padding-bottom: 15px; 
 }
 
-/* Ligne décorative sous le titre principal */
+
 h1.text-primary::after {
-    content: ''; /* Contenu vide pour l'élément pseudo */
-    position: absolute; /* Positionnement absolu par rapport au titre */
-    left: 50%; /* Centrage horizontal */
-    bottom: 0; /* Alignement sur le bas du titre */
-    transform: translateX(-50%); /* Ajustement précis du centrage */
-    width: 80px; /* Largeur de la ligne */
-    height: 3px; /* Épaisseur de la ligne */
-    background-color: #5E75C9; /* Couleur bleue identitaire */
-    border-radius: 2px; /* Légère courbure des bords */
+    content: ''; 
+    position: absolute; 
+    left: 50%; 
+    bottom: 0; 
+    transform: translateX(-50%); 
+    width: 80px; 
+    height: 3px; 
+    background-color: #5E75C9; 
+    border-radius: 2px; 
 }
 
-/* -----------------------------
-   CARTES CONTENEURS
-   ----------------------------- */
 
-/* Style des cartes d'interface */
+
 .card {
-    background-color: white; /* Fond blanc */
-    border-radius: 12px; /* Coins largement arrondis */
-    overflow: hidden; /* Masque les dépassements */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre portée légère */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation au survol */
-    margin-bottom: 25px; /* Espacement entre les cartes */
-    border: none; /* Suppression des bordures par défaut */
+    background-color: white; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    margin-bottom: 25px; 
+    border: none; 
 }
 
-/* Animation au survol des cartes */
+
 .card:hover {
-    transform: translateY(-5px); /* Léger effet de flottement */
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* Ombre plus prononcée */
+    transform: translateY(-5px); 
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); 
 }
 
-/* En-tête des cartes avec barre de titre */
+
 .card-header {
-    display: flex; /* Disposition en flexbox */
-    justify-content: space-between; /* Espacement entre titre et actions */
-    align-items: center; /* Alignement vertical */
-    padding: 18px 20px; /* Espacement intérieur */
-    background-color: #f8f9fa; /* Fond légèrement grisé */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Séparation fine */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 18px 20px; 
+    background-color: #f8f9fa; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
 }
 
-/* Titre des cartes */
+
 .card-header h3 {
-    margin: 0; /* Suppression des marges par défaut */
-    font-size: 1.3rem; /* Taille de police modérée */
-    font-weight: 600; /* Semi-gras */
-    color: #333; /* Noir atténué */
-    display: flex; /* Disposition en flexbox */
-    align-items: center; /* Alignement vertical */
-    gap: 10px; /* Espace pour les icônes */
+    margin: 0; 
+    font-size: 1.3rem; 
+    font-weight: 600; 
+    color: #333; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
 }
 
-/* Corps des cartes avec contenu principal */
+
 .card-body {
-    padding: 20px; /* Espacement intérieur uniforme */
+    padding: 20px; 
 }
 
-/* -----------------------------
-   TABLEAUX DE DONNÉES
-   ----------------------------- */
 
-/* Conteneur avec défilement horizontal pour tableaux */
+
 .table-responsive {
-    overflow-x: auto; /* Défilement horizontal si nécessaire */
-    border-radius: 8px; /* Coins arrondis */
+    overflow-x: auto; 
+    border-radius: 8px; 
 }
 
-/* Style général des tableaux */
+
 .table {
-    width: 100%; /* Pleine largeur */
-    border-collapse: collapse; /* Fusion des bordures adjacentes */
-    margin-bottom: 0; /* Suppression de la marge inférieure */
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 0; 
 }
 
-/* En-têtes de colonnes */
+
 .table thead th {
-    background-color: #f8f9fa; /* Fond légèrement grisé */
-    color: #495057; /* Gris foncé pour contraste */
-    font-weight: 600; /* Semi-gras */
-    text-align: left; /* Alignement à gauche */
-    padding: 12px 15px; /* Espacement intérieur */
-    border-bottom: 2px solid #dee2e6; /* Ligne de séparation renforcée */
+    background-color: #f8f9fa; 
+    color: #495057; 
+    font-weight: 600; 
+    text-align: left; 
+    padding: 12px 15px; 
+    border-bottom: 2px solid #dee2e6; 
 }
 
-/* Cellules du tableau */
+
 .table tbody td {
-    padding: 12px 15px; /* Espacement intérieur */
-    border-top: 1px solid #eeeeee; /* Séparateur fin entre lignes */
-    vertical-align: middle; /* Alignement vertical au milieu */
+    padding: 12px 15px; 
+    border-top: 1px solid #eeeeee; 
+    vertical-align: middle; 
 }
 
-/* Lignes alternées pour meilleure lisibilité */
+
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(94, 117, 201, 0.05); /* Teinte bleue très légère */
+    background-color: rgba(94, 117, 201, 0.05); 
 }
 
-/* Survol des lignes pour interaction visuelle */
+
 .table-hover tbody tr:hover {
-    background-color: rgba(94, 117, 201, 0.1); /* Teinte bleue légère */
+    background-color: rgba(94, 117, 201, 0.1); 
 }
 
-/* -----------------------------
-   BADGES DE STATUT
-   ----------------------------- */
 
-/* Style commun pour les badges indicateurs */
+
 .badge {
-    display: inline-block; /* Comportement en ligne avec largeur */
-    padding: 5px 10px; /* Espacement intérieur */
-    border-radius: 50px; /* Forme pilule */
-    font-size: 0.75rem; /* Petite taille de police */
-    font-weight: 600; /* Semi-gras */
+    display: inline-block; 
+    padding: 5px 10px; 
+    border-radius: 50px; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
 }
 
-/* Variante rouge pour alertes et dangers */
+
 .bg-danger {
-    background-color: #dc3545; /* Rouge vif */
-    color: white; /* Texte blanc pour contraste */
+    background-color: #dc3545; 
+    color: white; 
 }
 
-/* Variante orange pour avertissements */
+
 .bg-warning {
-    background-color: #fd7e14; /* Orange */
-    color: white; /* Texte blanc pour contraste */
+    background-color: #fd7e14; 
+    color: white; 
 }
 
-/* Variante bleue pour informations */
+
 .bg-info {
-    background-color: #17a2b8; /* Bleu-vert */
-    color: white; /* Texte blanc pour contraste */
+    background-color: #17a2b8; 
+    color: white; 
 }
 
-/* Variante verte pour succès */
+
 .bg-success {
-    background-color: #28a745; /* Vert */
-    color: white; /* Texte blanc pour contraste */
+    background-color: #28a745; 
+    color: white; 
 }
 
-/* Variante grise pour états neutres */
+
 .bg-secondary {
-    background-color: #6c757d; /* Gris moyen */
-    color: white; /* Texte blanc pour contraste */
+    background-color: #6c757d; 
+    color: white; 
 }
 
-/* -----------------------------
-   BOUTONS D'ACTION
-   ----------------------------- */
 
-/* Style commun pour tous les boutons */
+
 .btn {
-    padding: 8px 16px; /* Espacement intérieur */
-    border-radius: 8px; /* Coins arrondis */
-    font-weight: 500; /* Légèrement gras */
-    text-decoration: none; /* Suppression du soulignement pour liens */
-    display: inline-flex; /* Disposition en ligne avec flexbox */
-    align-items: center; /* Centrage vertical */
-    justify-content: center; /* Centrage horizontal */
-    gap: 8px; /* Espace entre icône et texte */
-    transition: all 0.2s ease; /* Animation douce */
-    color: white; /* Texte blanc par défaut */
-    border: none; /* Suppression des bordures */
-    cursor: pointer; /* Curseur main au survol */
+    padding: 8px 16px; 
+    border-radius: 8px; 
+    font-weight: 500; 
+    text-decoration: none; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px; 
+    transition: all 0.2s ease; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
 }
 
-/* Variante plus petite pour boutons compacts */
+
 .btn-sm {
-    padding: 5px 10px; /* Espacement réduit */
-    font-size: 0.85rem; /* Taille de police réduite */
+    padding: 5px 10px; 
+    font-size: 0.85rem; 
 }
 
-/* Bouton bleu principal */
+
 .btn-primary {
-    background-color: #5E75C9; /* Bleu identitaire */
+    background-color: #5E75C9; 
 }
 
-/* Animation au survol du bouton principal */
+
 .btn-primary:hover {
-    background-color: #4c61b8; /* Bleu légèrement plus foncé */
-    box-shadow: 0 4px 8px rgba(94, 117, 201, 0.3); /* Ombre portée */
+    background-color: #4c61b8; 
+    box-shadow: 0 4px 8px rgba(94, 117, 201, 0.3); 
 }
 
-/* Bouton gris secondaire */
+
 .btn-secondary {
-    background-color: #6c757d; /* Gris moyen */
+    background-color: #6c757d; 
 }
 
-/* Animation au survol du bouton secondaire */
+
 .btn-secondary:hover {
-    background-color: #5a6268; /* Gris plus foncé */
-    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3); /* Ombre portée */
+    background-color: #5a6268; 
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3); 
 }
 
-/* Bouton vert pour actions de succès */
+
 .btn-success {
-    background-color: #28a745; /* Vert */
+    background-color: #28a745; 
 }
 
-/* Animation au survol du bouton de succès */
+
 .btn-success:hover {
-    background-color: #218838; /* Vert plus foncé */
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3); /* Ombre portée */
+    background-color: #218838; 
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3); 
 }
 
-/* Bouton jaune pour avertissements */
+
 .btn-warning {
-    background-color: #ffc107; /* Jaune */
-    color: #212529; /* Texte foncé pour contraste */
+    background-color: #ffc107; 
+    color: #212529; 
 }
 
-/* Animation au survol du bouton d'avertissement */
+
 .btn-warning:hover {
-    background-color: #e0a800; /* Jaune plus foncé */
-    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3); /* Ombre portée */
+    background-color: #e0a800; 
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3); 
 }
 
-/* Bouton rouge pour actions critiques ou suppressions */
+
 .btn-danger {
-    background-color: #dc3545; /* Rouge */
+    background-color: #dc3545; 
 }
 
-/* Animation au survol du bouton danger */
+
 .btn-danger:hover {
-    background-color: #c82333; /* Rouge plus foncé */
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); /* Ombre portée */
+    background-color: #c82333; 
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); 
 }
 
-/* Bouton bleu-vert pour informations */
+
 .btn-info {
-    background-color: #17a2b8; /* Bleu-vert */
+    background-color: #17a2b8; 
 }
 
-/* Animation au survol du bouton info */
+
 .btn-info:hover {
-    background-color: #138496; /* Bleu-vert plus foncé */
-    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3); /* Ombre portée */
+    background-color: #138496; 
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3); 
 }
 
-/* -----------------------------
-   LISTES GROUPÉES
-   ----------------------------- */
 
-/* Conteneur de liste avec bordures externes */
+
 .list-group {
-    border-radius: 8px; /* Coins arrondis */
-    overflow: hidden; /* Masque les dépassements */
+    border-radius: 8px; 
+    overflow: hidden; 
 }
 
-/* Éléments individuels de la liste */
+
 .list-group-item {
-    border-left: none; /* Suppression des bordures latérales */
-    border-right: none; /* Suppression des bordures latérales */
-    padding: 15px 20px; /* Espacement intérieur */
-    transition: background-color 0.2s ease; /* Animation au survol */
-    border-color: #f2f2f2; /* Couleur de séparation très légère */
+    border-left: none; 
+    border-right: none; 
+    padding: 15px 20px; 
+    transition: background-color 0.2s ease; 
+    border-color: #f2f2f2; 
 }
 
-/* Style spécifique pour le premier élément */
+
 .list-group-item:first-child {
-    border-top-left-radius: 8px; /* Coin supérieur gauche arrondi */
-    border-top-right-radius: 8px; /* Coin supérieur droit arrondi */
+    border-top-left-radius: 8px; 
+    border-top-right-radius: 8px; 
 }
 
-/* Style spécifique pour le dernier élément */
+
 .list-group-item:last-child {
-    border-bottom-left-radius: 8px; /* Coin inférieur gauche arrondi */
-    border-bottom-right-radius: 8px; /* Coin inférieur droit arrondi */
+    border-bottom-left-radius: 8px; 
+    border-bottom-right-radius: 8px; 
 }
 
-/* Animation au survol des éléments de liste */
+
 .list-group-item:hover {
-    background-color: rgba(94, 117, 201, 0.05); /* Teinte bleue très légère */
+    background-color: rgba(94, 117, 201, 0.05); 
 }
 
-/* Titre dans les éléments de liste */
+
 .list-group-item h5 {
-    font-weight: 600; /* Semi-gras */
-    font-size: 1.1rem; /* Taille modérée */
-    color: #333; /* Noir atténué */
-    margin-bottom: 0.25rem; /* Petit espace sous le titre */
+    font-weight: 600; 
+    font-size: 1.1rem; 
+    color: #333; 
+    margin-bottom: 0.25rem; 
 }
 
-/* Texte secondaire dans les éléments de liste */
+
 .list-group-item small {
-    color: #6c757d; /* Gris pour information secondaire */
+    color: #6c757d; 
 }
 
-/* Paragraphes dans les éléments de liste */
+
 .list-group-item p {
-    margin-bottom: 0; /* Suppression de la marge inférieure */
-    color: #495057; /* Gris foncé pour lisibilité */
+    margin-bottom: 0; 
+    color: #495057; 
 }
 
-/* -----------------------------
-   ÉLÉMENTS DE FORMULAIRE
-   ----------------------------- */
 
-/* Étiquettes des champs de formulaire */
+
 .form-label {
-    display: block; /* Comportement en bloc */
-    font-weight: 500; /* Légèrement gras */
-    color: #495057; /* Gris foncé */
-    margin-bottom: 0.5rem; /* Espace sous l'étiquette */
+    display: block; 
+    font-weight: 500; 
+    color: #495057; 
+    margin-bottom: 0.5rem; 
 }
 
-/* Style commun pour les champs texte et listes déroulantes */
+
 .form-control, .form-select {
-    display: block; /* Comportement en bloc */
-    width: 100%; /* Pleine largeur */
-    padding: 0.75rem 1rem; /* Espacement intérieur */
-    font-size: 1rem; /* Taille standard */
-    line-height: 1.5; /* Hauteur de ligne pour lisibilité */
-    color: #495057; /* Gris foncé */
-    background-color: #f8f9fa; /* Fond légèrement grisé */
-    background-clip: padding-box; /* Limitation du fond */
-    border: 1px solid #dee2e6; /* Bordure légère */
-    border-radius: 8px; /* Coins arrondis */
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Animation */
+    display: block; 
+    width: 100%; 
+    padding: 0.75rem 1rem; 
+    font-size: 1rem; 
+    line-height: 1.5; 
+    color: #495057; 
+    background-color: #f8f9fa; 
+    background-clip: padding-box; 
+    border: 1px solid #dee2e6; 
+    border-radius: 8px; 
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
 }
 
-/* État de focus des champs de formulaire */
+
 .form-control:focus, .form-select:focus {
-    color: #495057; /* Maintien de la couleur du texte */
-    background-color: #fff; /* Fond blanc pour contraste */
-    border-color: #5E75C9; /* Bordure bleue identitaire */
-    outline: 0; /* Suppression du contour natif */
-    box-shadow: 0 0 0 3px rgba(94, 117, 201, 0.25); /* Halo de focus */
+    color: #495057; 
+    background-color: #fff; 
+    border-color: #5E75C9; 
+    outline: 0; 
+    box-shadow: 0 0 0 3px rgba(94, 117, 201, 0.25); 
 }
 
-/* -----------------------------
-   UTILITAIRES D'AGENCEMENT
-   ----------------------------- */
 
-/* Disposition en flexbox */
+
 .d-flex {
-    display: flex; /* Active flexbox */
+    display: flex; 
 }
 
-/* Espace équivalent entre les éléments */
+
 .justify-content-between {
-    justify-content: space-between; /* Répartit l'espace entre les éléments */
+    justify-content: space-between; 
 }
 
-/* Centrage horizontal des éléments */
+
 .justify-content-center {
-    justify-content: center; /* Centre horizontalement */
+    justify-content: center; 
 }
 
-/* Centrage vertical des éléments */
+
 .align-items-center {
-    align-items: center; /* Centre verticalement */
+    align-items: center; 
 }
 
-/* Centrage du texte */
+
 .text-center {
-    text-align: center; /* Centre le texte */
+    text-align: center; 
 }
 
-/* Alignement du texte à droite */
+
 .text-end {
-    text-align: right; /* Aligne le texte à droite */
+    text-align: right; 
 }
 
-/* Élément occupant toute la largeur disponible */
+
 .w-100 {
-    width: 100%; /* Largeur à 100% */
+    width: 100%; 
 }
 
-/* -----------------------------
-   ESPACEMENTS (MARGINS)
-   ----------------------------- */
 
-/* Marges supérieures de tailles variables */
-.mt-1 { margin-top: 0.25rem; } /* Très petite marge */
-.mt-2 { margin-top: 0.5rem; } /* Petite marge */
-.mt-3 { margin-top: 1rem; } /* Marge moyenne */
-.mt-4 { margin-top: 1.5rem; } /* Grande marge */
-.mt-5 { margin-top: 3rem; } /* Très grande marge */
 
-/* Marges inférieures de tailles variables */
-.mb-1 { margin-bottom: 0.25rem; } /* Très petite marge */
-.mb-2 { margin-bottom: 0.5rem; } /* Petite marge */
-.mb-3 { margin-bottom: 1rem; } /* Marge moyenne */
-.mb-4 { margin-bottom: 1.5rem; } /* Grande marge */
-.mb-5 { margin-bottom: 3rem; } /* Très grande marge */
+.mt-1 { margin-top: 0.25rem; } 
+.mt-2 { margin-top: 0.5rem; } 
+.mt-3 { margin-top: 1rem; } 
+.mt-4 { margin-top: 1.5rem; } 
+.mt-5 { margin-top: 3rem; } 
 
-/* Marge sur tous les côtés */
-.m-2 { margin: 0.5rem; } /* Petite marge uniforme */
 
-/* -----------------------------
-   SYSTÈME DE GRILLE
-   ----------------------------- */
+.mb-1 { margin-bottom: 0.25rem; } 
+.mb-2 { margin-bottom: 0.5rem; } 
+.mb-3 { margin-bottom: 1rem; } 
+.mb-4 { margin-bottom: 1.5rem; } 
+.mb-5 { margin-bottom: 3rem; } 
 
-/* Ligne de la grille */
+
+.m-2 { margin: 0.5rem; } 
+
+
+
 .row {
-    display: flex; /* Disposition en flexbox */
-    flex-wrap: wrap; /* Retour à la ligne si nécessaire */
-    margin-right: -15px; /* Compensation des paddings des colonnes */
-    margin-left: -15px; /* Compensation des paddings des colonnes */
+    display: flex; 
+    flex-wrap: wrap; 
+    margin-right: -15px; 
+    margin-left: -15px; 
 }
 
-/* Styles communs aux colonnes */
+
 .col-12, .col-md-6 {
-    position: relative; /* Pour positionnement des enfants */
-    width: 100%; /* Largeur par défaut */
-    padding-right: 15px; /* Gouttière à droite */
-    padding-left: 15px; /* Gouttière à gauche */
+    position: relative; 
+    width: 100%; 
+    padding-right: 15px; 
+    padding-left: 15px; 
 }
 
-/* Colonne pleine largeur */
+
 .col-12 {
-    flex: 0 0 100%; /* Ne rétrécit pas, n'agrandit pas, base 100% */
-    max-width: 100%; /* Largeur maximale */
+    flex: 0 0 100%; 
+    max-width: 100%; 
 }
 
-/* -----------------------------
-   ADAPTATIONS RESPONSIVES
-   ----------------------------- */
 
-/* Adaptation pour écrans moyens et grands */
+
 @media (min-width: 768px) {
-    /* Colonne demi-largeur sur tablette et desktop */
+    
     .col-md-6 {
-        flex: 0 0 50%; /* Ne rétrécit pas, n'agrandit pas, base 50% */
-        max-width: 50%; /* Largeur maximale */
+        flex: 0 0 50%; 
+        max-width: 50%; 
     }
 }
 
-/* Adaptation pour écrans moyens */
+
 @media (max-width: 992px) {
-    /* Réduction des espacements dans les cartes */
+    
     .card-body {
-        padding: 15px; /* Espacement réduit */
+        padding: 15px; 
     }
     
-    /* Réduction des espacements dans les tableaux */
+    
     .table thead th,
     .table tbody td {
-        padding: 10px; /* Espacement réduit */
+        padding: 10px; 
     }
     
-    /* Réduction de la taille des titres */
+    
     h1.text-primary {
-        font-size: 1.6rem; /* Taille réduite */
+        font-size: 1.6rem; 
     }
     
-    /* Réduction des titres de cartes */
+    
     .card-header h3 {
-        font-size: 1.2rem; /* Taille réduite */
+        font-size: 1.2rem; 
     }
 }
 
-/* Adaptation pour tablettes */
+
 @media (max-width: 768px) {
-    /* Réduction des marges du conteneur */
+    
     .container-fluid {
-        padding: 15px; /* Espacement réduit */
+        padding: 15px; 
     }
     
-    /* Réduction de la taille des boutons */
+    
     .btn {
-        padding: 6px 12px; /* Espacement réduit */
+        padding: 6px 12px; 
     }
     
-    /* Ajustement des petits boutons */
+    
     .btn-sm {
-        padding: 4px 8px; /* Espacement très réduit */
-        font-size: 0.75rem; /* Taille plus petite */
+        padding: 4px 8px; 
+        font-size: 0.75rem; 
     }
     
-    /* Passage en disposition verticale */
+    
     .d-flex {
-        flex-direction: column; /* Empile verticalement */
+        flex-direction: column; 
     }
     
-    /* Ajout d'espace entre les boutons empilés */
+    
     .d-flex .btn {
-        margin-bottom: 0.5rem; /* Espace entre boutons */
+        margin-bottom: 0.5rem; 
     }
 }
 
-/* Adaptation pour mobiles */
+
 @media (max-width: 576px) {
-    /* Réduction maximale des marges */
+    
     .container-fluid {
-        padding: 10px; /* Espacement minimal */
+        padding: 10px; 
     }
     
-    /* Réduction maximale des titres */
+    
     h1.text-primary {
-        font-size: 1.4rem; /* Taille très réduite */
+        font-size: 1.4rem; 
     }
     
-    /* Compactage des en-têtes de carte */
+    
     .card-header {
-        padding: 12px 15px; /* Espacement réduit */
+        padding: 12px 15px; 
     }
     
-    /* Compactage du contenu des cartes */
+    
     .card-body {
-        padding: 12px; /* Espacement réduit */
+        padding: 12px; 
     }
     
-    /* Réduction de la taille des champs */
+    
     .form-control, .form-select {
-        padding: 0.6rem 0.8rem; /* Espacement réduit */
+        padding: 0.6rem 0.8rem; 
     }
 }

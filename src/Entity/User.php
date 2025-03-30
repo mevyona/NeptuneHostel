@@ -16,8 +16,7 @@ class User
     private ?string $created_at;
     private ?string $updated_at;
     
-    // Relations (chargement paresseux)
-    private ?array $reservations = null;
+        private ?array $reservations = null;
     private ?array $reviews = null;
     private ?array $notifications = null;
     private ?array $cancellations = null;
@@ -165,77 +164,47 @@ class User
         $this->updated_at = $updated_at;
     }
     
-    /**
-     * Méthode pour définir les réservations associées à cet utilisateur
-     */
-    public function setReservations(array $reservations): void
+        public function setReservations(array $reservations): void
     {
         $this->reservations = $reservations;
     }
     
-    /**
-     * Renvoie les réservations associées à cet utilisateur
-     * Note: Cette méthode ne charge pas les réservations depuis la base de données
-     * Il faut utiliser UserModel->getUserReservations pour les charger d'abord
-     */
-    public function getReservations(): ?array
+        public function getReservations(): ?array
     {
         return $this->reservations;
     }
     
-    /**
-     * Méthode pour définir les avis rédigés par cet utilisateur
-     */
-    public function setReviews(array $reviews): void
+        public function setReviews(array $reviews): void
     {
         $this->reviews = $reviews;
     }
     
-    /**
-     * Renvoie les avis rédigés par cet utilisateur
-     */
-    public function getReviews(): ?array
+        public function getReviews(): ?array
     {
         return $this->reviews;
     }
     
-    /**
-     * Méthode pour définir les notifications de cet utilisateur
-     */
-    public function setNotifications(array $notifications): void
+        public function setNotifications(array $notifications): void
     {
         $this->notifications = $notifications;
     }
     
-    /**
-     * Renvoie les notifications de cet utilisateur
-     */
-    public function getNotifications(): ?array
+        public function getNotifications(): ?array
     {
         return $this->notifications;
     }
     
-    /**
-     * Méthode pour définir les annulations effectuées par cet utilisateur
-     */
-    public function setCancellations(array $cancellations): void
+        public function setCancellations(array $cancellations): void
     {
         $this->cancellations = $cancellations;
     }
     
-    /**
-     * Renvoie les annulations effectuées par cet utilisateur
-     */
-    public function getCancellations(): ?array
+        public function getCancellations(): ?array
     {
         return $this->cancellations;
     }
     
-    /**
-     * Convertir l'objet en tableau pour l'API
-     * Ne renvoie pas le mot de passe pour des raisons de sécurité
-     */
-    public function toArray(): array
+        public function toArray(): array
     {
         return [
             'id' => $this->id,

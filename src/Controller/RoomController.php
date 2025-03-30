@@ -46,13 +46,10 @@ class RoomController
             
             $media = null;
             
-            // Vérifier s'il s'agit d'une nouvelle image ou d'une image existante
-            if (!empty($_FILES['image_file']['name'])) {
-                // Traitement de l'upload d'image
-                $uploadDir = 'uploads/rooms/';
+                        if (!empty($_FILES['image_file']['name'])) {
+                                $uploadDir = 'uploads/rooms/';
                 
-                // Créer le répertoire s'il n'existe pas
-                if (!is_dir($uploadDir)) {
+                                if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
                 
@@ -61,39 +58,32 @@ class RoomController
                 $fileSize = $_FILES['image_file']['size'];
                 $fileTmpName = $_FILES['image_file']['tmp_name'];
                 
-                // Générer un nom unique pour le fichier
-                $uniqueName = uniqid('room_') . '_' . $fileName;
+                                $uniqueName = uniqid('room_') . '_' . $fileName;
                 $filePath = $uploadDir . $uniqueName;
                 
-                // Valider le type de fichier
-                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
                 if (!in_array($fileType, $allowedTypes)) {
                     $_SESSION['message'] = 'Type de fichier non autorisé. Seuls JPG, PNG et GIF sont acceptés.';
                     $_SESSION['success'] = false;
                 } 
-                // Valider la taille du fichier (5MB maximum)
-                elseif ($fileSize > 5 * 1024 * 1024) {
+                                elseif ($fileSize > 5 * 1024 * 1024) {
                     $_SESSION['message'] = 'Le fichier est trop volumineux. La taille maximale est de 5MB.';
                     $_SESSION['success'] = false;
                 } 
-                // Déplacer le fichier uploadé
-                elseif (move_uploaded_file($fileTmpName, $filePath)) {
-                    // Créer une nouvelle entité Media
-                    $media = new Media(null, $fileName, $filePath, $fileType, $fileSize, '');
+                                elseif (move_uploaded_file($fileTmpName, $filePath)) {
+                                        $media = new Media(null, $fileName, $filePath, $fileType, $fileSize, '');
                     $this->mediaModel->createMedia($media);
                 } else {
                     $_SESSION['message'] = "Erreur lors de l'upload du fichier.";
                     $_SESSION['success'] = false;
                 }
             } 
-            // Si une image existante a été sélectionnée
-            elseif (!empty($_POST['featured_image_id'])) {
+                        elseif (!empty($_POST['featured_image_id'])) {
                 $image_id = filter_input(INPUT_POST, 'featured_image_id', FILTER_SANITIZE_NUMBER_INT);
                 $media = $this->mediaModel->getOneMedia((int)$image_id);
             }
             
-            // Si tous les champs obligatoires sont remplis et qu'on a une image
-            if ($name && $price && $capacity && $media) {
+                        if ($name && $price && $capacity && $media) {
                 $room = new Room(null, $name, $is_available, (float)$price, (int)$capacity, $description, $media, '', '');
                 if ($this->roomModel->createRoom($room)) {
                     $_SESSION['message'] = 'Chambre ajoutée avec succès';
@@ -173,8 +163,7 @@ class RoomController
             exit();
         }
 
-        // Récupérer d'autres chambres avec une capacité similaire à suggérer
-        $similarRooms = $this->roomModel->getSimilarRooms($room->getCapacity(), $room->getId());
+                $similarRooms = $this->roomModel->getSimilarRooms($room->getCapacity(), $room->getId());
 
         echo $this->twig->render('roomController/showRoom.html.twig', [
             'room' => $room,
@@ -191,41 +180,31 @@ class RoomController
         header('Location: index.php?page=rooms');
     }
 
-    /**
-     * Méthode simple pour réserver directement depuis la page de chambre
-     */
-    public function bookRoomDirectly()
+        public function bookRoomDirectly()
     {
-        // Vérifiez si l'utilisateur est connecté
-        if (!isset($_SESSION['user_id'])) {
+                if (!isset($_SESSION['user_id'])) {
             $_SESSION['message'] = 'Vous devez être connecté pour effectuer une réservation.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=login');
             exit();
         }
 
-        // Récupérer les données du formulaire
-        $roomId = filter_input(INPUT_POST, 'room_id', FILTER_SANITIZE_NUMBER_INT);
+                $roomId = filter_input(INPUT_POST, 'room_id', FILTER_SANITIZE_NUMBER_INT);
         $checkIn = filter_input(INPUT_POST, 'check_in', FILTER_SANITIZE_STRING);
         $checkOut = filter_input(INPUT_POST, 'check_out', FILTER_SANITIZE_STRING);
         $specialRequests = filter_input(INPUT_POST, 'special_requests', FILTER_SANITIZE_STRING);
 
-        // Récupérer la chambre
-        $room = $this->roomModel->getOneRoom((int)$roomId);
+                $room = $this->roomModel->getOneRoom((int)$roomId);
 
-        // Calculer le nombre de nuits
-        $checkInDate = new \DateTime($checkIn);
+                $checkInDate = new \DateTime($checkIn);
         $checkOutDate = new \DateTime($checkOut);
         $interval = $checkInDate->diff($checkOutDate);
         $numberOfNights = $interval->days;
 
-        // Calculer le prix total
-        $roomTotal = $room->getPrice() * $numberOfNights;
-        $taxAmount = $roomTotal * 0.10; // 10% de taxe
-        $totalAmount = $roomTotal + $taxAmount;
+                $roomTotal = $room->getPrice() * $numberOfNights;
+        $taxAmount = $roomTotal * 0.10;         $totalAmount = $roomTotal + $taxAmount;
 
-        // Stocker les données dans la session
-        $_SESSION['reservation_data'] = [
+                $_SESSION['reservation_data'] = [
             'room_id' => $roomId,
             'check_in' => $checkIn,
             'check_out' => $checkOut,
@@ -236,8 +215,7 @@ class RoomController
             'special_requests' => $specialRequests
         ];
 
-        // Rediriger vers la page de paiement
-        header('Location: index.php?page=payment');
+                header('Location: index.php?page=payment');
         exit();
     }
 }
