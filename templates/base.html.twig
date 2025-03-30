@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="fr">
 <head>
-        <meta charset="utf-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Hôtel Neptune - Votre hébergement de luxe">
     <link rel="icon" type="image/png" href="images/logo.png">
     
     {% block css %}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/main.css">
     {% endblock %}
     
     <title>
@@ -19,13 +19,43 @@
 <body>
     <header>
         <nav class="navbar">
-                        <div class="logo">
-                <a href="index.php"><img src="images/logo.png" alt="Logo Hôtel Neptune"></a>
-            </div>
-
-            <div class="nav-links">
-                <div class="nav-item">
-                    <a href="index.php?page=login" class="btn btn-primary">Dashboard</a>
+            <div class="container navbar-container">
+                <div class="logo">
+                    <a href="index.php" aria-label="Accueil">
+                        <img src="images/logo.png" alt="Logo Hôtel Neptune">
+                    </a>
+                </div>
+                
+                <button class="mobile-nav-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                
+                <div class="nav-links" id="primary-navigation">
+                    <ul class="primary-navigation">
+                        <li class="nav-item">
+                            <a href="index.php" class="nav-link">
+                                <i class="bi bi-house"></i>
+                                <span>Accueil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?page=rooms" class="nav-link">
+                                <i class="bi bi-door-open"></i>
+                                <span>Chambres</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="user-navigation">
+                        <div class="nav-item has-dropdown">
+                            <a href="index.php?page=login" class="nav-link dropdown-toggle">
+                                <div class="user-avatar">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <span>Compte</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -35,83 +65,5 @@
         {% block content %}{% endblock %}
     </main>
 
-        <footer class="normal">
-        <div class="args">
-                        <div class="contact-info">
-                <h3>HÔTEL NEPTUNE</h3>
-                <div>
-                    <img src="images/location.svg" alt="Adresse">
-                    <p>2 RUE DU DEPOT,<br>8200 FRANCE</p>
-                </div>
-                <div>
-                    <img src="images/phone.svg" alt="Téléphone">
-                    <p>Tel: 06 00 00 00 00</p>
-                </div>
-            </div>
-            
-                        <div class="footer-links">
-                <a href="index.php?page=legals">Mentions légales</a>
-                -
-                <a href="index.php?page=cgv">CGV</a>
-            </div>
-        </div>
-
-        <hr class="solid-normal">
-
-                <form action="index.php?page=contact" method="POST">
-            <div class="input-group">
-                <input type="text" name="nom" placeholder="Nom" required>
-                <input type="text" name="prenom" placeholder="Prénom" required>
-            </div>
-            <div class="input-group">
-                <input type="tel" name="tel" placeholder="Tel" required>
-                <input type="email" name="email" placeholder="Email" required>
-            </div>
-            <textarea name="message" placeholder="Message" required></textarea>
-            <button type="submit">Envoyer</button>
-        </form>
-    </footer>
-
-        <footer class="mobile">
-        <div class="args">
-                        <div class="contact-info">
-                <h3>HÔTEL NEPTUNE</h3>
-                <div class="info">
-                    <img src="images/location.svg" alt="Adresse">
-                    <p>2 RUE DU DEPOT,<br>8200 FRANCE</p>
-                </div>
-                <div class="info">
-                    <img src="images/phone.svg" alt="Téléphone">
-                    <p>Tel: 06 00 00 00 00</p>
-                </div>
-            </div>
-        </div>
-
-        <hr class="solid-mobile">
-
-                <form action="index.php?page=contact" method="POST">
-            <div class="input-group">
-                <input type="text" name="nom" placeholder="Nom" required>
-                <input type="text" name="prenom" placeholder="Prénom" required>
-            </div>
-            <div class="input-group">
-                <input type="tel" name="tel" placeholder="Tel" required>
-                <input type="email" name="email" placeholder="Email" required>
-            </div>
-            <textarea name="message" placeholder="Message" required></textarea>
-            <button type="submit">Envoyer</button>
-        </form>
-
-                <div class="footer-links">
-            <a href="index.php?page=legals">Mentions légales</a>
-            <a href="index.php?page=cgv">CGV</a>
-        </div>
-    </footer>
-
-    {% block js %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-            crossorigin="anonymous"></script>
-    {% endblock %}
 </body>
 </html>

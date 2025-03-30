@@ -108,7 +108,7 @@
             {% if featuredRooms and featuredRooms|length > 0 %}
                 <div class="gallery-grid">
                     {% for room in featuredRooms %}
-                        <div class="gallery-item {% if loop.first %}large{% endif %}">
+                        <a href="index.php?page=showRoom&id={{ room.id }}" class="gallery-item {% if loop.first %}large{% endif %}">
                             {% if room.featuredImage %}
                                 <img src="{{ room.featuredImage.filePath }}" alt="Chambre {{ room.name }}">
                             {% else %}
@@ -117,8 +117,7 @@
                             <div class="gallery-overlay">
                                 <span>Chambre {{ room.name }} - {{ room.price }}€/nuit</span>
                             </div>
-                            <a href="index.php?page=showRoom&id={{ room.id }}" class="gallery-link"></a>
-                        </div>
+                        </a>
                     {% endfor %}
                 </div>
             {% else %}
@@ -154,21 +153,4 @@
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block javascript %}
-    <script>
-        // Script pour rendre les éléments de la galerie cliquables
-        document.addEventListener('DOMContentLoaded', function() {
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            galleryItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const link = this.querySelector('.gallery-link');
-                    if (link) {
-                        window.location.href = link.getAttribute('href');
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock %}
