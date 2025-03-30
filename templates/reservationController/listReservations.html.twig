@@ -1,0 +1,177 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Gestion des Réservations {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="css/reservation/list.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="bi bi-calendar-check"></i> Gestion des Réservations</h1>
+        <p>Consultez et gérez toutes les réservations de l'hôtel</p>
+    </div>
+
+    {% if session.message is defined %}
+        <div class="alert alert-{{ session.success ? 'success' : 'danger' }}">
+            {{ session.message }}
+        </div>
+    {% endif %}
+
+    <div class="table-responsive">
+        <table class="data-table" id="reservations-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Chambre</th>
+                    <th>Arrivée</th>
+                    <th>Départ</th>
+                    <th>Nuits</th>
+                    <th>Total</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if reservations is defined and reservations is not empty %}
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>#{{ reservation.id }}</td>
+                            <td>
+                                <div class="user-info">
+                                    {{ reservation.first_name }} {{ reservation.last_name }}
+                                    <small>{{ reservation.email }}</small>
+                                </div>
+                            </td>
+                            <td>{{ reservation.room_name }}</td>
+                            <td>{{ reservation.check_in|date("d/m/Y") }}</td>
+                            <td>{{ reservation.check_out|date("d/m/Y") }}</td>
+                            <td>{{ (reservation.check_out|date('U') - reservation.check_in|date('U')) / 86400 }} nuits</td>
+                            <td>{{ reservation.total_price|number_format(2, ',', ' ') }}€</td>
+                            <td>
+                                <span class="status-badge status-{{ reservation.status }}">
+                                    {{ reservation.status|capitalize }}
+                                </span>
+                            </td>
+                            <td class="actions">
+                                <div class="action-buttons">
+                                    <a href="index.php?page=showReservation&id={{ reservation.id }}" class="btn-icon view" title="Voir les détails">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    {% if reservation.status != 'cancelled' and reservation.status != 'completed' %}
+                                        <button class="btn-icon edit status-update-btn" data-id="{{ reservation.id }}" title="Modifier le statut">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <a href="index.php?page=deleteReservation&id={{ reservation.id }}" class="btn-icon delete" 
+                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');" title="Supprimer">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if reservation.status == 'confirmed' %}
+                                        <a href="index.php?page=downloadInvoice&id={{ reservation.id }}" class="btn-icon invoice" title="Télécharger la facture">
+                                            <i class="bi bi-file-earmark-pdf"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">Aucune réservation trouvée</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('reservation-search');
+            const reservationsTable = document.getElementById('reservations-table');
+            const rows = reservationsTable.querySelectorAll('tbody tr');
+
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+
+            const statusFilter = document.getElementById('status-filter');
+            statusFilter.addEventListener('change', function() {
+                const selectedStatus = statusFilter.value.toLowerCase();
+                
+                rows.forEach(row => {
+                    if (!selectedStatus) {
+                        row.style.display = '';
+                        return;
+                    }
+                    
+                    const statusCell = row.querySelector('td:nth-child(8)');
+                    const statusText = statusCell.textContent.trim().toLowerCase();
+                    
+                    row.style.display = statusText.includes(selectedStatus) ? '' : 'none';
+                });
+            });
+
+            const dateFilter = document.getElementById('date-filter');
+            dateFilter.addEventListener('change', function() {
+                const selectedDate = dateFilter.value;
+                
+                if (!selectedDate) {
+                    rows.forEach(row => row.style.display = '');
+                    return;
+                }
+                
+                rows.forEach(row => {
+                    const checkInDate = row.querySelector('td:nth-child(4)').textContent.trim();
+                    const checkOutDate = row.querySelector('td:nth-child(5)').textContent.trim();
+                    
+                    const [checkInDay, checkInMonth, checkInYear] = checkInDate.split('/');
+                    const [checkOutDay, checkOutMonth, checkOutYear] = checkOutDate.split('/');
+                    
+                    const formattedCheckIn = `${checkInYear}-${checkInMonth}-${checkInDay}`;
+                    const formattedCheckOut = `${checkOutYear}-${checkOutMonth}-${checkOutDay}`;
+                    
+                    row.style.display = (formattedCheckIn <= selectedDate && selectedDate <= formattedCheckOut) ? '' : 'none';
+                });
+            });
+
+            const statusModal = document.getElementById('status-modal');
+            const statusUpdateButtons = document.querySelectorAll('.status-update-btn');
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+            const reservationIdInput = document.getElementById('reservation_id');
+
+            statusUpdateButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const reservationId = this.getAttribute('data-id');
+                    reservationIdInput.value = reservationId;
+                    statusModal.style.display = 'block';
+                });
+            });
+
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    statusModal.style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === statusModal) {
+                    statusModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -209,8 +209,13 @@ class DefaultController
         echo $this->twig->render('default/contact.html.twig');
     }
 
-        public function about()
+        public function legals()
     {
-        echo $this->twig->render('default/about.html.twig');
+        echo $this->twig->render('default/legals.html.twig');
+    }
+
+        public function cgv()
+    {
+        echo $this->twig->render('default/cgv.html.twig');
     }
 }

@@ -58,7 +58,7 @@ class ReservationController
                     $reservation = new Reservation(null, $user, $room, $check_in, $check_out, $status, $total_price, $special_requests, '', '');
                     $this->reservationModel->createReservation($reservation);
                     $_SESSION['message'] = 'Réservation ajoutée';
-                    header('Location: index.php?page=list-reservations');
+                    header('Location: index.php?page=reservations');
                     exit();
                 }
             }
@@ -78,7 +78,7 @@ class ReservationController
         if ($id) {
             $this->reservationModel->deleteReservation((int)$id);
         }
-        header('Location: index.php?page=list-reservations');
+        header('Location: index.php?page=reservations');
     }
 
         public function initializePayment()
@@ -187,47 +187,68 @@ class ReservationController
 
         public function showReservation()
     {
-                if (!isset($_SESSION['user_id'])) {
-            $_SESSION['message'] = 'Vous devez être connecté pour voir vos réservations.';
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['message'] = 'Vous devez être connecté pour voir les détails d\'une réservation.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=login');
-            exit();
+            exit;
         }
-
-                $reservationId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        
+        $reservationId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         
         if (!$reservationId) {
-            $_SESSION['message'] = 'Numéro de réservation invalide.';
+            $_SESSION['message'] = 'ID de réservation invalide.';
             $_SESSION['success'] = false;
-            header('Location: index.php?page=dashboard');
-            exit();
+            header('Location: index.php?page=reservations');
+            exit;
         }
-
-                $reservation = $this->reservationModel->getReservationById((int)$reservationId);
         
-        if (!$reservation) {
-            $_SESSION['message'] = 'Réservation introuvable.';
+        try {
+            $reservation = $this->reservationModel->getReservationById((int)$reservationId);
+            
+            if (!$reservation) {
+                $_SESSION['message'] = 'Réservation introuvable.';
+                $_SESSION['success'] = false;
+                header('Location: index.php?page=reservations');
+                exit;
+            }
+            
+            if ($reservation['user_id'] != $_SESSION['user_id'] && 
+                $_SESSION['user_role'] != 'admin' && 
+                $_SESSION['user_role'] != 'staff') {
+                $_SESSION['message'] = 'Vous n\'êtes pas autorisé à voir cette réservation.';
+                $_SESSION['success'] = false;
+                header('Location: index.php?page=dashboard');
+                exit;
+            }
+            
+            $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
+            
+            $reservationHistory = [];
+            try {
+                if (method_exists($this->reservationModel, 'getReservationHistory')) {
+                    $reservationHistory = $this->reservationModel->getReservationHistory((int)$reservationId);
+                }
+            } catch (\Exception $e) {
+            }
+            
+            echo $this->twig->render('reservationController/showReservation.html.twig', [
+                'reservation' => $reservation,
+                'room' => $room,
+                'history' => $reservationHistory,
+                'session' => $_SESSION ?? []
+            ]);
+            
+        } catch (\Exception $e) {
+            $_SESSION['message'] = 'Une erreur est survenue lors de la récupération des détails: ' . $e->getMessage();
             $_SESSION['success'] = false;
-            header('Location: index.php?page=dashboard');
-            exit();
+            header('Location: index.php?page=reservations');
+            exit;
         }
-
-                        if ($reservation['user_id'] != $_SESSION['user_id'] && 
-            $_SESSION['user_role'] != 'admin' && 
-            $_SESSION['user_role'] != 'staff') {
-            $_SESSION['message'] = 'Vous n\'êtes pas autorisé à voir cette réservation.';
-            $_SESSION['success'] = false;
-            header('Location: index.php?page=dashboard');
-            exit();
-        }
-
-                $room = $this->roomModel->getOneRoom((int)$reservation['room_id']);
-
-                echo $this->twig->render('reservationController/showReservation.html.twig', [
-            'reservation' => $reservation,
-            'room' => $room,
-            'session' => $_SESSION ?? []
-        ]);
     }
 
         public function cancelReservation()
@@ -287,36 +308,84 @@ class ReservationController
 
         public function updateReservationStatus()
     {
-                if (!isset($_SESSION['user_id']) || 
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        if (!isset($_SESSION['user_id']) || 
             ($_SESSION['user_role'] != 'admin' && $_SESSION['user_role'] != 'staff')) {
             $_SESSION['message'] = 'Vous n\'êtes pas autorisé à effectuer cette action.';
             $_SESSION['success'] = false;
             header('Location: index.php?page=dashboard');
-            exit();
+            exit;
         }
-
-                $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_SANITIZE_NUMBER_INT);
-        $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
         
-        if (!$reservationId || !$status) {
-            $_SESSION['message'] = 'Données invalides.';
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: index.php?page=reservations');
+            exit;
+        }
+        
+        try {
+            $reservationId = filter_input(INPUT_POST, 'reservation_id', FILTER_VALIDATE_INT);
+            $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
+            $adminNote = filter_input(INPUT_POST, 'admin_note', FILTER_SANITIZE_STRING);
+            
+            if (!$reservationId || !$status) {
+                $_SESSION['message'] = 'Données invalides.';
+                $_SESSION['success'] = false;
+                header('Location: index.php?page=reservations');
+                exit;
+            }
+            
+            $success = $this->reservationModel->updateReservationStatus((int)$reservationId, $status);
+            
+            if ($success && $adminNote) {
+                try {
+                    if (method_exists($this->reservationModel, 'addReservationNote')) {
+                        $this->reservationModel->addReservationNote(
+                            (int)$reservationId, 
+                            $_SESSION['user_id'], 
+                            $adminNote
+                        );
+                    }
+                } catch (\Exception $e) {
+                    error_log('Erreur lors de l\'ajout de la note: ' . $e->getMessage());
+                }
+            }
+            
+            if ($success) {
+                $_SESSION['message'] = 'Le statut de la réservation a été mis à jour avec succès.';
+                $_SESSION['success'] = true;
+                
+                if ($status === 'cancelled') {
+                    $reservation = $this->reservationModel->getReservationById($reservationId);
+                    if ($reservation) {
+                        $notificationModel = $this->dependencyContainer->get('NotificationModel');
+                        $notification = new \MyApp\Entity\Notification(
+                            null,
+                            $reservation['user_id'],
+                            'Réservation annulée',
+                            "Votre réservation #$reservationId a été annulée par l'administration.",
+                            false,
+                            new \DateTime()
+                        );
+                        $notificationModel->createNotification($notification);
+                    }
+                }
+            } else {
+                $_SESSION['message'] = 'Impossible de mettre à jour le statut de la réservation.';
+                $_SESSION['success'] = false;
+            }
+            
+            header('Location: index.php?page=showReservation&id=' . $reservationId);
+            exit;
+            
+        } catch (\Exception $e) {
+            $_SESSION['message'] = 'Une erreur est survenue: ' . $e->getMessage();
             $_SESSION['success'] = false;
             header('Location: index.php?page=reservations');
-            exit();
+            exit;
         }
-
-                $success = $this->reservationModel->updateReservationStatus((int)$reservationId, $status);
-        
-        if ($success) {
-            $_SESSION['message'] = 'Le statut de la réservation a été mis à jour avec succès.';
-            $_SESSION['success'] = true;
-        } else {
-            $_SESSION['message'] = 'Une erreur s\'est produite lors de la mise à jour du statut.';
-            $_SESSION['success'] = false;
-        }
-        
-        header('Location: index.php?page=reservations');
-        exit();
     }
 
         public function updateRoomAvailability()

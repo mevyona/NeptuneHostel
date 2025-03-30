@@ -1,0 +1,201 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Détails de la réservation {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="css/reservation/details.css">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="bi bi-calendar-check"></i> Détails de la réservation #{{ reservation.id }}</h1>
+        <div class="breadcrumb">
+            <a href="index.php?page=reservations">Réservations</a> <i class="bi bi-chevron-right"></i> Détails #{{ reservation.id }}
+        </div>
+    </div>
+
+    <div class="reservation-card">
+        <div class="reservation-header">
+            <div class="reservation-status">
+                <span class="status-badge status-{{ reservation.status }}">
+                    {{ reservation.status|capitalize }}
+                </span>
+            </div>
+            <div class="reservation-actions">
+                {% if reservation.status != 'cancelled' and reservation.status != 'completed' %}
+                    <a href="index.php?page=deleteReservation&id={{ reservation.id }}" class="btn btn-danger" 
+                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');">
+                        <i class="bi bi-trash"></i> Supprimer
+                    </a>
+                {% endif %}
+                {% if reservation.status == 'confirmed' %}
+                    <a href="index.php?page=downloadInvoice&id={{ reservation.id }}" class="btn btn-primary">
+                        <i class="bi bi-file-earmark-pdf"></i> Télécharger la facture
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="reservation-details">
+            <div class="detail-section">
+                <h3>Informations générales</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Numéro de réservation:</div>
+                        <div class="detail-value">#{{ reservation.id }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date de création:</div>
+                        <div class="detail-value">{{ reservation.created_at|date("d/m/Y H:i") }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Dernière modification:</div>
+                        <div class="detail-value">{{ reservation.updated_at|date("d/m/Y H:i") }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Statut actuel:</div>
+                        <div class="detail-value">
+                            <span class="status-badge status-{{ reservation.status }}">
+                                {{ reservation.status|capitalize }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Client</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Nom complet:</div>
+                        <div class="detail-value">{{ reservation.first_name }} {{ reservation.last_name }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Email:</div>
+                        <div class="detail-value">{{ reservation.email }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ID utilisateur:</div>
+                        <div class="detail-value">
+                            <a href="index.php?page=showUser&id={{ reservation.user_id }}" class="link">
+                                #{{ reservation.user_id }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Actions:</div>
+                        <div class="detail-value">
+                            <a href="index.php?page=showUser&id={{ reservation.user_id }}" class="btn-icon view" title="Voir le profil">
+                                <i class="bi bi-person"></i> Voir le profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Chambre et dates</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Chambre:</div>
+                        <div class="detail-value">
+                            <a href="index.php?page=showRoom&id={{ reservation.room_id }}" class="link">
+                                {{ room.name }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Prix de la chambre:</div>
+                        <div class="detail-value">{{ room.price|number_format(2, ',', ' ') }}€ / nuit</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Arrivée:</div>
+                        <div class="detail-value">{{ reservation.check_in|date("d/m/Y") }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Départ:</div>
+                        <div class="detail-value">{{ reservation.check_out|date("d/m/Y") }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Durée du séjour:</div>
+                        <div class="detail-value">{{ (reservation.check_out|date('U') - reservation.check_in|date('U')) / 86400 }} nuits</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Facturation</h3>
+                <div class="detail-grid">
+                    <div class="detail-item wide">
+                        <div class="detail-label">Montant total:</div>
+                        <div class="detail-value">{{ reservation.total_price|number_format(2, ',', ' ') }}€</div>
+                    </div>
+                    <div class="detail-item wide">
+                        <div class="detail-label">Inclus:</div>
+                        <div class="detail-value">
+                            <ul class="included-list">
+                                <li>
+                                    <i class="bi bi-check"></i> 
+                                    {{ (reservation.check_out|date('U') - reservation.check_in|date('U')) / 86400 }} nuits x {{ room.price|number_format(2, ',', ' ') }}€
+                                </li>
+                                <li><i class="bi bi-check"></i> Taxes de séjour</li>
+                                <li><i class="bi bi-check"></i> Service de ménage</li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% if reservation.status == 'confirmed' %}
+                        <div class="detail-item wide">
+                            <div class="detail-label">Actions:</div>
+                            <div class="detail-value">
+                                <a href="index.php?page=downloadInvoice&id={{ reservation.id }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-file-earmark-pdf"></i> Télécharger la facture
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if reservation.special_requests %}
+                <div class="detail-section">
+                    <h3>Demandes spéciales</h3>
+                    <div class="special-requests">
+                        {{ reservation.special_requests|nl2br }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusModal = document.getElementById('status-modal');
+            const statusUpdateButtons = document.querySelectorAll('.status-update-btn');
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+            
+            statusUpdateButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    statusModal.style.display = 'block';
+                });
+            });
+            
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    statusModal.style.display = 'none';
+                });
+            });
+            
+            window.addEventListener('click', function(event) {
+                if (event.target === statusModal) {
+                    statusModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+{% endblock %}

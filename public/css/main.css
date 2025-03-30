@@ -674,6 +674,26 @@ footer.normal button:hover::before {
     left: 100%;
 }
 
+.contact-alert {
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.contact-alert.success {
+    background-color: rgba(45, 212, 191, 0.2);
+    color: var(--neptune-teal-dark);
+    border: 1px solid rgba(45, 212, 191, 0.3);
+}
+
+.contact-alert.error {
+    background-color: rgba(225, 29, 72, 0.1);
+    color: #e11d48;
+    border: 1px solid rgba(225, 29, 72, 0.2);
+}
+
 footer.mobile {
     display: none;
     flex-direction: column;

@@ -10,10 +10,13 @@ use MyApp\Controller\ReservationController;
 use MyApp\Controller\RoomController;
 use MyApp\Controller\PaymentController;
 use MyApp\Controller\InvoiceController;
+use MyApp\Controller\ContactMessageController;
 use MyApp\Service\DependencyContainer;
 
 class Router
 {
+    private array $routes = [];
+    private DependencyContainer $container;
     private $dependencyContainer;
     private $pageMappings;
     private $defaultPage;
@@ -23,12 +26,15 @@ class Router
     public function __construct(DependencyContainer $dependencyContainer)
     {
         $this->dependencyContainer = $dependencyContainer;
-                                                
-                $this->pageMappings = [
+        $this->container = $dependencyContainer;
+
+        $this->pageMappings = [
             'home' => [DefaultController::class, 'home', null],
+            'legals' => [DefaultController::class, 'legals', null],
+            'cgv' => [DefaultController::class, 'cgv', null],
+            '403' => [DefaultController::class, 'error403', null],
             '404' => [DefaultController::class, 'error404', null],
             '500' => [DefaultController::class, 'error500', null],
-            '403' => [DefaultController::class, 'error403', null],
             
             'users' => [UserController::class, 'listUsers', 'admin'],
             'listUsers' => [UserController::class, 'listUsers', 'admin'],
@@ -67,36 +73,40 @@ class Router
             'updateRoom' => [RoomController::class, 'updateRoom', 'admin'],
             'deleteRoom' => [RoomController::class, 'deleteRoom', 'admin'],
             'bookRoomDirectly' => [RoomController::class, 'bookRoomDirectly', 'client'],
+
+            'contact' => [ContactMessageController::class, 'contact', null],
         ];
         $this->defaultPage = 'home';
         $this->errorPage = '404';
         $this->unauthorizedPage = '403';
+
+        $this->initializeRoutes();
     }
 
     public function route($twig)
     {
-                if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
         
         $requestedPage = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_STRING);
 
-                if (!$requestedPage) {
+        if (!$requestedPage) {
             $requestedPage = $this->defaultPage;
         } else {
-                        if (!array_key_exists($requestedPage, $this->pageMappings)) {
+            if (!array_key_exists($requestedPage, $this->pageMappings)) {
                 $requestedPage = $this->errorPage;
             }
         }
 
-                $controllerInfo = $this->pageMappings[$requestedPage];
-                [$controllerClass, $method, $requiredRole] = $controllerInfo;
+        $controllerInfo = $this->pageMappings[$requestedPage];
+        [$controllerClass, $method, $requiredRole] = $controllerInfo;
 
-                if ($requiredRole !== null) {
+        if ($requiredRole !== null) {
             $userRole = $this->getUserRole();
             
-                        if (!$this->hasPermission($userRole, $requiredRole)) {
-                                $unauthorizedInfo = $this->pageMappings[$this->unauthorizedPage];
+            if (!$this->hasPermission($userRole, $requiredRole)) {
+                $unauthorizedInfo = $this->pageMappings[$this->unauthorizedPage];
                 [$errorControllerClass, $errorMethod] = $unauthorizedInfo;
                 $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
                 call_user_func([$errorController, $errorMethod]);
@@ -104,11 +114,11 @@ class Router
             }
         }
 
-                if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
-                        $controller = new $controllerClass($twig, $this->dependencyContainer);
-                        call_user_func([$controller, $method]);
+        if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
+            $controller = new $controllerClass($twig, $this->dependencyContainer);
+            call_user_func([$controller, $method]);
         } else {
-                        $error500Info = $this->pageMappings['500'];
+            $error500Info = $this->pageMappings['500'];
             [$errorControllerClass, $errorMethod] = $error500Info;
             $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
             call_user_func([$errorController, $errorMethod]);
@@ -117,7 +127,7 @@ class Router
     
     private function getUserRole(): ?string
     {
-                if (isset($_SESSION['user_role'])) {
+        if (isset($_SESSION['user_role'])) {
             return $_SESSION['user_role'];
         }
         
@@ -145,5 +155,43 @@ class Router
         }
         
         return $roleHierarchy[$userRole] >= $roleHierarchy[$requiredRole];
+    }
+
+    /**
+     * Initialise les routes de l'application
+     */
+    private function initializeRoutes(): void
+    {
+        $this->routes = [
+            // Autres routes existantes...
+            
+            // Routes pour les réservations
+            'reservations' => [
+                'controller' => 'ReservationController',
+                'method' => 'listReservations'
+            ],
+            'showReservation' => [
+                'controller' => 'ReservationController',
+                'method' => 'showReservation'
+            ],
+            'addReservation' => [
+                'controller' => 'ReservationController',
+                'method' => 'addReservation'
+            ],
+            'updateReservationStatus' => [
+                'controller' => 'ReservationController',
+                'method' => 'updateReservationStatus'
+            ],
+            'deleteReservation' => [
+                'controller' => 'ReservationController',
+                'method' => 'deleteReservation'
+            ],
+            'downloadInvoice' => [
+                'controller' => 'ReservationController',
+                'method' => 'downloadInvoice'
+            ],
+            
+            // Autres routes existantes...
+        ];
     }
 }

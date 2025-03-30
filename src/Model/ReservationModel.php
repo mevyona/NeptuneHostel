@@ -193,4 +193,53 @@ class ReservationModel
             return [];
         }
     }
+
+    /**
+     * Récupère toutes les réservations avec détails du client et de la chambre
+     * 
+     * @return array Tableau de réservations avec détails
+     */
+    public function getAllReservationsWithDetails(): array
+    {
+        try {
+            $query = "SELECT r.*, 
+                      u.first_name, u.last_name, u.email,
+                      rm.name AS room_name, rm.price AS room_price
+                    FROM Reservation r
+                    JOIN User u ON r.user_id = u.id
+                    JOIN Room rm ON r.room_id = rm.id
+                    ORDER BY r.created_at DESC";
+                    
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log('Erreur lors de la récupération des réservations avec détails: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function deleteReservation(int $id): bool
+    {
+        try {
+            $checkQuery = "SELECT id FROM Reservation WHERE id = :id";
+            $checkStmt = $this->db->prepare($checkQuery);
+            $checkStmt->bindParam(':id', $id, \PDO::PARAM_INT);
+            $checkStmt->execute();
+            
+            if ($checkStmt->rowCount() === 0) {
+                return false;
+            }
+            
+            $query = "DELETE FROM Reservation WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+            
+            return $stmt->execute();
+        } catch (\PDOException $e) {
+            error_log('Erreur lors de la suppression de la réservation: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

@@ -23,10 +23,19 @@ class HomeController
             'averageRating' => 4.8
         ];
 
-        echo $this->twig->render('default/home.html.twig', [
+        $viewData = [
             'featuredRooms' => $featuredRooms,
             'roomStats' => $roomStats,
             'session' => $_SESSION ?? []
-        ]);
+        ];
+        
+        if (isset($_SESSION['contact_message'])) {
+            $viewData['contact_message'] = $_SESSION['contact_message'];
+            $viewData['contact_success'] = $_SESSION['contact_success'];
+            unset($_SESSION['contact_message']);
+            unset($_SESSION['contact_success']);
+        }
+        
+        echo $this->twig->render('default/home.html.twig', $viewData);
     }
 }

@@ -1,15 +1,143 @@
 {% extends "base.html.twig" %}
 
 {% block title %} {{ parent() }} Mentions Légales {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="css/legals.css">
+{% endblock %}
        
 {% block content %} 
-    <div class="container-fluid">
-		<div class="row justify-content-center">
-			<div class="col-12 col-md-10">
-				 <h2 class="text-center text-light">Mentions Légales</h2> 
+<section class="legals-section">
+    <div class="container">
+        <div class="legals-header">
+            <h1>Mentions Légales</h1>
+            <div class="section-divider"></div>
+            <p class="legals-intro">
+                Dernière mise à jour : 30 mars 2025
+            </p>
+        </div>
 
+        <div class="legals-content">
+            <div class="legals-card">
+                <h2><i class="bi bi-building"></i> Éditeur du site</h2>
+                <p>
+                    <strong>Raison sociale :</strong> Hôtel Neptune SAS<br>
+                    <strong>Forme juridique :</strong> Société par Actions Simplifiée<br>
+                    <strong>Capital social :</strong> 500 000 €<br>
+                    <strong>SIRET :</strong> 123 456 789 00012<br>
+                    <strong>RCS :</strong> Paris B 123 456 789<br>
+                    <strong>Code APE :</strong> 5510Z (Hôtels et hébergement similaire)<br>
+                    <strong>TVA Intracommunautaire :</strong> FR 12 123456789<br>
+                    <strong>Siège social :</strong> 2 Rue du Dépôt, 82000 France<br>
+                    <strong>Téléphone :</strong> 06 00 00 00 00<br>
+                    <strong>Email :</strong> contact@hotelneptune.fr
+                </p>
+                <p>
+                    <strong>Directeur de la publication :</strong> Jean Dupont, Président<br>
+                    <strong>Responsable de la rédaction :</strong> Marie Laurent, Directrice Communication
+                </p>
+            </div>
 
-			</div>
-		</div>
-	</div>
-{% endblock %} 
+            <div class="legals-card">
+                <h2><i class="bi bi-hdd-rack"></i> Hébergement</h2>
+                <p>
+                    <strong>Raison sociale :</strong> OVHcloud SAS<br>
+                    <strong>Adresse :</strong> 2 rue Kellermann, 59100 Roubaix, France<br>
+                    <strong>Téléphone :</strong> 09 72 10 10 07<br>
+                    <strong>Site web :</strong> <a href="https://www.ovhcloud.com" target="_blank">www.ovhcloud.com</a>
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-shield-lock"></i> Protection des données personnelles</h2>
+                <p>
+                    Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés modifiée, vous disposez des droits suivants concernant vos données personnelles :
+                </p>
+                <ul>
+                    <li>Droit d'accès (article 15 du RGPD)</li>
+                    <li>Droit de rectification (article 16 du RGPD)</li>
+                    <li>Droit à l'effacement (article 17 du RGPD)</li>
+                    <li>Droit à la limitation du traitement (article 18 du RGPD)</li>
+                    <li>Droit à la portabilité des données (article 20 du RGPD)</li>
+                    <li>Droit d'opposition (article 21 du RGPD)</li>
+                </ul>
+                <p>
+                    Pour exercer ces droits ou pour toute question relative à la gestion de vos données personnelles, vous pouvez contacter notre Délégué à la Protection des Données (DPO) :
+                </p>
+                <p>
+                    <strong>Par email :</strong> dpo@hotelneptune.fr<br>
+                    <strong>Par courrier :</strong> DPO Hôtel Neptune - 2 Rue du Dépôt, 82000 France
+                </p>
+                <p>
+                    En cas de difficulté concernant la gestion de vos données, vous avez le droit d'introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL).
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-cookie"></i> Cookies</h2>
+                <p>
+                    Notre site utilise des cookies pour améliorer votre expérience de navigation, mesurer l'audience et optimiser nos services.
+                </p>
+                <p>
+                    Les cookies utilisés sur notre site sont de différentes natures :
+                </p>
+                <ul>
+                    <li><strong>Cookies techniques :</strong> indispensables au fonctionnement du site</li>
+                    <li><strong>Cookies analytiques :</strong> mesure d'audience et statistiques de navigation (Google Analytics)</li>
+                    <li><strong>Cookies de préférences :</strong> sauvegarde de vos préférences de navigation</li>
+                </ul>
+                <p>
+                    Vous pouvez à tout moment modifier vos préférences en matière de cookies en cliquant sur le lien "Gérer mes cookies" en bas de page.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-file-earmark-text"></i> Propriété intellectuelle</h2>
+                <p>
+                    L'ensemble des éléments constituant ce site web (textes, graphismes, logiciels, photographies, images, vidéos, sons, logos, noms de domaine, marques, etc.) est la propriété exclusive de l'Hôtel Neptune ou fait l'objet d'une autorisation d'utilisation.
+                </p>
+                <p>
+                    Toute reproduction, représentation, utilisation ou adaptation, sous quelque forme que ce soit, de tout ou partie de ces éléments, sans l'accord préalable et écrit de l'Hôtel Neptune, est strictement interdite et constitue un délit de contrefaçon sanctionné par les articles L.335-2 et suivants du Code de la propriété intellectuelle.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-briefcase"></i> Conditions générales</h2>
+                <p>
+                    L'utilisation de ce site est soumise aux conditions générales d'utilisation et de vente disponibles sur notre site. Nous vous invitons à les consulter attentivement.
+                </p>
+                <p>
+                    <a href="index.php?page=cgv" class="btn-link">Consulter nos Conditions Générales de Vente</a>
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-card-checklist"></i> Crédits</h2>
+                <p>
+                    <strong>Conception et développement :</strong> EPSI Nantes - Projet étudiant<br>
+                    <strong>Photographies :</strong> © Unsplash, Pexels, Adobe Stock<br>
+                    <strong>Illustrations :</strong> © Freepik, Undraw<br>
+                    <strong>Icônes :</strong> Bootstrap Icons (licence MIT)
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-patch-question"></i> Litiges</h2>
+                <p>
+                    Les présentes mentions légales sont régies par le droit français. En cas de litige, une solution amiable sera recherchée avant toute action judiciaire. À défaut, les tribunaux français seront seuls compétents.
+                </p>
+                <p>
+                    Conformément aux dispositions du Code de la consommation concernant le règlement amiable des litiges, l'Hôtel Neptune adhère au Service du Médiateur du Tourisme et du Voyage (MTV). Vous pouvez recourir gratuitement à ce service de médiation pour les litiges de nature contractuelle portant sur l'exécution du contrat de vente et/ou du contrat de prestation de services.
+                </p>
+                <p>
+                    <strong>Coordonnées du médiateur :</strong><br>
+                    Médiation Tourisme et Voyage (MTV)<br>
+                    BP 80 303 - 75 823 Paris Cedex 17<br>
+                    <a href="https://www.mtv.travel" target="_blank">www.mtv.travel</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

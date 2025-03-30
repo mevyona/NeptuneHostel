@@ -1,0 +1,122 @@
+.legals-section {
+    padding: 60px 0;
+    background-color: var(--background);
+    position: relative;
+}
+
+.legals-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.legals-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.section-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, var(--neptune-teal), var(--space-blue-light));
+    margin: 0 auto 20px;
+    border-radius: 3px;
+}
+
+.legals-intro {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.legals-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.legals-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.legals-card h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--neptune-teal);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legals-card h2 i {
+    font-size: 1.4rem;
+    color: var(--neptune-teal-light);
+}
+
+.legals-card p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.legals-card p strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.legals-card ul {
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+.legals-card ul li {
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.legals-card a {
+    color: var(--cosmos-purple);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.legals-card a:hover {
+    color: var(--cosmos-purple-dark);
+    text-decoration: underline;
+}
+
+.btn-link {
+    display: inline-block;
+    background-color: var(--neptune-teal-light);
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-link:hover {
+    background-color: var(--neptune-teal);
+    transform: translateY(-2px);
+    text-decoration: none !important;
+    box-shadow: 0 4px 8px rgba(45, 212, 191, 0.2);
+}
+
+@media (max-width: 768px) {
+    .legals-header h1 {
+        font-size: 2rem;
+    }
+    
+    .legals-card {
+        padding: 20px 15px;
+    }
+}

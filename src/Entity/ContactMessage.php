@@ -7,48 +7,126 @@ namespace MyApp\Entity;
 class ContactMessage
 {
     private ?int $id;
-    private string $first_name;
-    private string $last_name;
+    private string $firstName;
+    private string $lastName;
     private string $email;
     private ?string $phone;
     private string $message;
     private string $status;
-    private string $created_at;
-
+    private ?\DateTime $createdAt;
+    
     public function __construct(
         ?int $id,
-        string $first_name,
-        string $last_name,
+        string $firstName,
+        string $lastName,
         string $email,
         ?string $phone,
         string $message,
-        string $status,
-        string $created_at
+        string $status = 'new',
+        ?\DateTime $createdAt = null
     ) {
         $this->id = $id;
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->email = $email;
         $this->phone = $phone;
         $this->message = $message;
         $this->status = $status;
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt ?? new \DateTime();
     }
-
-    public function getId(): ?int { return $this->id; }
-    public function setId(?int $id): void { $this->id = $id; }
-    public function getFirstName(): string { return $this->first_name; }
-    public function setFirstName(string $first_name): void { $this->first_name = $first_name; }
-    public function getLastName(): string { return $this->last_name; }
-    public function setLastName(string $last_name): void { $this->last_name = $last_name; }
-    public function getEmail(): string { return $this->email; }
-    public function setEmail(string $email): void { $this->email = $email; }
-    public function getPhone(): ?string { return $this->phone; }
-    public function setPhone(?string $phone): void { $this->phone = $phone; }
-    public function getMessage(): string { return $this->message; }
-    public function setMessage(string $message): void { $this->message = $message; }
-    public function getStatus(): string { return $this->status; }
-    public function setStatus(string $status): void { $this->status = $status; }
-    public function getCreatedAt(): string { return $this->created_at; }
-    public function setCreatedAt(string $created_at): void { $this->created_at = $created_at; }
+    
+    // Getters
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+    
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+    
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+    
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+    
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+    
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+    
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+    
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+    
+    // Setters
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+    
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+    
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+    
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+    
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+    
+    public function setMessage(string $message): self
+    {
+        $this->message = $message;
+        return $this;
+    }
+    
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+    
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+    
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
 }

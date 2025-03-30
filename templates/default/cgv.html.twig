@@ -1,0 +1,210 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Conditions Générales de Vente {% endblock %}
+
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="css/legals.css">
+{% endblock %}
+       
+{% block content %} 
+<section class="legals-section">
+    <div class="container">
+        <div class="legals-header">
+            <h1>Conditions Générales de Vente</h1>
+            <div class="section-divider"></div>
+            <p class="legals-intro">
+                Dernière mise à jour : 30 mars 2025
+            </p>
+        </div>
+
+        <div class="legals-content">
+            <div class="legals-card">
+                <h2><i class="bi bi-journal-text"></i> Préambule</h2>
+                <p>
+                    Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre l'Hôtel Neptune et ses clients dans le cadre de la vente des prestations d'hébergement et des services proposés par l'établissement.
+                </p>
+                <p>
+                    Toute réservation implique l'acceptation sans réserve des présentes conditions générales de vente qui prévalent sur toutes autres conditions, sauf dérogation formelle et expresse de notre part.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-file-earmark-text"></i> Application des CGV</h2>
+                <p>
+                    Les présentes CGV s'appliquent à toutes les réservations effectuées :
+                </p>
+                <ul>
+                    <li>Sur notre site internet <strong>www.neptune-hostel.fr</strong></li>
+                    <li>Par téléphone auprès de notre service de réservation</li>
+                    <li>Par email ou courrier</li>
+                    <li>Directement à la réception de l'hôtel</li>
+                    <li>Via des plateformes partenaires (sous réserve de conditions spécifiques)</li>
+                </ul>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-calendar-check"></i> Processus de réservation</h2>
+                <p>
+                    La réservation n'est effective qu'après confirmation de notre part et versement de l'acompte ou garantie bancaire requise.
+                </p>
+                <p>
+                    <strong>Acompte :</strong> Pour toute réservation, un acompte de 30% du montant total du séjour est demandé. Le solde sera réglé au plus tard le jour de l'arrivée.
+                </p>
+                <p>
+                    <strong>Confirmation :</strong> Une confirmation de réservation vous sera envoyée par email dès validation de votre commande. Ce document confirme l'engagement réciproque entre le client et l'Hôtel Neptune.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-cash-coin"></i> Prix et paiement</h2>
+                <p>
+                    <strong>Prix :</strong> Les prix indiqués sont en euros, TVA et taxe de séjour incluses. La taxe de séjour est de 2,50€ par personne et par nuit (tarif susceptible d'évoluer selon la réglementation locale).
+                </p>
+                <p>
+                    <strong>Moyens de paiement acceptés :</strong>
+                </p>
+                <ul>
+                    <li>Cartes bancaires (Visa, Mastercard, American Express)</li>
+                    <li>Espèces (dans la limite de 1000€ selon la législation française)</li>
+                    <li>Chèques vacances ANCV</li>
+                    <li>Virements bancaires (uniquement pour les réservations effectuées au moins 7 jours avant l'arrivée)</li>
+                </ul>
+                <p>
+                    Un supplément de 30€ sera facturé pour toute personne supplémentaire au-delà de la capacité standard de la chambre, sous réserve d'acceptation préalable par l'hôtel.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-shield-check"></i> Garantie de réservation</h2>
+                <p>
+                    <strong>Réservation garantie :</strong> Toute réservation doit être garantie par une carte bancaire valide à la date du début du séjour et d'une autorisation de prélèvement. Une pré-autorisation du montant total ou partiel du séjour pourra être effectuée à des fins de vérification.
+                </p>
+                <p>
+                    En cas de garantie insuffisante ou invalide, la réservation pourra être annulée par l'hôtel sans préavis.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-x-circle"></i> Conditions d'annulation et de modification</h2>
+                <p>
+                    <strong>Politique standard :</strong>
+                </p>
+                <ul>
+                    <li>Annulation jusqu'à 48h avant l'arrivée : remboursement intégral de l'acompte</li>
+                    <li>Annulation entre 48h et 24h avant l'arrivée : facturation de la première nuit</li>
+                    <li>Annulation moins de 24h avant l'arrivée ou non-présentation : facturation de l'intégralité du séjour</li>
+                </ul>
+                <p>
+                    <strong>Tarifs non remboursables :</strong> Certains tarifs promotionnels peuvent être soumis à des conditions d'annulation spécifiques, notamment être non modifiables et non remboursables. Ces conditions particulières sont indiquées lors de votre réservation.
+                </p>
+                <p>
+                    <strong>Modification :</strong> Toute demande de modification de séjour doit être adressée à l'hôtel dans les plus brefs délais et est soumise à disponibilité. Des frais supplémentaires peuvent s'appliquer.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-clock"></i> Arrivée et départ</h2>
+                <p>
+                    <strong>Heure d'arrivée (check-in) :</strong> Les chambres sont disponibles à partir de 15h00.
+                </p>
+                <p>
+                    <strong>Heure de départ (check-out) :</strong> Les chambres doivent être libérées au plus tard à 11h00 le jour du départ.
+                </p>
+                <p>
+                    <strong>Arrivée tardive :</strong> La réception est ouverte 24h/24. En cas d'arrivée après 22h00, merci de prévenir l'hôtel.
+                </p>
+                <p>
+                    <strong>Early check-in / Late check-out :</strong> Sous réserve de disponibilité et moyennant un supplément :
+                </p>
+                <ul>
+                    <li>Early check-in (avant 15h00) : 50% du tarif journalier</li>
+                    <li>Late check-out (jusqu'à 18h00) : 50% du tarif journalier</li>
+                    <li>Late check-out (après 18h00) : 100% du tarif journalier</li>
+                </ul>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-stars"></i> Services et prestations</h2>
+                <p>
+                    <strong>Petit-déjeuner :</strong> Servi sous forme de buffet de 7h00 à 10h30 (jusqu'à 11h00 les week-ends et jours fériés). Tarif : 18€ par personne et 10€ pour les enfants de moins de 12 ans.
+                </p>
+                <p>
+                    <strong>Wi-Fi :</strong> Gratuit dans tout l'établissement.
+                </p>
+                <p>
+                    <strong>Parking :</strong> Parking privé disponible sur réservation au tarif de 15€ par jour.
+                </p>
+                <p>
+                    <strong>Services supplémentaires :</strong> Certains services (minibar, téléphone, blanchisserie, etc.) feront l'objet d'une facturation complémentaire.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-house-door"></i> Règlement intérieur</h2>
+                <p>
+                    Le client s'engage à respecter le règlement intérieur de l'hôtel affiché dans chaque chambre et disponible à la réception. En cas de non-respect, l'hôtel se réserve le droit de mettre fin au séjour sans indemnité ni remboursement.
+                </p>
+                <p>
+                    <strong>Animaux :</strong> Les animaux domestiques de petite taille (moins de 10kg) sont acceptés moyennant un supplément de 15€ par jour et par animal. Les animaux ne doivent pas être laissés seuls dans les chambres et doivent être tenus en laisse dans les parties communes.
+                </p>
+                <p>
+                    <strong>Tabac :</strong> Conformément à la législation, il est formellement interdit de fumer dans l'ensemble de l'établissement. Une amende forfaitaire de 150€ sera facturée en cas de non-respect.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-exclamation-triangle"></i> Responsabilités</h2>
+                <p>
+                    <strong>Responsabilité de l'hôtel :</strong> L'hôtel décline toute responsabilité en cas de vol, perte ou dommages aux effets personnels des clients dans les chambres ou les espaces communs. Un coffre-fort est à disposition dans chaque chambre.
+                </p>
+                <p>
+                    <strong>Responsabilité du client :</strong> Le client est responsable de tout dommage causé à l'hôtel, que ce soit par lui-même ou ses accompagnants. Les frais de remise en état seront facturés au client.
+                </p>
+                <p>
+                    L'hôtel se réserve le droit de prélever sur la carte bancaire du client le montant des dégradations constatées, des objets manquants, ou des frais de nettoyage exceptionnels.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-tornado"></i> Force majeure</h2>
+                <p>
+                    L'hôtel ne pourra être tenu responsable de l'inexécution totale ou partielle de ses obligations résultant d'un cas de force majeure, notamment en cas d'inondation, incendie, tempête, grève, émeute, ou toute autre cause indépendante de sa volonté.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-chat-dots"></i> Réclamations</h2>
+                <p>
+                    Toute réclamation doit être adressée à l'hôtel dans un délai de 15 jours maximum après la date de départ, par courrier recommandé avec accusé de réception à l'adresse suivante : Hôtel Neptune - Service Client - 2 Rue du Dépôt, 82000 France, ou par email à reclamations@hotelneptune.fr.
+                </p>
+                <p>
+                    Après avoir saisi notre service client et à défaut de réponse satisfaisante dans un délai de 60 jours, le client peut saisir le Médiateur du Tourisme et du Voyage dont les coordonnées sont disponibles sur le site www.mtv.travel.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-globe"></i> Loi applicable et juridiction compétente</h2>
+                <p>
+                    Les présentes conditions générales de vente sont soumises au droit français. Tout litige relatif à leur interprétation et/ou à leur exécution relève des tribunaux français.
+                </p>
+            </div>
+
+            <div class="legals-card">
+                <h2><i class="bi bi-info-circle"></i> Informations supplémentaires</h2>
+                <p>
+                    Pour toute question relative à votre réservation ou concernant les présentes CGV, veuillez contacter notre service client :
+                </p>
+                <p>
+                    <strong>Téléphone :</strong> 06 00 00 00 00<br>
+                    <strong>Email :</strong> reservations@hotelneptune.fr<br>
+                    <strong>Horaires :</strong> Du lundi au dimanche de 8h00 à 20h00
+                </p>
+                <p>
+                    Les présentes conditions générales de vente peuvent être modifiées à tout moment. La version applicable est celle en vigueur à la date de la réservation.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
