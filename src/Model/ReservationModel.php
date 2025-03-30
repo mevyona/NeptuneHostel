@@ -163,4 +163,34 @@ class ReservationModel
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Récupère les réservations les plus récentes
+     * 
+     * @param int $limit Nombre maximum de réservations à récupérer
+     * @return array Tableau de réservations récentes
+     */
+    public function getRecentReservations(int $limit = 5): array
+    {
+        try {
+            // Corriger les noms de tables pour correspondre au reste du code
+            $query = "SELECT r.*, 
+                        u.first_name, u.last_name, 
+                        ro.name AS room_name
+                      FROM Reservation r
+                      JOIN User u ON r.user_id = u.id
+                      JOIN Room ro ON r.room_id = ro.id
+                      ORDER BY r.created_at DESC
+                      LIMIT :limit";
+                      
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log('Erreur lors de la récupération des réservations récentes: ' . $e->getMessage());
+            return [];
+        }
+    }
 }

@@ -1,59 +1,20 @@
-{% extends "blank.html.twig" %}
-{% block title %}
-    {{ parent() }} 
-    {% if user.isAdmin %}
-        Dashboard Administration
-    {% elseif user.isStaff %}
-        Dashboard Personnel
-    {% else %}
-        Mon Profil
-    {% endif %}
-{% endblock %}
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Tableau de bord {% endblock %}
 
 {% block css %} 
     {{ parent() }} 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel='stylesheet' href='css/user/dashboard.css'> 
+    <link rel='stylesheet' href='css/user/dashboard.css'>
 {% endblock %}
 
 {% block content %}
-        <div class="float-element"></div>
-    <div class="float-element"></div>
-    <div class="float-element"></div>
-
     <div class="dashboard-container">
-                <div class="welcome-banner">
-            <div class="user-welcome">
-                <h1>
-                    {% if user.isAdmin %}
-                        <i class="bi bi-speedometer2"></i> Dashboard Administration
-                    {% elseif user.isStaff %}
-                        <i class="bi bi-speedometer"></i> Dashboard Personnel
-                    {% else %}
-                        <i class="bi bi-person-circle"></i> Mon Espace Client
-                    {% endif %}
-                </h1>
-                <p>Bienvenue, {{ user.firstName }}! <span class="user-role-badge 
-                    {% if user.role == 'admin' %}badge-admin{% elseif user.role == 'staff' %}badge-staff{% else %}badge-client{% endif %}">
-                    {% if user.role == 'admin' %}
-                        Administrateur
-                    {% elseif user.role == 'staff' %}
-                        Personnel
-                    {% else %}
-                        Client
-                    {% endif %}
-                </span></p>
-            </div>
-
-            <div class="user-actions">
-                <a href="index.php" class="dashboard-btn secondary"><i class="bi bi-house-door"></i> Retour à l'accueil</a>
-                <a href="index.php?page=updateUser&id={{ user.id }}" class="dashboard-btn primary"><i class="bi bi-pencil-square"></i> Modifier profil</a>
-                <a href="index.php?page=changePassword&id={{ user.id }}" class="dashboard-btn warning"><i class="bi bi-key"></i> Changer mot de passe</a>
-                <a href="index.php?page=logout" class="dashboard-btn danger"><i class="bi bi-box-arrow-right"></i> Déconnexion</a>
-            </div>
+        <div class="dashboard-header">
+            <h1>Bienvenue, {{ user.firstName }}</h1>
+            <p>Voici un aperçu de votre compte et de vos activités.</p>
         </div>
 
-                <div class="dashboard-grid">
+        <div class="dashboard-grid">
                         <div class="dashboard-card personal-info">
                 <div class="card-header">
                     <h2><i class="bi bi-person"></i> Informations Personnelles</h2>
@@ -61,7 +22,7 @@
                 <div class="card-body">
                     <div class="info-row">
                         <div class="info-label">Nom complet:</div>
-                        <div class="info-value">{{ user.fullName }}</div>
+                        <div class="info-value">{{ user.firstName }} {{ user.lastName }}</div>
                     </div>
                     <div class="info-row">
                         <div class="info-label">Email:</div>
@@ -75,19 +36,23 @@
                         <div class="info-label">Membre depuis:</div>
                         <div class="info-value">{{ user.createdAt|date('j F Y') }}</div>
                     </div>
+                    <div class="action-buttons">
+                        <a href="index.php?page=updateProfile" class="dashboard-btn secondary">
+                            <i class="bi bi-pencil"></i> Modifier mon profil
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            {% if user.isClient or user.isStaff or user.isAdmin %}
                         <div class="dashboard-card reservations">
                 <div class="card-header">
                     <h2><i class="bi bi-calendar-check"></i> Mes Réservations</h2>
-                    {% if user.reservations is not empty %}
+                    {% if user.reservations is defined and user.reservations is not empty %}
                         <span class="counter">{{ user.reservations|length }}</span>
                     {% endif %}
                 </div>
                 <div class="card-body">
-                    {% if user.reservations is not empty %}
+                    {% if user.reservations is defined and user.reservations is not empty %}
                         <div class="table-responsive">
                             <table class="dashboard-table">
                                 <thead>
@@ -104,7 +69,13 @@
                                     {% for reservation in user.reservations %}
                                         <tr>
                                             <td>#{{ reservation.id }}</td>
-                                            <td>{{ reservation.room_id }}</td>
+                                            <td>
+                                                {% if reservation.room is defined %}
+                                                    {{ reservation.room.name }}
+                                                {% else %}
+                                                    Chambre {{ reservation.room_id }}
+                                                {% endif %}
+                                            </td>
                                             <td>
                                                 <div>{{ reservation.check_in|date('d/m/Y') }}</div>
                                                 <div class="text-muted"><i class="bi bi-arrow-down"></i></div>
@@ -117,9 +88,9 @@
                                             </td>
                                             <td>{{ reservation.total_price }}€</td>
                                             <td>
-                                                <a href="index.php?page=showReservation&id={{ reservation.id }}" class="action-btn info"><i class="bi bi-eye"></i></a>
-                                                {% if reservation.status == 'Confirmée' %}
-                                                    <a href="index.php?page=addCancellation&id={{ reservation.id }}" class="action-btn danger"><i class="bi bi-x-circle"></i></a>
+                                                <a href="index.php?page=showReservation&id={{ reservation.id }}" class="action-btn info" title="Voir les détails"><i class="bi bi-eye"></i></a>
+                                                {% if reservation.status == 'confirmed' or reservation.status == 'pending' %}
+                                                    <a href="index.php?page=cancelReservation&id={{ reservation.id }}" class="action-btn danger" title="Annuler" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette réservation?');"><i class="bi bi-x-circle"></i></a>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -136,18 +107,16 @@
                     {% endif %}
                 </div>
             </div>
-            {% endif %}
 
-            {% if user.isClient or user.isStaff or user.isAdmin %}
                         <div class="dashboard-card reviews">
                 <div class="card-header">
                     <h2><i class="bi bi-star"></i> Mes Avis</h2>
-                    {% if user.reviews is not empty %}
+                    {% if user.reviews is defined and user.reviews is not empty %}
                         <span class="counter">{{ user.reviews|length }}</span>
                     {% endif %}
                 </div>
                 <div class="card-body">
-                    {% if user.reviews is not empty %}
+                    {% if user.reviews is defined and user.reviews is not empty %}
                         <div class="reviews-list">
                             {% for review in user.reviews %}
                                 <div class="review-item">
@@ -162,6 +131,9 @@
                                     <div class="review-content">
                                         <p>{{ review.comment }}</p>
                                     </div>
+                                    {% if review.room is defined %}
+                                        <div class="review-room">Chambre: {{ review.room.name }}</div>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         </div>
@@ -174,28 +146,31 @@
                     {% endif %}
                 </div>
             </div>
-            {% endif %}
 
-            {% if user.isClient or user.isStaff or user.isAdmin %}
                         <div class="dashboard-card notifications">
                 <div class="card-header">
                     <h2><i class="bi bi-bell"></i> Notifications</h2>
-                    {% if user.notifications is not empty %}
+                    {% if user.notifications is defined and user.notifications is not empty %}
                         <span class="counter">{{ user.notifications|length }}</span>
                     {% endif %}
                 </div>
                 <div class="card-body">
-                    {% if user.notifications is not empty %}
+                    {% if user.notifications is defined and user.notifications is not empty %}
                         <div class="notifications-list">
                             {% for notification in user.notifications %}
-                                <div class="notification-item">
+                                <div class="notification-item {% if not notification.isRead %}unread{% endif %}">
                                     <div class="notification-header">
                                         <h4>{{ notification.title }}</h4>
-                                        <span class="notification-date">{{ notification.created_at|date('d/m/Y') }}</span>
+                                        <span class="notification-date">{{ notification.createdAt|date('d/m/Y') }}</span>
                                     </div>
                                     <div class="notification-content">
                                         <p>{{ notification.message }}</p>
                                     </div>
+                                    {% if not notification.isRead %}
+                                        <div class="notification-actions">
+                                            <a href="index.php?page=markAsRead&id={{ notification.id }}" class="mark-read">Marquer comme lu</a>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         </div>
@@ -207,9 +182,8 @@
                     {% endif %}
                 </div>
             </div>
-            {% endif %}
 
-            {% if user.isStaff or user.isAdmin %}
+            {% if user.role == 'staff' or user.role == 'admin' %}
                         <div class="dashboard-card recent-activity wide">
                 <div class="card-header">
                     <h2><i class="bi bi-activity"></i> Activité Récente</h2>
@@ -234,7 +208,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                                                        <tr>
+                                    {% if recentReservations is defined and recentReservations is not empty %}
+                                        {% for res in recentReservations %}
+                                            <tr>
+                                                <td>#{{ res.id }}</td>
+                                                <td>{{ res.first_name }} {{ res.last_name }}</td>
+                                                <td>{{ res.room_name }}</td>
+                                                <td>
+                                                    <div>{{ res.check_in|date('d/m/Y') }}</div>
+                                                    <div class="text-muted"><i class="bi bi-arrow-down"></i></div>
+                                                    <div>{{ res.check_out|date('d/m/Y') }}</div>
+                                                </td>
+                                                <td>
+                                                    <span class="status-badge status-{{ res.status|lower }}">
+                                                        {{ res.status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="index.php?page=showReservation&id={{ res.id }}" class="action-btn info" title="Voir"><i class="bi bi-eye"></i></a>
+                                                    <a href="index.php?page=updateReservation&id={{ res.id }}" class="action-btn warning" title="Modifier"><i class="bi bi-pencil"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="6" class="text-center">Aucune réservation récente</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
                                         <td colspan="6" class="text-center">
                                             <a href="index.php?page=reservations" class="dashboard-btn secondary">Voir toutes les réservations</a>
                                         </td>
@@ -252,14 +253,28 @@
                                         <th>ID</th>
                                         <th>Client</th>
                                         <th>Réservation</th>
-                                        <th>Date</th>
-                                        <th>Motif</th>
-                                        <th>Actions</th>
+                                        <th>Date d'annulation</th>
+                                        <th>Raison</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                                                        <tr>
-                                        <td colspan="6" class="text-center">
+                                    {% if recentCancellations is defined and recentCancellations is not empty %}
+                                        {% for canc in recentCancellations %}
+                                            <tr>
+                                                <td>#{{ canc.id }}</td>
+                                                <td>{{ canc.first_name }} {{ canc.last_name }}</td>
+                                                <td>#{{ canc.reservation_id }}</td>
+                                                <td>{{ canc.cancellation_date|date('d/m/Y') }}</td>
+                                                <td>{{ canc.reason|slice(0, 50) }}{% if canc.reason|length > 50 %}...{% endif %}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">Aucune annulation récente</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">
                                             <a href="index.php?page=cancellations" class="dashboard-btn secondary">Voir toutes les annulations</a>
                                         </td>
                                     </tr>
@@ -271,7 +286,7 @@
             </div>
             {% endif %}
 
-            {% if user.isAdmin %}
+            {% if user.role == 'admin' %}
                         <div class="dashboard-card user-management">
                 <div class="card-header">
                     <h2><i class="bi bi-people"></i> Gestion des Utilisateurs</h2>
@@ -279,15 +294,15 @@
                 <div class="card-body">
                     <div class="stats-row">
                         <div class="stat-box">
-                            <div class="stat-value">XX</div>
+                            <div class="stat-value">{{ userStats.clients|default('--') }}</div>
                             <div class="stat-label">Total clients</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-value">XX</div>
+                            <div class="stat-value">{{ userStats.staff|default('--') }}</div>
                             <div class="stat-label">Personnel</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-value">XX</div>
+                            <div class="stat-value">{{ userStats.admins|default('--') }}</div>
                             <div class="stat-label">Admins</div>
                         </div>
                     </div>
@@ -297,9 +312,7 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
-
-            {% if user.isAdmin %}
+            
                         <div class="dashboard-card room-management">
                 <div class="card-header">
                     <h2><i class="bi bi-building"></i> Gestion des Chambres</h2>
@@ -307,50 +320,51 @@
                 <div class="card-body">
                     <div class="stats-row">
                         <div class="stat-box">
-                            <div class="stat-value">XX</div>
+                            <div class="stat-value">{{ roomStats.total|default('--') }}</div>
                             <div class="stat-label">Total chambres</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-value">XX</div>
+                            <div class="stat-value">{{ roomStats.available|default('--') }}</div>
                             <div class="stat-label">Disponibles</div>
                         </div>
                         <div class="stat-box">
-                            <div class="stat-value">XX%</div>
+                            <div class="stat-value">{{ roomStats.occupancy|default('--') }}%</div>
                             <div class="stat-label">Taux d'occupation</div>
                         </div>
                     </div>
                     <div class="action-buttons centered">
-                        <a href="index.php?page=rooms" class="dashboard-btn primary"><i class="bi bi-list-ul"></i> Liste des chambres</a>
-                        <a href="index.php?page=addRoom" class="dashboard-btn success"><i class="bi bi-plus-circle"></i> Ajouter une chambre</a>
+                        <a href="index.php?page=rooms" class="dashboard-btn primary"><i class="bi bi-grid"></i> Liste des chambres</a>
+                        <a href="index.php?page=addRoom" class="dashboard-btn success"><i class="bi bi-plus-lg"></i> Ajouter une chambre</a>
                     </div>
                 </div>
             </div>
             {% endif %}
         </div>
     </div>
+{% endblock %}
 
+{% block js %}
+    {{ parent() }}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab functionality for staff/admin dashboard
+            // Gestion des onglets
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
             
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    // Remove active class from all buttons
+                    // Désactiver tous les boutons d'onglet
                     tabButtons.forEach(btn => btn.classList.remove('active'));
                     
-                    // Add active class to clicked button
+                    // Masquer tous les contenus d'onglet
+                    tabContents.forEach(content => content.style.display = 'none');
+                    
+                    // Activer le bouton cliqué
                     this.classList.add('active');
                     
-                    // Hide all content sections
-                    tabContents.forEach(content => {
-                        content.style.display = 'none';
-                    });
-                    
-                    // Show the selected content section
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId + '-tab').style.display = 'block';
+                    // Afficher le contenu correspondant
+                    const tabId = this.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).style.display = 'block';
                 });
             });
         });

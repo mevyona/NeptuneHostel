@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace MyApp\Service;
 
 use MyApp\Model\UserModel;
@@ -17,6 +19,7 @@ use PDO;
 
 class DependencyContainer
 {
+    private array $services = [];
     private $instances = [];
 
     public function __construct()
@@ -30,6 +33,17 @@ class DependencyContainer
         }
 
         return $this->instances[$key];
+    }
+
+    /**
+     * Vérifie si un service existe dans le conteneur
+     * 
+     * @param string $id Identifiant du service
+     * @return bool True si le service existe, false sinon
+     */
+    public function has(string $id): bool
+    {
+        return isset($this->services[$id]) || method_exists($this, 'get' . $id);
     }
 
     private function createInstance($key)

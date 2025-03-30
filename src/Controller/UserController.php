@@ -4,6 +4,8 @@ namespace MyApp\Controller;
 
 use MyApp\Entity\User;
 use MyApp\Model\UserModel;
+use MyApp\Model\ReservationModel; // Ajout de l'import manquant
+use MyApp\Model\RoomModel; // Ajout de l'import manquant
 use MyApp\Service\DependencyContainer;
 use Twig\Environment;
 
@@ -11,10 +13,12 @@ class UserController
 {
     private Environment $twig;
     private UserModel $userModel;
+    private DependencyContainer $dependencyContainer; // Ajout du conteneur de dépendances
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer) {
         $this->twig = $twig;
         $this->userModel = $dependencyContainer->get('UserModel');
+        $this->dependencyContainer = $dependencyContainer; // Sauvegarde du conteneur pour usage ultérieur
     }
 
     public function login()
@@ -418,17 +422,55 @@ class UserController
                 exit;
             }
             
-            try {
-                $this->userModel->loadUserRelations($user);
-            } catch (\Exception $e) {
-                $_SESSION['message'] = 'Certaines informations de profil n\'ont pas pu être chargées.';
-                $_SESSION['success'] = false;
-            }
+            // Charger toutes les relations utilisateur
+            $this->userModel->loadUserRelations($user);
             
-            echo $this->twig->render('userController/dashboard.html.twig', [
+            // Préparation des données additionnelles pour les administrateurs et le personnel
+            $viewData = [
                 'user' => $user,
                 'session' => $_SESSION ?? []
-            ]);
+            ];
+            
+            // Pour les administrateurs et le personnel, charger des données additionnelles
+            if ($user->getRole() == 'admin' || $user->getRole() == 'staff') {
+                // Utiliser le conteneur de dépendances pour obtenir le modèle
+                $reservationModel = $this->dependencyContainer->get('ReservationModel');
+                $viewData['recentReservations'] = $reservationModel->getRecentReservations(5);
+                
+                // Vérifier si CancellationModel existe, sinon gérer les annulations différemment
+                if ($this->dependencyContainer->has('CancellationModel')) {
+                    $cancellationModel = $this->dependencyContainer->get('CancellationModel');
+                    $viewData['recentCancellations'] = $cancellationModel->getRecentCancellations(5);
+                } else {
+                    // Alternative: filtrer les réservations avec statut "cancelled"
+                    $viewData['recentCancellations'] = [];
+                }
+            }
+            
+            // Pour les administrateurs, charger des statistiques
+            if ($user->getRole() == 'admin') {
+                // Statistiques utilisateurs
+                $viewData['userStats'] = [
+                    'clients' => count($this->userModel->getUsersByRole('client')),
+                    'staff' => count($this->userModel->getUsersByRole('staff')),
+                    'admins' => count($this->userModel->getUsersByRole('admin'))
+                ];
+                
+                // Statistiques chambres - utiliser le conteneur de dépendances
+                $roomModel = $this->dependencyContainer->get('RoomModel');
+                $rooms = $roomModel->getAllRooms();
+                $availableRooms = array_filter($rooms, function($room) {
+                    return $room->isAvailable();
+                });
+                
+                $viewData['roomStats'] = [
+                    'total' => count($rooms),
+                    'available' => count($availableRooms),
+                    'occupancy' => count($rooms) > 0 ? round((1 - count($availableRooms) / count($rooms)) * 100) : 0
+                ];
+            }
+            
+            echo $this->twig->render('userController/dashboard.html.twig', $viewData);
         } catch (\Exception $e) {
             $_SESSION['message'] = 'Une erreur est survenue lors de l\'accès à votre profil: ' . $e->getMessage();
             $_SESSION['success'] = false;
